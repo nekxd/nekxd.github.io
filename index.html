@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+  <title>GOOGLE ВЕРНИТЕ МОЙ САЙТ!!!! #FREENEKXD</title>
+  <style>
+    /* Сброс отступов и полная высота */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background-color: #ffffff; /* чисто белый фон, как у поисковика */
+    }
+
+    /* Контейнер на весь экран, всё выравнивается по центру */
+    .fullscreen-message {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 20px; /* небольшой отступ, чтобы текст не прилипал к краям на мобильных */
+    }
+
+    /* Сам текст — крупный, чёткий, без анимаций и украшений */
+    .big-text {
+      font-family: 'Arial', 'Helvetica', sans-serif; /* простой строгий шрифт без засечек, похож на системный */
+      font-weight: 900; /* максимально жирный */
+      font-size: clamp(2.5rem, 12vw, 7rem); /* адаптивный размер: на телефонах ~2.5rem, на широких экранах до 7rem и больше */
+      line-height: 1.2;
+      color: #1a1a1a; /* почти чёрный, контрастный */
+      text-transform: uppercase; /* все буквы заглавные, как в кричащем требовании */
+      letter-spacing: 0.02em;
+      word-break: break-word; /* чтобы длинное слово или хештег переносились, если совсем узкий экран */
+      white-space: normal;
+      /* Никаких transition, animation, transform — просто статичная надпись */
+    }
+
+    /* Дополнительно: можно слегка выделить хештег цветом, но без анимаций.
+       Оставим его того же цвета для строгости, как вы просили "просто надпись".
+       Если нужно совсем одинаково — всё уже единообразно. */
+    .big-text span {
+      /* по желанию можно было бы сделать другим цветом, но в задании просто надпись.
+         Оставлю единый стиль, чтобы не нарушать "без анимаций просто надпись". */
+    }
+  </style>
+</head>
+<body>
+  <div class="fullscreen-message">
+    <!-- Текст точно как в запросе: GOOGLE ВЕРНИТЕ МОЙ САЙТ!!!! #FREENEKXD -->
+    <div class="big-text">GOOGLE ВЕРНИТЕ МОЙ САЙТ!!!! #FREENEKXD</div>
+  </div>
+</body>
+</html>
