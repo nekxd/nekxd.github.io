@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Никита - Биография</title>
+<title>Nekxdd</title>
 
 <style>
 body{
@@ -27,6 +27,7 @@ body{
     gap:10px;
 }
 
+/* TILE */
 .tile{
     background:#0078D7;
     padding:20px;
@@ -34,6 +35,7 @@ body{
     cursor:pointer;
     transition:.15s;
 }
+
 .tile:hover{transform:scale(1.03)}
 .tile:active{transform:scale(.97)}
 
@@ -45,9 +47,14 @@ body{
 .orange{background:#f39c12}
 
 .tile h2{margin:0 0 10px;font-weight:300}
-
 .tile p{opacity:.9}
 
+/* DONATE TILE */
+.donate{
+    background:#e74c3c;
+}
+
+/* FOOTER BLOCKS */
 footer{
     margin-top:30px;
     display:flex;
@@ -57,10 +64,28 @@ footer{
 }
 
 footer img{image-rendering:pixelated}
+
+/* NICK BLOCK */
+.nickblock{
+    margin-top:25px;
+    text-align:center;
+    font-size:14px;
+    color:#aaa;
+}
+
+.nickblock a{
+    color:#aaa;
+    text-decoration:none;
+}
+
+.nickblock a:hover{
+    color:white;
+}
 </style>
 </head>
 
 <body>
+
 <div class="wrap">
 
 <div class="header">
@@ -72,17 +97,12 @@ footer img{image-rendering:pixelated}
 
 <div class="tile large">
 <h2>Обо мне</h2>
-<p>
-Привет.<br>
-Я Никита.<br>
-Просто забавный челик,<br>
-который вайбкодит всякую херню.
-</p>
+<p>Просто забавный челик который вайбкодит всякую херню</p>
 </div>
 
 <div class="tile green" onclick="location.href='socials.html'">
 <h2>Соц. сети</h2>
-<p>мои соц сетки</p>
+<p>мои социальные сети</p>
 </div>
 
 <div class="tile purple">
@@ -92,16 +112,23 @@ footer img{image-rendering:pixelated}
 
 <div class="tile orange wide" onclick="location.href='player.html'">
 <h2>Музыка</h2>
-<p>немного музычки из профиля в тгшке</p>
+<p>музончик</p>
 </div>
 
-<div class="tile wide">
-<h2>Факт</h2>
-<p>не гений, не миллиардер, не плейбой, не филантроп</p>
+<div class="tile large">
+<h2>Статус</h2>
+<p>Не гений, не миллиардер, не плейбой, не филантроп</p>
+</div>
+
+<!-- DONATE -->
+<div class="tile donate wide" onclick="window.open('https://donatepay.ru/don/nekichxd')">
+<h2>Донаты</h2>
+<p>поддержать меня баблишком</p>
 </div>
 
 </div>
 
+<!-- FOOTER -->
 <footer>
 
 <a href="http://madebydimas.top">
@@ -113,15 +140,26 @@ footer img{image-rendering:pixelated}
 </a>
 
 <a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif" width="88" height="31">
+<img src="http://veselcraft.ru/images/vc.gif">
 </a>
 
 <a href="https://github.com" target="_blank">
-<img src="https:/madebydimas.top/github.gif" width="88" height="31">
+<img src="https://madebydimas.top/github.gif" width="88" height="31">
 </a>
 
 </footer>
 
+<!-- NICKNAME CERTIFICATE -->
+<div class="nickblock">
+
+<a href="https://mynickname.com/id833025">
+<img src="https://mynickname.com/img.php?id=833025&sert=1"
+alt="Certificate for nickname Nekich, is registered to: nekich_idk.t.me">
+</a>
+
 </div>
+
+</div>
+
 </body>
 </html>
