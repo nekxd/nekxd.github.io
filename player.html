@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:'Segoe UI';
+    display:flex;
+    justify-content:center;
+}
+
+.wrap{width:900px;padding:40px}
+
+h1{font-size:60px;font-weight:300}
+
+.player{
+    background:#222;
+    padding:20px;
+    margin-top:20px;
+}
+
+button{
+    background:#0078d7;
+    border:none;
+    color:white;
+    padding:10px;
+    cursor:pointer;
+    margin-right:5px;
+}
+
+.track{
+    padding:10px;
+    background:#333;
+    margin-top:5px;
+    cursor:pointer;
+}
+
+.track:hover{background:#444}
+
+footer{
+    margin-top:30px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+}
+</style>
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>Music Player</h1>
+
+<div class="player">
+
+<audio id="audio" controls style="width:100%"></audio>
+
+<div id="list"></div>
+
+</div>
+
+<footer>
+<a href="http://madebydimas.top">
+<img src="http://madebydimas.top/button.png" width="88" height="31">
+</a>
+
+<a href="http://myslivets.com" target="_blank">
+<img src="http://myslivets.com/img/button.png" width="88" height="31">
+</a>
+
+<a href="http://veselcraft.ru/" target="_blank">
+<img src="http://veselcraft.ru/images/vc.gif" width="88" height="31">
+</a>
+
+<a href="https://github.com" target="_blank">
+<img src="https://madebydimas.top/github.gif" width="88" height="31">
+</a>
+
+</footer>
+
+</div>
+
+<script>
+const tracks = [
+["Tyler The Creator - Assmilk","https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3"],
+["Kanye West - Bound 2","https://github.com/nekxd/player/raw/refs/heads/main/b2.m4a"],
+["Птицу ЕМЪ - Биохазард","https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a"],
+["Grimes - Oblivion","https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a"],
+["Kanye West - Waves","https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3"]
+["Kunteynir - Это Жизнь","https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a"]
+["Kunteynir - Дало В Ноги (ft. чЁ)","https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a"]
+["Tyler The Creator - She (ft. Frank Ocean)","https://github.com/nekxd/player/raw/refs/heads/main/she.m4a"]
+];
+
+const audio = document.getElementById("audio");
+const list = document.getElementById("list");
+
+tracks.forEach(t=>{
+    const div = document.createElement("div");
+    div.className="track";
+    div.innerText=t[0];
+    div.onclick=()=>audio.src=t[1],audio.play();
+    list.appendChild(div);
+});
+</script>
+
+</body>
+</html>
