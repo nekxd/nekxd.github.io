@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nekxdd Player</title>
+
+<style>
+body{
+    margin:0;
+    background:#111;
+    color:white;
+    font-family:'Segoe UI',sans-serif;
+    display:flex;
+    justify-content:center;
+}
+
+.wrap{
+    width:900px;
+    max-width:95%;
+    padding:30px;
+}
+
+h1{
+    font-size:60px;
+    font-weight:300;
+    margin:0 0 20px;
+}
+
+.player{
+    background:#222;
+    padding:20px;
+}
+
+audio{
+    width:100%;
+}
+
+.track{
+    background:#0078D7;
+    padding:15px;
+    margin-top:8px;
+    cursor:pointer;
+    transition:.15s;
+}
+
+.track:hover{
+    transform:scale(1.03);
+}
+
+.track:active{
+    transform:scale(.97);
+}
+
+.back{
+    display:block;
+    margin-top:20px;
+    color:white;
+}
+
+footer{
+    margin-top:30px;
+    display:flex;
+    gap:6px;
+    flex-wrap:wrap;
+    justify-content:center;
+}
+
+footer img{
+    width:88px;
+    height:31px;
+}
+
+@media(max-width:700px){
+
+h1{
+    font-size:40px;
+}
+
+.wrap{
+    padding:15px;
+}
+
+.track{
+    padding:12px;
+}
+
+}
+</style>
+
+</head>
+
+<body>
+
+<div class="wrap">
+
+<h1>Nekxdd Player</h1>
+
+<div class="player">
+
+<audio id="audio" controls></audio>
+
+<div class="track" onclick="play('assmilk.mp3')">
+Tyler The Creator - Assmilk
+</div>
+
+<div class="track" onclick="play('b2.m4a')">
+Kanye West - Bound 2
+</div>
+
+<div class="track" onclick="play('biohazard.m4a')">
+Птицу ЕМЪ - Биохазард
+</div>
+
+<div class="track" onclick="play('oblivion.m4a')">
+Grimes - Oblivion
+</div>
+
+<div class="track" onclick="play('waves.mp3')">
+Kanye West - Waves
+</div>
+
+<div class="track" onclick="play('chejizh.m4a')">
+Kunteynir - Это Жизнь
+</div>
+
+<div class="track" onclick="play('dalovnogi.m4a')">
+Kunteynir - Дало В Ноги
+</div>
+
+<div class="track" onclick="play('she.m4a')">
+Tyler The Creator - She
+</div>
+
+</div>
+
+<a class="back" href="index.html">
+← На главную
+</a>
+
+<footer>
+
+<a href="http://madebydimas.top">
+<img src="http://madebydimas.top/button.png">
+</a>
+
+<a href="http://myslivets.com" target="_blank">
+<img src="http://myslivets.com/img/button.png">
+</a>
+
+<a href="http://veselcraft.ru/" target="_blank">
+<img src="http://veselcraft.ru/images/vc.gif">
+</a>
+
+<a href="https://github.com" target="_blank">
+<img src="https://madebydimas.top/github.gif">
+</a>
+
+<a href="https://firefox.com" target="_blank">
+<img src="firefox.gif">
+</a>
+
+</footer>
+
+<div style="margin-top:25px;text-align:center">
+
+<a href="https://mynickname.com/nekich">
+<img src="https://mynickname.com/forum4t6/Nekich.gif">
+</a>
+
+<br><br>
+
+<a href="https://mynickname.com/id1844833">
+<img src="https://mynickname.com/forum4t5/nekxd.gif">
+</a>
+
+</div>
+
+</div>
+
+
+<script>
+
+const base="https://raw.githubusercontent.com/nekxd/player/main/";
+
+function play(file){
+
+let audio=document.getElementById("audio");
+
+audio.src=base+file;
+
+audio.play();
+
+}
+
+</script>
+
+</body>
+</html>
