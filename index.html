@@ -9,46 +9,79 @@
 body{
     margin:0;
     background:#111;
-    font-family:'Segoe UI',sans-serif;
     color:white;
+    font-family:'Segoe UI',sans-serif;
     display:flex;
     justify-content:center;
 }
 
-.wrap{width:900px;padding:40px}
+.wrap{
+    width:900px;
+    max-width:95%;
+    padding:20px;
+}
 
-.header h1{font-size:70px;font-weight:300;margin:0}
-.header p{color:#aaa;font-size:20px}
+h1{
+    font-size:60px;
+    font-weight:300;
+    margin:0 0 20px;
+}
 
 .grid{
-    margin-top:30px;
     display:grid;
-    grid-template-columns:repeat(4,1fr);
+    grid-template-columns:repeat(2,1fr);
     gap:10px;
 }
 
 .tile{
     background:#0078D7;
     padding:20px;
-    min-height:160px;
-    cursor:pointer;
-    transition:.15s;
+    min-height:120px;
+    box-sizing:border-box;
 }
 
-.tile:hover{transform:scale(1.03)}
-.tile:active{transform:scale(.97)}
+.green{
+    background:#16a085;
+}
 
-.large{grid-column:span 2}
-.wide{grid-column:span 2}
+.purple{
+    background:#8e44ad;
+}
 
-.green{background:#16a085}
-.purple{background:#8e44ad}
-.orange{background:#f39c12}
+.orange{
+    background:#f39c12;
+}
 
-.tile h2{margin:0 0 10px;font-weight:300}
-.tile p{opacity:.9}
+.red{
+    background:#e74c3c;
+}
 
-.donate{background:#e74c3c}
+.tile h2{
+    margin:0 0 10px;
+    font-weight:300;
+}
+
+.tile p{
+    margin:0;
+    line-height:1.6;
+    word-wrap:break-word;
+}
+
+.back{
+    display:inline-block;
+    margin-top:20px;
+    color:white;
+}
+
+textarea{
+    width:100%;
+    box-sizing:border-box;
+    resize:none;
+    background:#222;
+    color:white;
+    border:1px solid #555;
+    padding:10px;
+}
 
 footer{
     margin-top:30px;
@@ -56,6 +89,35 @@ footer{
     gap:6px;
     flex-wrap:wrap;
     justify-content:center;
+}
+
+footer img{
+    max-width:88px;
+    height:31px;
+}
+
+@media(max-width:700px){
+
+.wrap{
+    padding:15px;
+}
+
+h1{
+    font-size:40px;
+}
+
+.grid{
+    grid-template-columns:1fr;
+}
+
+.tile{
+    width:100%;
+}
+
+footer{
+    gap:8px;
+}
+
 }
 </style>
 </head>
@@ -104,6 +166,11 @@ footer{
 <div class="tile purple" onclick="location.href='devices.html'">
 <h2>Мои устройства</h2>
 <p>ПК, телефоны и периферия</p>
+</div>
+
+<div class="tile orange wide" onclick="location.href='m-player.html'">
+<h2>Музыка (мобильная версия)</h2>
+<p>плеер с моей музыкой</p>
 </div>
     
 </div>
