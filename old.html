@@ -143,22 +143,26 @@ DonationAlerts
 <div class="section player">
 <h2>Музыка</h2>
 
-<audio controls style="width:100%;">
-<source src="https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3">
-</audio>
+<audio id="player" controls style="width:100%"></audio>
 
-<br><br>
-
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3">Tyler The Creator - Assmilk</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/b2.m4a">Kanye West - Bound 2</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a">Птицу ЕМЪ - Биохазард</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a">Grimes - Oblivion</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3">Kanye West - Waves</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a">Kunteynir - Это Жизнь</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a">Kunteynir - Дало В Ноги</a>
-<a href="https://github.com/nekxd/player/raw/refs/heads/main/she.m4a">Tyler The Creator - She</a>
-
+<div class="player">
+<a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/assmilk.mp3');return false;">Tyler The Creator - Assmilk</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a');return false;">Птицу ЕМЪ - Биохазард</a>
+<a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/b2.m4a');return false;">Kanye West - Bound 2</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a');return false;">Grimes - Oblivion</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3');return false;">Kanye West - Waves</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a');return false;">Kunteynir - Это жизнь</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a');return false;">Kunteynir - Дало в Ноги</a>
+<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/she.m4a');return false;">Tyler The Creator - She</a>
 </div>
+
+<script>
+function playTrack(url){
+    var p=document.getElementById('player');
+    p.src=url;
+    p.play();
+}
+</script>
 
 <div class="footer">
 
