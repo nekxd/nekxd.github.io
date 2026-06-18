@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Устройства - WP8</title>
+<style>
+/* ---------- Стиль Приложений WP8 ---------- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    margin: 0; background-color: #000; color: white;
+    font-family: 'Segoe UI', 'Segoe WP', sans-serif;
+    padding: 20px 0 0 25px; overflow-x: hidden;
+}
+.app-title {
+    text-transform: uppercase; font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; margin-bottom: -10px; color: #a0a0a0;
+}
+h1 {
+    font-size: 64px; font-weight: 200; margin: 0 0 10px 0;
+    letter-spacing: -2px; white-space: nowrap;
+}
+.wp-list { display: flex; flex-direction: column; padding-right: 25px; padding-bottom: 80px; }
+.list-item {
+    padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 28px; font-weight: 300; line-height: 1.1;
+}
+.list-item span {
+    display: block; font-size: 15px; color: #a0a0a0;
+    font-weight: 400; margin-top: 8px; line-height: 1.4;
+}
+/* Нижняя панель */
+.bottom-app-bar {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+    background: #1f1f1f; display: flex; align-items: center;
+    padding: 0 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+}
+.app-bar-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 2px solid white;
+    display: flex; align-items: center; justify-content: center; color: white;
+    text-decoration: none; transition: 0.1s;
+}
+.app-bar-btn:active { background: white; color: black; }
+</style>
+</head>
+<body>
+
+<div class="app-title">система</div>
+<h1>девайсы</h1>
+
+<div class="wp-list">
+    <div class="list-item">
+        ПК
+        <span>AMD Ryzen 5 2600<br>ASUS ROG GTX 1070 8 GB<br>16 GB DDR4 RAM<br>SSD WD Green 240 GB<br>HDD Toshiba 500 GB</span>
+    </div>
+    
+    <div class="list-item">
+        Монитор
+        <span>MSI MAG 2K 165 Гц</span>
+    </div>
+    
+    <div class="list-item">
+        Периферия
+        <span>Defender Pro Atomic Core<br>VXE R1 SE+<br>Defender Triple<br>Fifine A6</span>
+    </div>
+    
+    <div class="list-item">
+        Телефоны
+        <span>Realme P3 5G — 256 GB<br>Samsung Galaxy A13 — 64 GB<br>Samsung S3 Duos — 16 GB<br>iPhone 5S — 16 GB</span>
+    </div>
+
+    <div class="list-item">
+        Умный дом
+        <span>Яндекс Станция Мини 2</span>
+    </div>
+</div>
+
+<div class="bottom-app-bar">
+    <a href="mobile.html" class="app-bar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+</body>
+</html>
