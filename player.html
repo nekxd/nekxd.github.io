@@ -2,253 +2,437 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>музыкальный плеер</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Музыкальный плеер</title>
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:'Segoe UI',sans-serif;
-    display:flex;
-    justify-content:center;
+/* ---------- Базовые стили ---------- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url('http://nekxd.ru/start.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    user-select: none;
 }
 
-.wrap{width:1000px;padding:40px}
-
-h1{font-size:60px;font-weight:300}
-
-.player{display:flex;gap:20px;margin-top:20px}
-
-.left{flex:2;background:#1e1e1e;padding:20px}
-.right{flex:1;background:#151515;padding:10px;max-height:520px;overflow:auto}
-
-.track{
-    padding:12px;
-    margin-bottom:6px;
-    background:#2a2a2a;
-    cursor:pointer;
-    transition:.2s;
+/* ---------- Заголовок и кнопка "Назад" ---------- */
+.header-container {
+    position: absolute;
+    top: 45px;
+    left: 85px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
 }
 
-.track:hover{background:#3a3a3a}
-.track.active{background:#0078d7}
-
-.bar{
-    width:100%;
-    height:6px;
-    background:#333;
-    margin-top:10px;
-    cursor:pointer;
+.back-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
 }
 
-.progress{
-    height:100%;
-    width:0%;
-    background:#0078d7;
+.back-btn:hover {
+    background: white;
+    color: black;
 }
 
-button{
-    background:#0078d7;
-    border:none;
-    color:white;
-    padding:10px 14px;
-    cursor:pointer;
-    transition:.2s;
+.back-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
-button:hover{background:#0063b1}
-
-.controls{
-    display:flex;
-    gap:10px;
-    margin-top:10px;
+.start-header {
+    font-size: 52px;
+    font-weight: 200;
+    letter-spacing: -1.5px;
 }
 
-.playbtn{
-    transition:.2s;
+/* ---------- Сетка плиток (Metro Grid) ---------- */
+.tiles-container {
+    display: flex;
+    gap: 70px;
+    height: 100%;
+    align-items: flex-start;
+    padding-top: 150px;
+    padding-left: 85px;
+    padding-right: 85px;
+    padding-bottom: 40px;
+    width: max-content;
 }
 
-.playbtn.active{
-    transform:scale(1.2);
-    color:#00aaff;
+.tile-group {
+    display: grid;
+    grid-template-columns: 120px 120px;
+    grid-template-rows: repeat(4, 120px);
+    gap: 8px;
 }
 
-.vol{
-    width:100%;
-    margin-top:10px;
+/* ---------- Стили плиток ---------- */
+.tile {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    padding: 15px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease, outline 0.1s;
+    outline: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
 }
 
-/* FOOTER */
-footer{
-    margin-top:30px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-    justify-content:flex-start;
+.tile:hover {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: -2px;
 }
 
-footer img{
-    image-rendering:pixelated;
+.tile:active { transform: scale(0.96); }
+
+/* Размеры */
+.tile.wide { grid-column: span 2; }
+.tile.giant { 
+    grid-column: span 2; 
+    grid-row: span 4; 
+    cursor: default; 
+    padding: 25px;
 }
+.tile.giant:active { transform: none; } /* Отключаем "нажатие" на всю плитку плеера */
+
+/* Цвета */
+.bg-player { background: #8e44ad; }
+.bg-dark { background: rgba(30, 30, 30, 0.85); backdrop-filter: blur(5px); }
+.track-tile.playing { 
+    background: #0078D7; 
+    outline: 2px solid white; 
+    outline-offset: -2px;
+}
+
+/* Внутренности плитки */
+.tile-title {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 13.5px;
+    font-weight: 400;
+    opacity: 0.8;
+}
+
+.track-content {
+    font-size: 15px;
+    line-height: 1.4;
+    margin-top: 5px;
+    z-index: 2;
+}
+.track-content b { font-weight: 600; font-size: 18px; display: block; margin-top: 2px; }
+
+/* ---------- Элементы управления плеером ---------- */
+.player-ui {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.now-playing-box {
+    flex-grow: 1;
+}
+
+.now-playing-label {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    opacity: 0.7;
+    margin-bottom: 10px;
+}
+
+#now {
+    font-size: 24px;
+    font-weight: 300;
+    line-height: 1.2;
+    display: block;
+}
+
+.bar {
+    width: 100%;
+    height: 6px;
+    background: rgba(255, 255, 255, 0.2);
+    margin: 20px 0;
+    cursor: pointer;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.progress {
+    height: 100%;
+    width: 0%;
+    background: white;
+    pointer-events: none;
+}
+
+.controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.ctrl-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    font-size: 16px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: 0.2s;
+}
+
+.ctrl-btn:hover {
+    background: white;
+    color: #8e44ad;
+}
+
+.ctrl-btn.playbtn {
+    width: 55px;
+    height: 55px;
+    font-size: 20px;
+}
+
+.ctrl-btn.playbtn.active {
+    background: white;
+    color: #8e44ad;
+}
+
+.vol-container {
+    margin-bottom: 20px;
+}
+
+.vol-container span {
+    font-size: 12px;
+    opacity: 0.8;
+    display: block;
+    margin-bottom: 5px;
+}
+
+.vol {
+    width: 100%;
+    cursor: pointer;
+    accent-color: white;
+}
+
+/* ---------- Анимация появления ---------- */
+@keyframes startScreenIn {
+    0% { transform: scale(0.85) translateX(60px); opacity: 0; }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
+}
+.tile { animation: startScreenIn 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) backwards; }
+
+/* Кастомизация скроллбара */
+::-webkit-scrollbar { width: 8px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 </style>
 </head>
-
 <body>
 
-<div class="wrap">
-
-<h1>Музыкальный плеер</h1>
-
-<div class="player">
-
-<div class="left">
-
-<audio id="audio"></audio>
-
-<div id="now">Выбери трек</div>
-
-<div class="bar" onclick="seek(event)">
-<div class="progress" id="progress"></div>
+<div class="header-container">
+    <button class="back-btn" onclick="location.href='index.html'" aria-label="Назад на главную">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="start-header">Музыка</div>
 </div>
 
-<div class="controls">
-<button onclick="prev()">⏮</button>
-<button id="playBtn" class="playbtn" onclick="toggle()">▶</button>
-<button onclick="next()">⏭</button>
-</div>
+<div class="tiles-container">
 
-<input type="range" class="vol" min="0" max="1" step="0.01" onchange="setVol(this.value)">
+    <div class="tile-group">
+        <div class="tile giant bg-player">
+            <audio id="audio"></audio>
+            
+            <div class="player-ui">
+                <div class="now-playing-box">
+                    <div class="now-playing-label">Сейчас играет</div>
+                    <span id="now">Выбери трек из списка</span>
+                </div>
 
-</div>
+                <div>
+                    <div class="bar" onclick="seek(event)">
+                        <div class="progress" id="progress"></div>
+                    </div>
 
-<div class="right" id="list"></div>
+                    <div class="controls">
+                        <button class="ctrl-btn" onclick="prev()">⏮</button>
+                        <button id="playBtn" class="ctrl-btn playbtn" onclick="toggle()">▶</button>
+                        <button class="ctrl-btn" onclick="next()">⏭</button>
+                    </div>
 
-</div>
+                    <div class="vol-container">
+                        <span>Громкость</span>
+                        <input type="range" class="vol" min="0" max="1" step="0.01" onchange="setVol(this.value)">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-<a class="back" href="index.html">← На главную</a>
+    <div class="tile-group">
+        <div class="tile wide bg-dark track-tile" onclick="load(0)">
+            <div class="track-content">Tyler The Creator<b>Assmilk</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(1)">
+            <div class="track-content">Kanye West<b>Bound 2</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(2)">
+            <div class="track-content">Птицу ЕМЪ<b>Биохазард</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(3)">
+            <div class="track-content">Grimes<b>Oblivion</b></div>
+        </div>
+    </div>
 
-</div>
-
-<footer>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png" width="88" height="31">
-</a>
-
-<a href="http://myslivets.com" target="_blank">
-<img src="http://myslivets.com/img/button.png" width="88" height="31">
-</a>
-
-<a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif" width="88" height="31">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif" width="88" height="31">
-</a>
-
-<a href="http://firefox.com" target="_blank">
-<img src="firefox.gif" height="31" width="88" alt="Firefox">
-</a>
-
-</footer>
+    <div class="tile-group">
+        <div class="tile wide bg-dark track-tile" onclick="load(4)">
+            <div class="track-content">Kanye West<b>Waves</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(5)">
+            <div class="track-content">Kunteynir<b>Это Жизнь</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(6)">
+            <div class="track-content">Kunteynir<b>Дало В Ноги</b></div>
+        </div>
+        <div class="tile wide bg-dark track-tile" onclick="load(7)">
+            <div class="track-content">Tyler The Creator<b>She</b></div>
+        </div>
+    </div>
 
 </div>
 
 <script>
+// --- Визуальные эффекты (Скролл и Анимация) ---
+(function(){
+    const container = document.querySelector('.tiles-container');
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY * 2;
+        }
+    });
 
+    document.querySelectorAll('.tile').forEach((t, i) => {
+        t.style.animationDelay = (i * 0.05) + 's';
+    });
+})();
+
+// --- Логика плеера ---
 const tracks = [
-["Tyler The Creator - Assmilk","https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3"],
-["Kanye West - Bound 2","https://github.com/nekxd/player/raw/refs/heads/main/b2.m4a"],
-["Птицу ЕМЪ - Биохазард","https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a"],
-["Grimes - Oblivion","https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a"],
-["Kanye West - Waves","https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3"],
-["Kunteynir - Это Жизнь","https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a"],
-["Kunteynir - Дало В Ноги","https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a"],
-["Tyler The Creator - She","https://github.com/nekxd/player/raw/refs/heads/main/she.m4a"]
+    ["Tyler The Creator - Assmilk","https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3"],
+    ["Kanye West - Bound 2","https://github.com/nekxd/player/raw/refs/heads/main/b2.m4a"],
+    ["Птицу ЕМЪ - Биохазард","https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a"],
+    ["Grimes - Oblivion","https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a"],
+    ["Kanye West - Waves","https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3"],
+    ["Kunteynir - Это Жизнь","https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a"],
+    ["Kunteynir - Дало В Ноги","https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a"],
+    ["Tyler The Creator - She","https://github.com/nekxd/player/raw/refs/heads/main/she.m4a"]
 ];
 
-let audio=document.getElementById("audio");
-let list=document.getElementById("list");
-let now=document.getElementById("now");
-let progress=document.getElementById("progress");
-let playBtn=document.getElementById("playBtn");
+let audio = document.getElementById("audio");
+let now = document.getElementById("now");
+let progress = document.getElementById("progress");
+let playBtn = document.getElementById("playBtn");
 
-let current=0;
+let current = 0;
 
-function load(i){
-current=i;
-audio.src=tracks[i][1];
-now.innerText=tracks[i][0];
-highlight(i);
-audio.play();
-setPlayState(true);
+function load(i) {
+    current = i;
+    audio.src = tracks[i][1];
+    now.innerText = tracks[i][0];
+    highlight(i);
+    audio.play();
+    setPlayState(true);
 }
 
-function highlight(i){
-document.querySelectorAll(".track").forEach((t,idx)=>{
-t.classList.toggle("active",idx===i);
-});
+function highlight(i) {
+    document.querySelectorAll(".track-tile").forEach((t, idx) => {
+        t.classList.toggle("playing", idx === i);
+    });
 }
 
-tracks.forEach((t,i)=>{
-let div=document.createElement("div");
-div.className="track";
-div.innerText=t[0];
-div.onclick=()=>load(i);
-list.appendChild(div);
-});
-
-function toggle(){
-if(audio.paused){
-audio.play();
-setPlayState(true);
-}else{
-audio.pause();
-setPlayState(false);
-}
+function toggle() {
+    // Если трек еще не выбран, запускаем первый
+    if (!audio.src) {
+        load(0);
+        return;
+    }
+    
+    if (audio.paused) {
+        audio.play();
+        setPlayState(true);
+    } else {
+        audio.pause();
+        setPlayState(false);
+    }
 }
 
-function setPlayState(isPlaying){
-if(isPlaying){
-playBtn.innerText="❚❚";
-playBtn.classList.add("active");
-}else{
-playBtn.innerText="▶";
-playBtn.classList.remove("active");
-}
-}
-
-function next(){
-current=(current+1)%tracks.length;
-load(current);
+function setPlayState(isPlaying) {
+    if (isPlaying) {
+        playBtn.innerText = "❚❚";
+        playBtn.classList.add("active");
+    } else {
+        playBtn.innerText = "▶";
+        playBtn.classList.remove("active");
+    }
 }
 
-function prev(){
-current=(current-1+tracks.length)%tracks.length;
-load(current);
+function next() {
+    current = (current + 1) % tracks.length;
+    load(current);
 }
 
-audio.addEventListener("ended",next);
+function prev() {
+    current = (current - 1 + tracks.length) % tracks.length;
+    load(current);
+}
 
-audio.addEventListener("play",()=>setPlayState(true));
-audio.addEventListener("pause",()=>setPlayState(false));
+audio.addEventListener("ended", next);
+audio.addEventListener("play", () => setPlayState(true));
+audio.addEventListener("pause", () => setPlayState(false));
 
-audio.addEventListener("timeupdate",()=>{
-progress.style.width=(audio.currentTime/audio.duration)*100+"%";
+audio.addEventListener("timeupdate", () => {
+    if(audio.duration) {
+        progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+    }
 });
 
-function seek(e){
-let r=e.target.getBoundingClientRect();
-audio.currentTime=((e.clientX-r.left)/r.width)*audio.duration;
+function seek(e) {
+    if(!audio.duration) return;
+    let r = e.target.getBoundingClientRect();
+    // Учитываем клик как по самому бару, так и по полосе прогресса
+    let clickX = e.clientX - r.left; 
+    audio.currentTime = (clickX / r.width) * audio.duration;
 }
 
-function setVol(v){
-audio.volume=v;
+function setVol(v) {
+    audio.volume = v;
 }
-
 </script>
 
 </body>
