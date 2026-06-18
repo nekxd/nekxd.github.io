@@ -176,7 +176,7 @@ body {
     overflow-y: auto;
     flex-grow: 1;
     padding-right: 10px;
-    margin-bottom: 25px; /* Защищаем место для заголовка снизу */
+    margin-bottom: 25px;
 }
 
 /* Анимация приседания каретки */
@@ -244,7 +244,7 @@ body {
 }
 .badges-container img { width: 88px; height: 31px; cursor: pointer; }
 
-/* Текстовое поле с кодом (исправлен скроллбар) */
+/* Текстовое поле с кодом */
 textarea.code-box {
     width: 100%; height: 75px; margin-top: 8px; margin-bottom: 12px; background: rgba(0,0,0,0.5);
     color: #fff; border: 1px solid rgba(255,255,255,0.2); padding: 8px; font-size: 11px; 
@@ -281,16 +281,85 @@ textarea.code-box {
 }
 .user-menu a:hover { background: rgba(255,255,255,0.1); }
 
-/* Кастомизация скроллбара (добавлена ширина, чтобы вертикальный скролл был тонким) */
+/* Кастомизация скроллбара */
 ::-webkit-scrollbar { width: 8px; height: 12px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
+
+/* ---------- Виджет погоды ---------- */
+.weather-content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+    padding: 5px;
+    z-index: 2;
+    position: relative;
+}
+
+.weather-city {
+    font-size: 18px;
+    font-weight: 300;
+}
+
+.weather-icon-container {
+    position: absolute;
+    top: 25px;
+    right: 15px;
+    width: 90px;
+    height: 90px;
+}
+
+.sun-icon {
+    position: absolute;
+    top: 0;
+    right: 10px;
+    width: 55px;
+    height: 55px;
+    color: #FFD700;
+    animation: spin 15s linear infinite;
+}
+
+.cloud-icon {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 65px;
+    height: 65px;
+    color: white;
+    opacity: 0.95;
+    animation: float 4s ease-in-out infinite;
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
+}
+
+.weather-temp {
+    font-size: 48px;
+    font-weight: 200;
+    line-height: 1;
+    margin-top: auto;
+    margin-bottom: 2px;
+}
+
+.weather-desc {
+    font-size: 13px;
+    opacity: 0.8;
+    margin-bottom: 25px;
+}
+
+/* Анимации погоды */
+@keyframes spin {
+    100% { transform: rotate(360deg); }
+}
+@keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+}
 </style>
 </head>
 <body>
 
-<div class="start-header">Пуск</div>
+<div class="start-header">Пукст</div>
 
 <div class="user-controls">
     <div class="user-info" id="userBtn">
@@ -319,6 +388,33 @@ textarea.code-box {
 <div class="tiles-container">
 
     <div class="tile-group">
+        <div class="tile large blue" data-label="погода">
+            <div class="weather-content">
+                <div class="weather-city">Определение...</div>
+                
+                <div class="weather-icon-container">
+                    <svg class="sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="5"></circle>
+                        <line x1="12" y1="1" x2="12" y2="3"></line>
+                        <line x1="12" y1="21" x2="12" y2="23"></line>
+                        <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line>
+                        <line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line>
+                        <line x1="1" y1="12" x2="3" y2="12"></line>
+                        <line x1="21" y1="12" x2="23" y2="12"></line>
+                        <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line>
+                        <line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>
+                    </svg>
+                    <svg class="cloud-icon" viewBox="0 0 24 24" fill="currentColor" stroke="none">
+                        <path d="M17.5,19 C19.9852814,19 22,16.9852814 22,14.5 C22,12.1332847 20.1783857,10.2014457 17.8687315,10.0210204 C17.3824558,6.61391986 14.4533036,4 10.9997193,4 C7.1337227,4 3.9997193,7.13400675 3.9997193,11 C3.9997193,11.0827253 4.00115049,11.1651167 4.00398695,11.2471542 C1.73719003,11.8398033 0,13.9723507 0,16.5 C0,19.5375661 2.46243388,22 5.5,22 L17.5,22 C19.9852814,22 22,19.9852814 22,17.5 Z"></path>
+                    </svg>
+                </div>
+
+                <div class="weather-temp">--°</div>
+                <div class="weather-desc">Загрузка данных...</div>
+            </div>
+            <div class="tile-title">Погода</div>
+        </div>
+
         <div class="tile large blue" data-label="обо мне">
             <div class="tile-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.5" r="1"/></svg>
@@ -328,7 +424,9 @@ textarea.code-box {
             </div>
             <div class="tile-title">Обо мне</div>
         </div>
+    </div>
 
+    <div class="tile-group">
         <div class="tile wide orange" data-label="музыка" onclick="location.href='player.html'">
             <div class="tile-icon">
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 18V4l12-2v14"/></svg>
@@ -405,7 +503,7 @@ textarea.code-box {
             <div class="tile-title">Устройства</div>
         </div>
 
-<div class="tile dark" style="grid-column: 1 / 3; grid-row: 2 / 5; cursor: default; padding: 15px 5px 15px 15px; display: flex; flex-direction: column;">
+        <div class="tile dark" style="grid-column: 1 / 3; grid-row: 2 / 5; cursor: default; padding: 15px 5px 15px 15px; display: flex; flex-direction: column;">
             
             <div class="webring-scroll">
                 <div style="font-size: 13px; margin-bottom: 15px; color: #ddd; text-align: center;">Добавьте мою кнопку!</div>
@@ -508,6 +606,49 @@ textarea.code-box {
             openSearch();
         }
     });
+
+    // ---------- Функция динамической загрузки погоды ----------
+    async function initLiveWeather() {
+        try {
+            // Определение локации по IP-адресу
+            const geoRes = await fetch('https://ipapi.co/json/');
+            const geoData = await geoRes.json();
+            
+            const city = geoData.city || 'Москва';
+            const lat = geoData.latitude || 55.7558;
+            const lon = geoData.longitude || 37.6173;
+
+            // Запрос погоды по координатам локации
+            const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+            const weatherData = await weatherRes.json();
+            
+            const temp = Math.round(weatherData.current_weather.temperature);
+            const code = weatherData.current_weather.weathercode;
+
+            // Сопоставление кодов WMO с текстовым описанием на русском
+            let description = 'Ясно';
+            if (code === 1 || code === 2) description = 'Переменная облачность';
+            else if (code === 3) description = 'Пасмурно';
+            else if (code >= 45 && code <= 48) description = 'Туман';
+            else if (code >= 51 && code <= 55) description = 'Морось';
+            else if (code >= 61 && code <= 65) description = 'Дождь';
+            else if (code >= 71 && code <= 77) description = 'Снег';
+            else if (code >= 80 && code <= 82) description = 'Ливень';
+            else if (code >= 95) description = 'Гроза';
+
+            // Обновление интерфейса плитки погоды
+            document.querySelector('.weather-city').textContent = city;
+            document.querySelector('.weather-temp').textContent = (temp > 0 ? '+' : '') + temp + '°';
+            document.querySelector('.weather-desc').textContent = description;
+
+        } catch (err) {
+            console.error('Ошибка получения погоды:', err);
+            document.querySelector('.weather-city').textContent = 'Упс!';
+            document.querySelector('.weather-desc').textContent = 'Ошибка загрузки данных';
+        }
+    }
+
+    initLiveWeather();
 })();
 </script>
 
