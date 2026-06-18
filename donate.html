@@ -2,190 +2,242 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Донаты</title>
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:'Segoe UI',sans-serif;
-    display:flex;
-    justify-content:center;
+/* ---------- Базовые стили ---------- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url('http://nekxd.ru/start.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    user-select: none;
 }
 
-.wrap{
-    width:900px;
-    max-width:95%;
-    padding:20px;
+/* ---------- Заголовок и кнопка "Назад" ---------- */
+.header-container {
+    position: absolute;
+    top: 45px;
+    left: 85px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
 }
 
-h1{
-    font-size:60px;
-    font-weight:300;
-    margin:0 0 20px;
+.back-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+.back-btn:hover {
+    background: white;
+    color: black;
 }
 
-.tile{
-    background:#0078D7;
-    padding:20px;
-    min-height:120px;
-    box-sizing:border-box;
+.back-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
-.green{
-    background:#16a085;
+.start-header {
+    font-size: 52px;
+    font-weight: 200;
+    letter-spacing: -1.5px;
 }
 
-.purple{
-    background:#8e44ad;
+/* ---------- Сетка плиток (Metro Grid) ---------- */
+.tiles-container {
+    display: flex;
+    gap: 70px;
+    height: 100%;
+    align-items: flex-start;
+    padding-top: 150px;
+    padding-left: 85px;
+    padding-right: 85px;
+    padding-bottom: 40px;
+    width: max-content;
 }
 
-.orange{
-    background:#f39c12;
+.tile-group {
+    display: grid;
+    grid-template-columns: 120px 120px;
+    grid-template-rows: repeat(4, 120px);
+    gap: 8px;
 }
 
-.red{
-    background:#e74c3c;
+/* ---------- Стили плиток ---------- */
+.tile {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease;
+    outline: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
 }
 
-.tile h2{
-    margin:0 0 10px;
-    font-weight:300;
+.tile:hover {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: -2px;
 }
 
-.tile p{
-    margin:0;
-    line-height:1.6;
-    word-wrap:break-word;
+.tile:active { transform: scale(0.96); }
+
+/* Размеры */
+.tile.wide { grid-column: span 2; }
+
+/* Брендовые и банковские цвета */
+.bg-orange { background: #f39c12; }
+.bg-donationalerts { background: #ff7300; }
+.bg-tinkoff { background: #ffdd2d; color: black; } /* Желтый фон с черным текстом */
+.bg-yoomoney { background: #8e44ad; }
+.bg-alfa { background: #e74c3c; }
+.bg-ozon { background: #0078D7; }
+.bg-mts { background: #e30611; }
+
+/* Внутренности плитки */
+.tile-title {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 13.5px;
+    font-weight: 400;
+    max-width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 2;
 }
 
-.back{
-    display:inline-block;
-    margin-top:20px;
-    color:white;
+.tile-content {
+    font-size: 20px;
+    letter-spacing: 1.5px;
+    font-weight: 300;
+    text-align: center;
+    margin-top: 30px;
+    z-index: 2;
 }
 
-textarea{
-    width:100%;
-    box-sizing:border-box;
-    resize:none;
-    background:#222;
-    color:white;
-    border:1px solid #555;
-    padding:10px;
+.tile-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
+.tile-icon svg { width: 32px; height: 32px; opacity: 0.9; }
 
-footer{
-    margin-top:30px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-    justify-content:center;
+/* ---------- Анимация появления ---------- */
+@keyframes startScreenIn {
+    0% { transform: scale(0.85) translateX(60px); opacity: 0; }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
 }
+.tile { animation: startScreenIn 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) backwards; }
 
-footer img{
-    max-width:88px;
-    height:31px;
-}
-
-@media(max-width:700px){
-
-.wrap{
-    padding:15px;
-}
-
-h1{
-    font-size:40px;
-}
-
-.grid{
-    grid-template-columns:1fr;
-}
-
-.tile{
-    width:100%;
-}
-
-footer{
-    gap:8px;
-}
-
-}
+/* Кастомизация скроллбара */
+::-webkit-scrollbar { width: 8px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 </style>
 </head>
 <body>
 
-<div class="wrap">
+<div class="header-container">
+    <button class="back-btn" onclick="location.href='index.html'" aria-label="Назад на главную">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="start-header">Донаты</div>
+</div>
 
-<h1>Донаты</h1>
+<div class="tiles-container">
 
-<div class="card">
+    <div class="tile-group">
+        <a href="https://new.donatepay.ru/@nekichxd" target="_blank" class="tile bg-orange wide">
+            <div class="tile-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 1v22M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"></path></svg>
+            </div>
+            <div class="tile-title">DonatePay</div>
+        </a>
 
-<p><a href="https://new.donatepay.ru/@nekichxd">DonatePay</a></p>
+        <a href="https://www.donationalerts.com/r/nekxd" target="_blank" class="tile bg-donationalerts wide">
+            <div class="tile-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"></polygon></svg>
+            </div>
+            <div class="tile-title">DonationAlerts</div>
+        </a>
 
-<p><a href="https://www.donationalerts.com/r/nekxd">DonationAlerts</a></p>
+        <div class="tile bg-tinkoff wide">
+            <div class="tile-content">2200 7021 8463 5477</div>
+            <div class="tile-title">Тинькофф</div>
+        </div>
 
-<p>Тинькофф<br>2200 7021 8463 5477</p>
+        <div class="tile bg-yoomoney wide">
+            <div class="tile-content">5599 0021 3104 1065</div>
+            <div class="tile-title">YooMoney</div>
+        </div>
+    </div>
 
-<p>YooMoney<br>5599 0021 3104 1065</p>
+    <div class="tile-group">
+        <div class="tile bg-alfa wide">
+            <div class="tile-content">2200 1546 7614 4461</div>
+            <div class="tile-title">Альфа-Банк</div>
+        </div>
 
-<p>Альфа-Банк<br>2200 1546 7614 4461</p>
+        <div class="tile bg-ozon wide">
+            <div class="tile-content">2204 3212 8872 5864</div>
+            <div class="tile-title">Ozon Банк</div>
+        </div>
 
-<p>Ozon Банк<br>2204 3212 8872 5864</p>
-
-<p>МТС Банк<br>2203 8302 6759 3987</p>
+        <div class="tile bg-mts wide">
+            <div class="tile-content">2203 8302 6759 3987</div>
+            <div class="tile-title">МТС Банк</div>
+        </div>
+    </div>
 
 </div>
 
+<script>
+(function(){
+    const container = document.querySelector('.tiles-container');
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY * 2;
+        }
+    });
 
-<a class="back" href="index.html">← На главную</a>
-
-</div>
-
-<footer>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png" width="88" height="31">
-</a>
-
-<a href="http://myslivets.com" target="_blank">
-<img src="http://myslivets.com/img/button.png" width="88" height="31">
-</a>
-
-<a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif" width="88" height="31">
-</a>
-
-<a href="http://firefox.com" target="_blank">
-<img src="firefox.gif" height="31" width="88" alt="Firefox">
-</a>
-
-</footer>
-
-<div style="margin-top:25px;text-align:center">
-
-<a href="https://mynickname.com/nekich">
-<img src="https://mynickname.com/forum4t6/Nekich.gif">
-</a>
-
-<br><br>
-
-<a href="https://mynickname.com/id1844833">
-<img src="https://mynickname.com/forum4t5/nekxd.gif">
-</a>
-
-</div>
+    document.querySelectorAll('.tile').forEach((t, i) => {
+        t.style.animationDelay = (i * 0.05) + 's';
+    });
+})();
+</script>
 
 </body>
 </html>
