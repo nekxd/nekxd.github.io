@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Пуск - Mobile</title>
+
+<style>
+/* ---------- Базовые стили WP8 ---------- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background-color: #000000; /* Истинно черный фон (OLED) */
+    color: white;
+    font-family: 'Segoe UI', 'Segoe WP', Tahoma, sans-serif;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+/* ---------- Статус-бар ---------- */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 2px 15px;
+    font-size: 11px;
+    font-weight: 600;
+    opacity: 0.8;
+    height: 24px;
+    background: #000;
+    position: sticky;
+    top: 0;
+    z-index: 100;
+}
+
+.status-icons {
+    display: flex;
+    gap: 5px;
+    align-items: center;
+}
+
+/* ---------- Сетка Windows Phone 8 ---------- */
+.wp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px; /* Расстояние между плитками */
+    padding: 20px 15px 80px 15px;
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+/* ---------- Плитки ---------- */
+.tile {
+    position: relative;
+    color: white;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    /* Анимация нажатия как в WP8 */
+    transition: transform 0.1s cubic-bezier(0.1, 0.9, 0.2, 1);
+    transform-origin: center;
+}
+
+.tile:active {
+    transform: scale(0.94); /* Пружинистое уменьшение при тапе */
+    opacity: 0.85;
+}
+
+/* Размеры (основаны на aspect-ratio для идеальных пропорций) */
+.medium { grid-column: span 2; aspect-ratio: 1 / 1; }
+.wide   { grid-column: span 4; aspect-ratio: 2 / 1; }
+.large  { grid-column: span 4; aspect-ratio: 1 / 1; } /* Для Webring */
+
+/* Цвета WP8 */
+.blue   { background: #1ba1e2; }
+.green  { background: #339933; }
+.purple { background: #8c0095; }
+.orange { background: #f09609; }
+.red    { background: #e51400; }
+.donate { background: #d80073; }
+.dark   { background: #1f1f1f; }
+
+/* Содержимое плиток */
+.tile-title {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 13px;
+    font-weight: 400;
+    white-space: nowrap;
+    z-index: 2;
+}
+
+.tile-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%;
+    height: 45%;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tile-icon svg { width: 100%; height: 100%; opacity: 0.9; }
+
+/* Живые плитки (Текст) */
+.tile-content {
+    padding: 10px;
+    font-size: 14px;
+    line-height: 1.3;
+}
+
+/* ---------- Виджет Погоды ---------- */
+.weather-wide {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px;
+    height: 100%;
+}
+.weather-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.weather-temp { font-size: 42px; font-weight: 200; line-height: 1; }
+.weather-desc { font-size: 14px; opacity: 0.9; }
+.weather-city { font-size: 16px; font-weight: 300; margin-top: -5px; }
+
+/* ---------- Анимация появления при загрузке ---------- */
+@keyframes tiltIn {
+    0% { transform: translateY(150px) rotateX(-20deg); opacity: 0; }
+    100% { transform: translateY(0) rotateX(0); opacity: 1; }
+}
+.tile { animation: tiltIn 0.5s ease-out backwards; perspective: 1000px; }
+
+/* ---------- Кнопка "Все приложения" ---------- */
+.all-apps {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 15px;
+    padding: 10px 15px;
+    color: white;
+    text-decoration: none;
+    margin-top: -50px;
+    margin-bottom: 30px;
+    max-width: 500px;
+    margin-left: auto;
+    margin-right: auto;
+}
+.all-apps-btn {
+    width: 40px; height: 40px;
+    border-radius: 50%; border: 2px solid white;
+    display: flex; align-items: center; justify-content: center;
+}
+.all-apps:active .all-apps-btn { background: white; color: black; }
+
+</style>
+</head>
+<body>
+
+<div class="status-bar">
+    <div class="status-icons">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M2 22h20V2z"/></svg>
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/></svg>
+    </div>
+    <span id="clock">00:00</span>
+</div>
+
+<div class="wp-grid">
+
+    <div class="tile wide blue" onclick="initLiveWeather()">
+        <div class="weather-wide">
+            <div class="weather-info">
+                <div class="weather-city">Определение...</div>
+                <div class="weather-temp">--°</div>
+            </div>
+            <div style="text-align: right; display: flex; flex-direction: column; justify-content: space-between;">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line></svg>
+                <div class="weather-desc">Загрузка...</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="tile medium purple" onclick="location.href='old.html'">
+        <div class="tile-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+        </div>
+        <div class="tile-title">Win9x версия</div>
+    </div>
+
+    <div class="tile medium blue">
+        <div class="tile-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="9"/><line x1="12" y1="11" x2="12" y2="16.5"/><circle cx="12" cy="7.5" r="1"/></svg>
+        </div>
+        <div class="tile-title">Обо мне</div>
+    </div>
+
+    <div class="tile wide orange" onclick="location.href='m-player.html'">
+        <div class="tile-icon" style="width: 25%; height: 50%; left: 20%;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/><path d="M9 18V4l12-2v14"/></svg>
+        </div>
+        <div class="tile-content" style="position: absolute; right: 15px; top: 15px; width: 50%;">
+            <div style="font-size: 16px; font-weight: 600;">Nekxdd Player</div>
+            <div style="font-size: 12px; opacity: 0.8; margin-top: 5px;">Моя музыка</div>
+        </div>
+        <div class="tile-title">Музыка</div>
+    </div>
+
+    <div class="tile medium green" onclick="location.href='socials.html'">
+        <div class="tile-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="6" cy="12" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="18" cy="18" r="2.4"/><line x1="8.1" y1="11" x2="15.9" y2="7"/><line x1="8.1" y1="13" x2="15.9" y2="17"/></svg>
+        </div>
+        <div class="tile-title">Соц. сети</div>
+    </div>
+
+    <div class="tile medium purple" onclick="location.href='devices.html'">
+        <div class="tile-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="2" width="14" height="20" rx="2" ry="2"></rect><line x1="12" y1="18" x2="12.01" y2="18"></line></svg>
+        </div>
+        <div class="tile-title">Устройства</div>
+    </div>
+
+    <div class="tile wide donate" onclick="location.href='donate.html'">
+        <div class="tile-icon" style="width: 20%; left: 20%;">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 21s-7-4.5-9.5-9A5 5 0 0112 6a5 5 0 019.5 6c-2.5 4.5-9.5 9-9.5 9z"/></svg>
+        </div>
+        <div class="tile-content" style="position: absolute; right: 15px; top: 25px;">
+            <div style="font-size: 16px;">Поддержать проект</div>
+        </div>
+        <div class="tile-title">Донаты</div>
+    </div>
+
+    <div class="tile large dark">
+        <div class="tile-content" style="height: 100%; overflow-y: auto; padding-bottom: 30px;">
+            <div style="font-size: 18px; margin-bottom: 10px; font-weight: 300;">Webring</div>
+            <div style="display: flex; flex-wrap: wrap; gap: 5px;">
+                <img src="button.png" width="88" height="31">
+                <img src="old.png" width="88" height="31">
+                <img src="http://madebydimas.top/button.png" width="88" height="31">
+                <img src="http://myslivets.com/img/button.png" width="88" height="31">
+            </div>
+            <div style="font-size: 12px; color: #888; margin-top: 10px;">Прокрутите для просмотра</div>
+        </div>
+        <div class="tile-title">Webring</div>
+    </div>
+
+</div>
+
+<a href="#" class="all-apps">
+    <span style="font-size: 16px;">Все приложения</span>
+    <div class="all-apps-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+    </div>
+</a>
+
+<script>
+// Часы для статус-бара
+setInterval(() => {
+    const d = new Date();
+    document.getElementById('clock').innerText = d.getHours().toString().padStart(2, '0') + ':' + d.getMinutes().toString().padStart(2, '0');
+}, 1000);
+
+// Каскадная анимация появления плиток
+document.querySelectorAll('.tile').forEach((t, i) => { t.style.animationDelay = (i * 0.05) + 's'; });
+
+// Погода
+async function initLiveWeather() {
+    try {
+        const geoRes = await fetch('https://ipapi.co/json/');
+        const geoData = await geoRes.json();
+        const lat = geoData.latitude || 55.75;
+        const lon = geoData.longitude || 37.61;
+        const weatherRes = await fetch(`https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current_weather=true`);
+        const weatherData = await weatherRes.json();
+        const temp = Math.round(weatherData.current_weather.temperature);
+        
+        document.querySelector('.weather-city').textContent = geoData.city || 'Москва';
+        document.querySelector('.weather-temp').textContent = (temp > 0 ? '+' : '') + temp + '°';
+        document.querySelector('.weather-desc').textContent = 'Обновлено';
+    } catch (err) {
+        document.querySelector('.weather-city').textContent = 'Ошибка';
+    }
+}
+initLiveWeather();
+</script>
+</body>
+</html>
