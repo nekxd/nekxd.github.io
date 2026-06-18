@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Донаты - WP8</title>
+<style>
+/* ---------- Стиль Приложений WP8 ---------- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    margin: 0; background-color: #000; color: white;
+    font-family: 'Segoe UI', 'Segoe WP', sans-serif;
+    padding: 20px 0 0 25px; overflow-x: hidden;
+}
+.app-title {
+    text-transform: uppercase; font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; margin-bottom: -10px; color: #a0a0a0;
+}
+h1 {
+    font-size: 64px; font-weight: 200; margin: 0 0 10px 0;
+    letter-spacing: -2px; white-space: nowrap;
+}
+.wp-list { display: flex; flex-direction: column; padding-right: 25px; padding-bottom: 80px; }
+.list-item {
+    padding: 15px 0; border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 28px; font-weight: 300; cursor: pointer;
+    transition: background 0.1s; text-decoration: none; color: white;
+}
+.list-item:active { background: #1f1f1f; }
+.list-item span {
+    display: block; font-size: 16px; color: #1ba1e2;
+    font-weight: 400; margin-top: 5px; letter-spacing: 1px;
+}
+/* Нижняя панель */
+.bottom-app-bar {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+    background: #1f1f1f; display: flex; align-items: center;
+    padding: 0 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
+}
+.app-bar-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 2px solid white;
+    display: flex; align-items: center; justify-content: center; color: white;
+    text-decoration: none; transition: 0.1s;
+}
+.app-bar-btn:active { background: white; color: black; }
+
+/* Уведомление о копировании */
+.toast {
+    position: fixed; top: -50px; left: 0; width: 100%; background: #1ba1e2;
+    color: white; text-align: center; padding: 15px; font-size: 16px;
+    font-weight: 600; transition: top 0.3s; z-index: 1000;
+}
+</style>
+</head>
+<body>
+
+<div class="toast" id="toastMsg">Скопировано в буфер</div>
+
+<div class="app-title">поддержка</div>
+<h1>донаты</h1>
+
+<div class="wp-list">
+    <a href="https://new.donatepay.ru/@nekichxd" class="list-item">
+        DonatePay
+        <span>Перейти на страницу</span>
+    </a>
+    
+    <a href="https://www.donationalerts.com/r/nekxd" class="list-item">
+        DonationAlerts
+        <span>Перейти на страницу</span>
+    </a>
+
+    <div class="list-item" onclick="copyData('2200 7021 8463 5477')">
+        Тинькофф
+        <span style="color: #a0a0a0;">2200 7021 8463 5477</span>
+    </div>
+
+    <div class="list-item" onclick="copyData('5599 0021 3104 1065')">
+        YooMoney
+        <span style="color: #a0a0a0;">5599 0021 3104 1065</span>
+    </div>
+
+    <div class="list-item" onclick="copyData('2200 1546 7614 4461')">
+        Альфа-Банк
+        <span style="color: #a0a0a0;">2200 1546 7614 4461</span>
+    </div>
+
+    <div class="list-item" onclick="copyData('2204 3212 8872 5864')">
+        Ozon Банк
+        <span style="color: #a0a0a0;">2204 3212 8872 5864</span>
+    </div>
+
+    <div class="list-item" onclick="copyData('2203 8302 6759 3987')">
+        МТС Банк
+        <span style="color: #a0a0a0;">2203 8302 6759 3987</span>
+    </div>
+</div>
+
+<div class="bottom-app-bar">
+    <a href="mobile.html" class="app-bar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+<script>
+function copyData(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        const toast = document.getElementById('toastMsg');
+        toast.style.top = '0';
+        setTimeout(() => { toast.style.top = '-50px'; }, 2000);
+    });
+}
+</script>
+
+</body>
+</html>
