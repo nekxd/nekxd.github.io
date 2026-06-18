@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Соцсети - WP8</title>
+
+<style>
+/* ---------- Базовые стили WP8 ---------- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+body {
+    margin: 0; padding: 0;
+    background-color: #000;
+    color: white;
+    font-family: 'Segoe UI', 'Segoe WP', sans-serif;
+    overflow-x: hidden;
+    user-select: none;
+}
+
+/* Заголовок страницы как в приложениях WP */
+.app-title {
+    text-transform: uppercase; font-size: 13px; font-weight: 700;
+    letter-spacing: 1px; margin-bottom: -10px; color: #a0a0a0;
+    padding: 20px 0 0 25px;
+}
+h1 {
+    font-size: 64px; font-weight: 200; margin: 0 0 10px 0;
+    letter-spacing: -2px; white-space: nowrap;
+    padding-left: 25px;
+}
+
+/* ---------- Сетка WP8 ---------- */
+.wp-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    padding: 10px 15px 80px 15px; /* Отступ снизу для панели */
+    max-width: 500px;
+    margin: 0 auto;
+}
+.tile {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    cursor: pointer;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    transition: transform 0.1s;
+    transform-origin: center;
+}
+.tile:active { transform: scale(0.94); opacity: 0.85; }
+
+/* Размеры */
+.medium { grid-column: span 2; aspect-ratio: 1 / 1; }
+.wide   { grid-column: span 4; aspect-ratio: 2 / 1; }
+
+/* Цвета WP8 */
+.telegram { background: #1ba1e2; }
+.discord { background: #5865F2; }
+.instagram { background: #d80073; }
+.tiktok, .steam, .github { background: #1f1f1f; }
+.bluesky, .openvk { background: #1ba1e2; }
+.ember { background: #339933; }
+.renaissance { background: #ECE9D8; color: black; } /* Светлый цвет, как в оригинале */
+.mail { background: #8c0095; }
+
+.tile-title {
+    position: absolute; bottom: 8px; left: 10px;
+    font-size: 13px; font-weight: 400; z-index: 2;
+}
+.tile-icon {
+    position: absolute; top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    width: 45%; height: 45%; z-index: 1;
+    display: flex; align-items: center; justify-content: center;
+}
+.tile-icon img, .tile-icon svg { width: 100%; height: 100%; object-fit: contain; }
+.invert img { filter: invert(1); }
+
+@keyframes tiltIn {
+    0% { transform: translateY(100px) rotateX(-20deg); opacity: 0; }
+    100% { transform: translateY(0) rotateX(0); opacity: 1; }
+}
+.tile { animation: tiltIn 0.5s ease-out backwards; }
+
+/* ---------- Нижняя панель WP8 ---------- */
+.bottom-app-bar {
+    position: fixed; bottom: 0; left: 0; width: 100%; height: 60px;
+    background: #1f1f1f; display: flex; align-items: center;
+    padding: 0 20px; box-shadow: 0 -2px 10px rgba(0,0,0,0.5); z-index: 100;
+}
+.app-bar-btn {
+    width: 40px; height: 40px; border-radius: 50%; border: 2px solid white;
+    display: flex; align-items: center; justify-content: center; color: white;
+    text-decoration: none; transition: 0.1s;
+}
+.app-bar-btn:active { background: white; color: black; }
+</style>
+</head>
+<body>
+
+<div class="app-title">контакты</div>
+<h1>соцсети</h1>
+
+<div class="wp-grid">
+    <a href="https://t.me/KanyeWestLover1337" target="_blank" class="tile medium telegram">
+        <div class="tile-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/3840px-Telegram_logo.svg.png"></div>
+        <div class="tile-title">Telegram</div>
+    </a>
+    <a href="https://discord.gg/fUWugHxnWC" target="_blank" class="tile medium discord invert">
+        <div class="tile-icon"><img src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png"></div>
+        <div class="tile-title">Discord</div>
+    </a>
+    <a href="https://www.instagram.com/nekich.idk" target="_blank" class="tile medium instagram">
+        <div class="tile-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg></div>
+        <div class="tile-title">Instagram</div>
+    </a>
+    <a href="https://www.tiktok.com/@MS4wLjABAAAAZoTs4H5gndnr_pRo8uFmg41oPkZ_JLaZezFRmS_SWRBrG_0GhL1EUHEIgNruFkIK" target="_blank" class="tile medium tiktok">
+        <div class="tile-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/3840px-Tiktok_icon.svg.png"></div>
+        <div class="tile-title">TikTok</div>
+    </a>
+    <a href="https://steamcommunity.com/id/nekichxd" target="_blank" class="tile medium steam">
+        <div class="tile-icon"><img src="https://cdn2.steamgriddb.com/icon/776af9671dbfa3ac15c6e0711001bdea.ico"></div>
+        <div class="tile-title">Steam</div>
+    </a>
+    <a href="https://github.com/nekxd/" target="_blank" class="tile medium github invert">
+        <div class="tile-icon"><img src="https://images.icon-icons.com/3685/PNG/512/github_logo_icon_229278.png"></div>
+        <div class="tile-title">GitHub</div>
+    </a>
+    <a href="https://bsky.app/profile/nekxd.bsky.social" target="_blank" class="tile medium bluesky invert">
+        <div class="tile-icon"><img src="https://cdn.iconscout.com/icon/free/png-256/free-bluesky-icon-svg-download-png-14515218.png"></div>
+        <div class="tile-title">Bluesky</div>
+    </a>
+    <a href="https://openvk.org/nxd" target="_blank" class="tile medium openvk">
+        <div class="tile-icon"><img src="https://4pda.to/s/qirtf22OpTGz0lXIbz26gdJPnTqN6b0yyD4hK.png"></div>
+        <div class="tile-title">OpenVK</div>
+    </a>
+    
+    <!-- Добавлен Renaissance -->
+    <a href="http://mrim.su" target="_blank" class="tile wide renaissance">
+        <div class="tile-icon" style="width: 20%; left: 15%;">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4951qcnkUA2V3juqsYYiSiIWjJTdRzSIX3LSncvPmfA&s" style="mix-blend-mode: multiply;">
+        </div>
+        <div style="position: absolute; right: 15px; top: 35%; font-size: 16px; font-weight: 600;">nekich@mail.ru</div>
+        <div class="tile-title" style="color: black; font-weight: 600;">Renaissance</div>
+    </a>
+
+    <a href="https://emb.faero.top/nekich" target="_blank" class="tile wide ember">
+        <div class="tile-icon" style="width: 20%; left: 15%;"><img src="https://emb.faero.top/templates/Default/images/icons/ic_.png"></div>
+        <div style="position: absolute; right: 15px; top: 35%; font-size: 20px;">Ember</div>
+        <div class="tile-title">Сообщество</div>
+    </a>
+
+    <!-- Явно написано Почта -->
+    <a href="mailto:yandhi@nekxd.ru" class="tile wide mail">
+        <div class="tile-icon" style="width: 20%; left: 15%;">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+        </div>
+        <div style="position: absolute; right: 15px; top: 35%; font-size: 16px;">yandhi@nekxd.ru</div>
+        <div class="tile-title">Почта (Email)</div>
+    </a>
+</div>
+
+<!-- Системная кнопка "Назад" WP8 -->
+<div class="bottom-app-bar">
+    <a href="mobile.html" class="app-bar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
+</div>
+
+<script>
+    // Анимация задержки при загрузке
+    document.querySelectorAll('.tile').forEach((t, i) => { t.style.animationDelay = (i * 0.05) + 's'; });
+</script>
+</body>
+</html>
