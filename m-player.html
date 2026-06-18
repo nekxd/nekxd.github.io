@@ -2,197 +2,155 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nekxdd Player</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>Музыка - WP8</title>
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:'Segoe UI',sans-serif;
-    display:flex;
-    justify-content:center;
+/* ---------- Стиль Приложений WP8 ---------- */
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+
+body {
+    margin: 0;
+    background-color: #000; /* Только черный */
+    color: white;
+    font-family: 'Segoe UI', 'Segoe WP', sans-serif;
+    padding: 20px 0 0 25px; /* Отступы как в WP */
+    overflow-x: hidden;
 }
 
-.wrap{
-    width:900px;
-    max-width:95%;
-    padding:30px;
+/* Название "приложения" сверху */
+.app-title {
+    text-transform: uppercase;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    margin-bottom: -10px;
+    color: #a0a0a0;
 }
 
-h1{
-    font-size:60px;
-    font-weight:300;
-    margin:0 0 20px;
+/* Огромный заголовок страницы (Panorama / Pivot стиль) */
+h1 {
+    font-size: 64px;
+    font-weight: 200;
+    margin: 0 0 20px 0;
+    letter-spacing: -2px;
+    white-space: nowrap; /* Позволяем тексту уходить за край экрана */
 }
 
-.player{
-    background:#222;
-    padding:20px;
+/* ---------- Список (Треки / Контакты / Устройства) ---------- */
+.wp-list {
+    display: flex;
+    flex-direction: column;
+    padding-right: 25px;
+    padding-bottom: 50px;
 }
 
-audio{
-    width:100%;
+.list-item {
+    padding: 15px 0;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    font-size: 24px;
+    font-weight: 300;
+    cursor: pointer;
+    transition: background 0.1s;
+    color: white;
+    text-decoration: none;
+    display: block;
 }
 
-.track{
-    background:#0078D7;
-    padding:15px;
-    margin-top:8px;
-    cursor:pointer;
-    transition:.15s;
+.list-item:active {
+    background: #1ba1e2; /* Синий акцент при нажатии */
+    color: white;
 }
 
-.track:hover{
-    transform:scale(1.03);
+.list-item span {
+    display: block;
+    font-size: 14px;
+    color: #1ba1e2; /* Синий цвет для доп. инфы */
+    font-weight: 400;
+    margin-top: 2px;
 }
 
-.track:active{
-    transform:scale(.97);
+/* Кнопка "Назад" в стиле WP (круглая снизу) */
+.bottom-app-bar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 60px;
+    background: #1f1f1f;
+    display: flex;
+    align-items: center;
+    padding: 0 20px;
+    box-shadow: 0 -2px 10px rgba(0,0,0,0.5);
 }
 
-.back{
-    display:block;
-    margin-top:20px;
-    color:white;
+.app-bar-btn {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 2px solid white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    text-decoration: none;
+    transition: 0.1s;
 }
 
-footer{
-    margin-top:30px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-footer img{
-    width:88px;
-    height:31px;
-}
-
-@media(max-width:700px){
-
-h1{
-    font-size:40px;
-}
-
-.wrap{
-    padding:15px;
-}
-
-.track{
-    padding:12px;
-}
-
+.app-bar-btn:active {
+    background: white;
+    color: black;
 }
 </style>
-
 </head>
-
 <body>
 
-<div class="wrap">
+<div class="app-title">плеер</div>
+<h1>треки</h1>
 
-<h1>Nekxdd Player</h1>
-
-<div class="player">
-
-<audio id="audio" controls></audio>
-
-<div class="track" onclick="play('assmilk.mp3')">
-Tyler The Creator - Assmilk
+<div style="padding-right: 25px; margin-bottom: 20px;">
+    <audio id="audioPlayer" controls style="width: 100%; height: 40px;"></audio>
 </div>
 
-<div class="track" onclick="play('b2.m4a')">
-Kanye West - Bound 2
+<div class="wp-list">
+    <div class="list-item" onclick="play('biohazard.m4a')">
+        Биохазард
+        <span>Птицу ЕМЪ</span>
+    </div>
+    
+    <div class="list-item" onclick="play('oblivion.m4a')">
+        Oblivion
+        <span>Grimes</span>
+    </div>
+    
+    <div class="list-item" onclick="play('waves.mp3')">
+        Waves
+        <span>Kanye West</span>
+    </div>
+    
+    <div class="list-item" onclick="play('chejizh.m4a')">
+        Это Жизнь
+        <span>Kunteynir</span>
+    </div>
+
+    <div class="list-item" onclick="play('she.m4a')">
+        She
+        <span>Tyler The Creator</span>
+    </div>
 </div>
 
-<div class="track" onclick="play('biohazard.m4a')">
-Птицу ЕМЪ - Биохазард
+<div class="bottom-app-bar">
+    <a href="mobile.html" class="app-bar-btn">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 12H5M12 19l-7-7 7-7"/></svg>
+    </a>
 </div>
-
-<div class="track" onclick="play('oblivion.m4a')">
-Grimes - Oblivion
-</div>
-
-<div class="track" onclick="play('waves.mp3')">
-Kanye West - Waves
-</div>
-
-<div class="track" onclick="play('chejizh.m4a')">
-Kunteynir - Это Жизнь
-</div>
-
-<div class="track" onclick="play('dalovnogi.m4a')">
-Kunteynir - Дало В Ноги
-</div>
-
-<div class="track" onclick="play('she.m4a')">
-Tyler The Creator - She
-</div>
-
-</div>
-
-<a class="back" href="index.html">
-← На главную
-</a>
-
-<footer>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png">
-</a>
-
-<a href="http://myslivets.com" target="_blank">
-<img src="http://myslivets.com/img/button.png">
-</a>
-
-<a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif">
-</a>
-
-<a href="https://firefox.com" target="_blank">
-<img src="firefox.gif">
-</a>
-
-</footer>
-
-<div style="margin-top:25px;text-align:center">
-
-<a href="https://mynickname.com/nekich">
-<img src="https://mynickname.com/forum4t6/Nekich.gif">
-</a>
-
-<br><br>
-
-<a href="https://mynickname.com/id1844833">
-<img src="https://mynickname.com/forum4t5/nekxd.gif">
-</a>
-
-</div>
-
-</div>
-
 
 <script>
-
-const base="https://raw.githubusercontent.com/nekxd/player/main/";
-
 function play(file){
-
-let audio=document.getElementById("audio");
-
-audio.src=base+file;
-
-audio.play();
-
+    var player = document.getElementById('audioPlayer');
+    player.src = file;
+    player.play();
 }
-
 </script>
 
 </body>
