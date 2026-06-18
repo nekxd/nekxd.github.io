@@ -6,220 +6,228 @@
 <title>Мои устройства</title>
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:'Segoe UI',sans-serif;
-    display:flex;
-    justify-content:center;
+/* ---------- Базовые стили ---------- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url('http://nekxd.ru/start.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    user-select: none;
 }
 
-.wrap{
-    width:900px;
-    max-width:95%;
-    padding:20px;
+/* ---------- Заголовок и кнопка "Назад" ---------- */
+.header-container {
+    position: absolute;
+    top: 45px;
+    left: 85px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
 }
 
-h1{
-    font-size:60px;
-    font-weight:300;
-    margin:0 0 20px;
+.back-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(2,1fr);
-    gap:10px;
+.back-btn:hover {
+    background: white;
+    color: black;
 }
 
-.tile{
-    background:#0078D7;
-    padding:20px;
-    min-height:120px;
-    box-sizing:border-box;
+.back-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
-.green{
-    background:#16a085;
+.start-header {
+    font-size: 52px;
+    font-weight: 200;
+    letter-spacing: -1.5px;
 }
 
-.purple{
-    background:#8e44ad;
+/* ---------- Сетка плиток (Metro Grid) ---------- */
+.tiles-container {
+    display: flex;
+    gap: 70px;
+    height: 100%;
+    align-items: flex-start;
+    padding-top: 150px;
+    padding-left: 85px;
+    padding-right: 85px;
+    padding-bottom: 40px;
+    width: max-content;
 }
 
-.orange{
-    background:#f39c12;
+.tile-group {
+    display: grid;
+    grid-template-columns: 120px 120px;
+    grid-template-rows: repeat(4, 120px);
+    gap: 8px;
 }
 
-.red{
-    background:#e74c3c;
+/* ---------- Стили плиток ---------- */
+.tile {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease;
+    outline: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
 }
 
-.tile h2{
-    margin:0 0 10px;
-    font-weight:300;
+.tile:hover {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: -2px;
 }
 
-.tile p{
-    margin:0;
-    line-height:1.6;
-    word-wrap:break-word;
+.tile:active { transform: scale(0.96); }
+
+/* Размеры */
+.tile.wide { grid-column: span 2; }
+.tile.large { grid-column: span 2; grid-row: span 2; }
+
+/* Цвета из вашей прошлой версии */
+.bg-blue { background: #0078D7; }
+.bg-green { background: #16a085; }
+.bg-purple { background: #8e44ad; }
+.bg-orange { background: #f39c12; }
+.bg-red { background: #e74c3c; }
+
+/* Внутренности плитки */
+.tile-title {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 13.5px;
+    font-weight: 400;
+    max-width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 2;
 }
 
-.back{
-    display:inline-block;
-    margin-top:20px;
-    color:white;
+.tile-content {
+    font-size: 13.5px;
+    line-height: 1.5;
+    padding: 5px;
+    padding-bottom: 25px; /* Чтобы текст не налезал на заголовок */
+    z-index: 2;
 }
 
-textarea{
-    width:100%;
-    box-sizing:border-box;
-    resize:none;
-    background:#222;
-    color:white;
-    border:1px solid #555;
-    padding:10px;
+/* ---------- Анимация появления ---------- */
+@keyframes startScreenIn {
+    0% { transform: scale(0.85) translateX(60px); opacity: 0; }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
 }
+.tile { animation: startScreenIn 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) backwards; }
 
-footer{
-    margin-top:30px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-    justify-content:center;
-}
-
-footer img{
-    max-width:88px;
-    height:31px;
-}
-
-@media(max-width:700px){
-
-.wrap{
-    padding:15px;
-}
-
-h1{
-    font-size:40px;
-}
-
-.grid{
-    grid-template-columns:1fr;
-}
-
-.tile{
-    width:100%;
-}
-
-footer{
-    gap:8px;
-}
-
-}
+/* Кастомизация скроллбара */
+::-webkit-scrollbar { width: 8px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 </style>
 </head>
-
 <body>
 
-<div class="wrap">
-
-<h1>Мои устройства</h1>
-
-<div class="grid">
-
-<div class="tile">
-<h2>ПК</h2>
-<p>
-AMD Ryzen 5 2600<br>
-ASUS ROG NVIDIA GeForce GTX 1070 8 GB<br>
-16 GB DDR4 RAM<br>
-SSD WD Green M.2 SATA 240 GB<br>
-HDD Toshiba 500 GB
-</p>
+<div class="header-container">
+    <button class="back-btn" onclick="location.href='index.html'" aria-label="Назад на главную">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="start-header">Мои устройства</div>
 </div>
 
-<div class="tile green">
-<h2>Монитор</h2>
-<p>
-MSI MAG 2K 165 Гц
-</p>
-</div>
+<div class="tiles-container">
 
-<div class="tile purple">
-<h2>Периферия</h2>
-<p>
-Defender Pro Atomic Core<br>
-VXE R1 SE+<br>
-Defender Triple<br>
-Fifine A6
-</p>
-</div>
+    <div class="tile-group">
+        <div class="tile bg-blue large">
+            <div class="tile-content">
+                AMD Ryzen 5 2600<br>
+                ASUS ROG GTX 1070 8 GB<br>
+                16 GB DDR4 RAM<br>
+                SSD WD Green 240 GB<br>
+                HDD Toshiba 500 GB
+            </div>
+            <div class="tile-title">ПК</div>
+        </div>
 
-<div class="tile orange">
-<h2>Умные устройства</h2>
-<p>
-Яндекс Станция Мини 2 с часами
-</p>
-</div>
+        <div class="tile bg-green wide">
+            <div class="tile-content" style="font-size: 15px; margin-top: 10px;">
+                MSI MAG 2K 165 Гц
+            </div>
+            <div class="tile-title">Монитор</div>
+        </div>
 
-<div class="tile red">
-<h2>Телефоны</h2>
-<p>
-Realme P3 5G — 256 GB<br>
-Samsung Galaxy A13 4G — 64 GB<br>
-Samsung S3 Duos — 16 GB<br>
-iPhone 5S — 16 GB
-</p>
-</div>
+        <div class="tile bg-orange wide">
+            <div class="tile-content" style="font-size: 15px; margin-top: 10px;">
+                Яндекс Станция Мини 2
+            </div>
+            <div class="tile-title">Умные устройства</div>
+        </div>
+    </div>
 
-</div>
+    <div class="tile-group">
+        <div class="tile bg-purple large">
+            <div class="tile-content">
+                Defender Pro Atomic Core<br>
+                VXE R1 SE+<br>
+                Defender Triple<br>
+                Fifine A6
+            </div>
+            <div class="tile-title">Периферия</div>
+        </div>
 
-<a class="back" href="index.html">← На главную</a>
-
-</div>
-
-<footer>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png" width="88" height="31">
-</a>
-
-<a href="http://myslivets.com" target="_blank">
-<img src="http://myslivets.com/img/button.png" width="88" height="31">
-</a>
-
-<a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif" width="88" height="31">
-</a>
-
-<a href="http://firefox.com" target="_blank">
-<img src="firefox.gif" height="31" width="88" alt="Firefox">
-</a>
-
-</footer>
-
-<div style="margin-top:25px;text-align:center">
-
-<a href="https://mynickname.com/nekich">
-<img src="https://mynickname.com/forum4t6/Nekich.gif">
-</a>
-
-<br><br>
-
-<a href="https://mynickname.com/id1844833">
-<img src="https://mynickname.com/forum4t5/nekxd.gif">
-</a>
+        <div class="tile bg-red large">
+            <div class="tile-content">
+                Realme P3 5G — 256 GB<br>
+                Samsung Galaxy A13 — 64 GB<br>
+                Samsung S3 Duos — 16 GB<br>
+                iPhone 5S — 16 GB
+            </div>
+            <div class="tile-title">Телефоны</div>
+        </div>
+    </div>
 
 </div>
 
-</div>
+<script>
+(function(){
+    const container = document.querySelector('.tiles-container');
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY * 2;
+        }
+    });
+
+    document.querySelectorAll('.tile').forEach((t, i) => {
+        t.style.animationDelay = (i * 0.05) + 's';
+    });
+})();
+</script>
 
 </body>
 </html>
