@@ -2,168 +2,272 @@
 <html lang="ru">
 <head>
 <meta charset="UTF-8">
-<title>социальные сети</title>
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Социальные сети</title>
 
 <style>
-body{
-    margin:0;
-    background:#111;
-    color:white;
-    font-family:'Segoe UI',sans-serif;
-    padding:40px;
+/* ---------- Базовые стили ---------- */
+* { box-sizing: border-box; }
+
+body {
+    margin: 0;
+    padding: 0;
+    background: #000 url('http://nekxd.ru/start.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    overflow-x: auto;
+    overflow-y: hidden;
+    height: 100vh;
+    user-select: none;
 }
 
-h1{
-    font-weight:300;
-    font-size:60px;
+/* ---------- Заголовок и кнопка "Назад" ---------- */
+.header-container {
+    position: absolute;
+    top: 45px;
+    left: 85px;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+    z-index: 10;
 }
 
-.grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:10px;
-    margin-top:20px;
+.back-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    border-radius: 50%;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.1s, color 0.1s;
 }
 
-a{
-    text-decoration:none;
-    color:white;
-    padding:18px 20px;
-    display:flex;
-    align-items:center;
-    gap:14px;
-    min-height:70px;
-    transition:.2s;
+.back-btn:hover {
+    background: white;
+    color: black;
 }
 
-a:hover{transform:scale(1.04)}
-
-img{
-    height:32px;
-    width:auto;
-    object-fit:contain;
-    display:block;
+.back-btn svg {
+    width: 20px;
+    height: 20px;
 }
 
-
-.telegram{background:#229ED9}
-.tiktok{background:#000}
-.openvk{background:#4A76A8}
-.ember{background:#2ecc71}
-.steam{background:#000}
-.github{background:#000}
-.instagram{background:linear-gradient(45deg,#f58529,#dd2a7b,#8134af)}
-.discord{background:#5865F2}
-.bluesky{background:#0085ff}
-.renaissance{background:#16a085}
-.mail{background:#444}
-
-.discord img,
-.bluesky img{
-    filter:invert(1);
+.start-header {
+    font-size: 52px;
+    font-weight: 200;
+    letter-spacing: -1.5px;
 }
 
-/* FOOTER */
-footer{
-    margin-top:40px;
-    display:flex;
-    gap:6px;
-    flex-wrap:wrap;
-    justify-content:center;
+/* ---------- Сетка плиток (Metro Grid) ---------- */
+.tiles-container {
+    display: flex;
+    gap: 70px;
+    height: 100%;
+    align-items: flex-start;
+    padding-top: 150px;
+    padding-left: 85px;
+    padding-right: 85px;
+    padding-bottom: 40px;
+    width: max-content;
 }
-footer img{
-    image-rendering:pixelated;
+
+.tile-group {
+    display: grid;
+    grid-template-columns: 120px 120px;
+    grid-template-rows: repeat(4, 120px);
+    gap: 8px;
 }
+
+/* ---------- Стили плиток ---------- */
+.tile {
+    position: relative;
+    color: white;
+    text-decoration: none;
+    padding: 10px;
+    cursor: pointer;
+    overflow: hidden;
+    transition: transform 0.1s ease;
+    outline: 2px solid transparent;
+    display: flex;
+    flex-direction: column;
+}
+
+.tile:hover {
+    outline: 2px solid rgba(255, 255, 255, 0.4);
+    outline-offset: -2px;
+}
+
+.tile:active { transform: scale(0.96); }
+
+/* Размеры */
+.tile.wide { grid-column: 1 / 3; }
+
+/* Брендовые цвета соцсетей */
+.bg-telegram { background: #229ED9; }
+.bg-tiktok { background: #000; }
+.bg-openvk { background: #4A76A8; }
+.bg-ember { background: #2ecc71; }
+.bg-steam { background: #000; }
+.bg-github { background: #000; }
+.bg-bluesky { background: #0085ff; }
+.bg-instagram { background: linear-gradient(45deg, #f58529, #dd2a7b, #8134af); }
+.bg-discord { background: #5865F2; }
+.bg-renaissance { background: #ECE9D8; }
+.bg-mail { background: #444; }
+
+/* Внутренности плитки */
+.tile-title {
+    position: absolute;
+    bottom: 8px;
+    left: 10px;
+    font-size: 13.5px;
+    font-weight: 400;
+    max-width: calc(100% - 20px);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    z-index: 2;
+}
+
+.tile-icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tile-icon img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+}
+
+/* Инверсия для определенных иконок (как в твоем оригинале) */
+.invert-icon img { filter: invert(1); }
+
+/* SVG-заглушки для ссылок без картинок */
+.tile-icon svg { width: 32px; height: 32px; opacity: 0.9; }
+
+/* ---------- Анимация появления ---------- */
+@keyframes startScreenIn {
+    0% { transform: scale(0.85) translateX(60px); opacity: 0; }
+    100% { transform: scale(1) translateX(0); opacity: 1; }
+}
+.tile { animation: startScreenIn 0.6s cubic-bezier(0.1, 0.9, 0.2, 1) backwards; }
+
+/* Кастомизация скроллбара */
+::-webkit-scrollbar { width: 8px; height: 12px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.5); }
 </style>
 </head>
-
 <body>
 
-<h1>Социальные сети</h1>
+<div class="header-container">
+    <button class="back-btn" onclick="location.href='index.html'" aria-label="Назад на главную">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+    </button>
+    <div class="start-header">Социальные сети</div>
+</div>
 
-<div class="grid">
+<div class="tiles-container">
 
-<a class="telegram" href="https://t.me/KanyeWestLover1337">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/3840px-Telegram_logo.svg.png">
-Telegram
-</a>
+    <div class="tile-group">
+        <a href="https://t.me/KanyeWestLover1337" target="_blank" class="tile bg-telegram">
+            <div class="tile-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/82/Telegram_logo.svg/3840px-Telegram_logo.svg.png" alt="Telegram"></div>
+            <div class="tile-title">Telegram</div>
+        </a>
 
-<a class="tiktok" href="https://www.tiktok.com/@MS4wLjABAAAAZoTs4H5gndnr_pRo8uFmg41oPkZ_JLaZezFRmS_SWRBrG_0GhL1EUHEIgNruFkIK">
-<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/3840px-Tiktok_icon.svg.png">
-TikTok
-</a>
+        <a href="https://discord.gg/fUWugHxnWC" target="_blank" class="tile bg-discord invert-icon">
+            <div class="tile-icon"><img src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png" alt="Discord"></div>
+            <div class="tile-title">Discord</div>
+        </a>
 
-<a class="openvk" href="https://openvk.org/nxd">
-<img src="https://4pda.to/s/qirtf22OpTGz0lXIbz26gdJPnTqN6b0yyD4hK.png">
-OpenVK
-</a>
+        <a href="https://www.instagram.com/nekich.idk" target="_blank" class="tile bg-instagram">
+            <div class="tile-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+            </div>
+            <div class="tile-title">Instagram</div>
+        </a>
 
-<a class="ember" href="https://emb.faero.top/nekich">
-Ember
-</a>
+        <a href="https://www.tiktok.com/@MS4wLjABAAAAZoTs4H5gndnr_pRo8uFmg41oPkZ_JLaZezFRmS_SWRBrG_0GhL1EUHEIgNruFkIK" target="_blank" class="tile bg-tiktok">
+            <div class="tile-icon"><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/a/a6/Tiktok_icon.svg/3840px-Tiktok_icon.svg.png" alt="TikTok"></div>
+            <div class="tile-title">TikTok</div>
+        </a>
+    </div>
 
-<a class="steam" href="https://steamcommunity.com/id/nekichxd">
-<img src="https://cdn2.steamgriddb.com/icon/776af9671dbfa3ac15c6e0711001bdea.ico">
-Steam
-</a>
+    <div class="tile-group">
+        <a href="https://steamcommunity.com/id/nekichxd" target="_blank" class="tile bg-steam">
+            <div class="tile-icon"><img src="https://cdn2.steamgriddb.com/icon/776af9671dbfa3ac15c6e0711001bdea.ico" alt="Steam"></div>
+            <div class="tile-title">Steam</div>
+        </a>
 
-<a class="github" href="https://github.com/nekxd/">
-<img src="https://images.icon-icons.com/3685/PNG/512/github_logo_icon_229278.png">
-GitHub
-</a>
+        <a href="https://github.com/nekxd/" target="_blank" class="tile bg-github invert-icon">
+            <div class="tile-icon"><img src="https://images.icon-icons.com/3685/PNG/512/github_logo_icon_229278.png" alt="GitHub"></div>
+            <div class="tile-title">GitHub</div>
+        </a>
 
-<a class="bluesky" href="https://bsky.app/profile/nekxd.bsky.social">
-<img src="https://cdn.iconscout.com/icon/free/png-256/free-bluesky-icon-svg-download-png-14515218.png">
-Bluesky
-</a>
+        <a href="https://bsky.app/profile/nekxd.bsky.social" target="_blank" class="tile bg-bluesky invert-icon">
+            <div class="tile-icon"><img src="https://cdn.iconscout.com/icon/free/png-256/free-bluesky-icon-svg-download-png-14515218.png" alt="Bluesky"></div>
+            <div class="tile-title">Bluesky</div>
+        </a>
 
-<a class="instagram" href="https://www.instagram.com/nekich.idk">
-Instagram
-</a>
+        <a href="https://openvk.org/nxd" target="_blank" class="tile bg-openvk">
+            <div class="tile-icon"><img src="https://4pda.to/s/qirtf22OpTGz0lXIbz26gdJPnTqN6b0yyD4hK.png" alt="OpenVK"></div>
+            <div class="tile-title">OpenVK</div>
+        </a>
+    </div>
 
-<a class="discord" href="https://discord.gg/fUWugHxnWC">
-<img src="https://www.freeiconspng.com/uploads/discord-black-icon-1.png">
-Discord
-</a>
+    <div class="tile-group">
+        <a href="https://emb.faero.top/nekich" target="_blank" class="tile bg-ember wide">
+            <div class="tile-icon"><img src="https://emb.faero.top/templates/Default/images/icons/ic_.png" alt="ember"></div>
+            <div class="tile-title">Ember</div>
+        </a>
 
-<a class="renaissance" href="https://mrim.su">
-Renaissance / nekich@mail.ru
-</a>
+        <a href="mrim.su" target="_blank" class="tile bg-renaissance wide">
+            <div class="tile-icon"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT4951qcnkUA2V3juqsYYiSiIWjJTdRzSIX3LSncvPmfA&s" alt="ember"></div>
+            <div class="tile-title">Renaissance (nekich@mail.ru)</div>
+        </a>
 
-<a class="mail" href="mailto:yandhi@nekxd.ru">
-Email: yandhi@nekxd.ru
-</a>
+        <a href="mailto:yandhi@nekxd.ru" class="tile bg-mail wide">
+            <div class="tile-icon">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="22,6 12,13 2,6"></polyline></svg>
+            </div>
+            <div class="tile-title">Email: yandhi@nekxd.ru</div>
+        </a>
+    </div>
 
 </div>
 
-<a class="back" href="index.html">← На главную</a>
+<script>
+(function(){
+    // Горизонтальный скроллинг колесиком мыши
+    const container = document.querySelector('.tiles-container');
+    container.addEventListener('wheel', (e) => {
+        if (e.deltaY !== 0) {
+            e.preventDefault();
+            container.scrollLeft += e.deltaY * 2;
+        }
+    });
 
-</div>
-
-<footer>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png" width="88" height="31">
-</a>
-
-<a href="http://myslivets.com" target="_blank">
-<img src="http://myslivets.com/img/button.png" width="88" height="31">
-</a>
-
-<a href="http://veselcraft.ru/" target="_blank">
-<img src="http://veselcraft.ru/images/vc.gif">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif" width="88" height="31">
-</a>
-
-<a href="http://firefox.com" target="_blank">
-<img src="firefox.gif" height="31" width="88" alt="Firefox">
-</a>
-
-</footer>
+    // Анимация задержки появления плиток
+    document.querySelectorAll('.tile').forEach((t, i) => {
+        t.style.animationDelay = (i * 0.05) + 's';
+    });
+})();
+</script>
 
 </body>
 </html>
