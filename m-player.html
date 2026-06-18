@@ -34,15 +34,80 @@ h1 {
     font-weight: 200;
     margin: 0 0 20px 0;
     letter-spacing: -2px;
-    white-space: nowrap; /* Позволяем тексту уходить за край экрана */
+    white-space: nowrap;
 }
 
-/* ---------- Список (Треки / Контакты / Устройства) ---------- */
+/* ---------- Кастомный Плеер ---------- */
+.custom-player {
+    margin-bottom: 30px;
+    padding-right: 25px;
+}
+
+.now-playing-title {
+    font-size: 28px;
+    font-weight: 300;
+    color: white;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.now-playing-artist {
+    font-size: 16px;
+    color: #1ba1e2;
+    margin-bottom: 15px;
+    font-weight: 400;
+}
+
+.player-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.ctrl-btn {
+    background: transparent;
+    border: 2px solid white;
+    color: white;
+    padding: 10px 15px;
+    font-family: 'Segoe UI', sans-serif;
+    font-size: 16px;
+    cursor: pointer;
+    border-radius: 30px;
+    transition: 0.1s;
+    outline: none;
+}
+
+.ctrl-btn:active {
+    background: white;
+    color: black;
+}
+
+.play-btn {
+    flex-grow: 1;
+    border-color: #1ba1e2;
+    color: #1ba1e2;
+}
+
+.play-btn:active {
+    background: #1ba1e2;
+    color: white;
+}
+
+.volume-status {
+    font-size: 12px;
+    color: #a0a0a0;
+    margin-top: 10px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* ---------- Список Треков ---------- */
 .wp-list {
     display: flex;
     flex-direction: column;
     padding-right: 25px;
-    padding-bottom: 50px;
+    padding-bottom: 80px; /* Отступ для нижней панели */
 }
 
 .list-item {
@@ -58,16 +123,20 @@ h1 {
 }
 
 .list-item:active {
-    background: #1ba1e2; /* Синий акцент при нажатии */
+    background: #1ba1e2;
     color: white;
 }
 
 .list-item span {
     display: block;
     font-size: 14px;
-    color: #1ba1e2; /* Синий цвет для доп. инфы */
+    color: #1ba1e2;
     font-weight: 400;
     margin-top: 2px;
+}
+
+.list-item:active span {
+    color: white;
 }
 
 /* Кнопка "Назад" в стиле WP (круглая снизу) */
@@ -108,32 +177,60 @@ h1 {
 <div class="app-title">плеер</div>
 <h1>треки</h1>
 
-<div style="padding-right: 25px; margin-bottom: 20px;">
-    <audio id="audioPlayer" controls style="width: 100%; height: 40px;"></audio>
+<!-- Скрытый аудио элемент -->
+<audio id="audioPlayer"></audio>
+
+<!-- Кастомный интерфейс плеера -->
+<div class="custom-player">
+    <div class="now-playing-title" id="np-title">Выберите трек</div>
+    <div class="now-playing-artist" id="np-artist">из списка ниже</div>
+    
+    <div class="player-controls">
+        <button class="ctrl-btn" onclick="changeVolume(-0.1)">- Vol</button>
+        <button class="ctrl-btn play-btn" id="playBtn" onclick="togglePlay()">► Play</button>
+        <button class="ctrl-btn" onclick="changeVolume(0.1)">Vol +</button>
+    </div>
+    <div class="volume-status" id="vol-status">Громкость: 100%</div>
 </div>
 
+<!-- Список треков -->
 <div class="wp-list">
-    <div class="list-item" onclick="play('biohazard.m4a')">
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/assmilk.mp3', 'Assmilk', 'Tyler The Creator')">
+        Assmilk
+        <span>Tyler The Creator</span>
+    </div>
+
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/b2.m4a', 'Bound 2', 'Kanye West')">
+        Bound 2
+        <span>Kanye West</span>
+    </div>
+
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a', 'Биохазард', 'Птицу ЕМЪ')">
         Биохазард
         <span>Птицу ЕМЪ</span>
     </div>
     
-    <div class="list-item" onclick="play('oblivion.m4a')">
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a', 'Oblivion', 'Grimes')">
         Oblivion
         <span>Grimes</span>
     </div>
     
-    <div class="list-item" onclick="play('waves.mp3')">
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3', 'Waves', 'Kanye West')">
         Waves
         <span>Kanye West</span>
     </div>
     
-    <div class="list-item" onclick="play('chejizh.m4a')">
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a', 'Это Жизнь', 'Kunteynir')">
         Это Жизнь
         <span>Kunteynir</span>
     </div>
 
-    <div class="list-item" onclick="play('she.m4a')">
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a', 'Дало В Ноги', 'Kunteynir')">
+        Дало В Ноги
+        <span>Kunteynir</span>
+    </div>
+
+    <div class="list-item" onclick="loadAndPlay('https://github.com/nekxd/player/raw/refs/heads/main/she.m4a', 'She', 'Tyler The Creator')">
         She
         <span>Tyler The Creator</span>
     </div>
@@ -146,11 +243,53 @@ h1 {
 </div>
 
 <script>
-function play(file){
-    var player = document.getElementById('audioPlayer');
-    player.src = file;
-    player.play();
-}
+    const audio = document.getElementById('audioPlayer');
+    const playBtn = document.getElementById('playBtn');
+    const npTitle = document.getElementById('np-title');
+    const npArtist = document.getElementById('np-artist');
+    const volStatus = document.getElementById('vol-status');
+
+    // Функция загрузки и запуска трека
+    function loadAndPlay(url, title, artist) {
+        if(audio.src !== url) {
+            audio.src = url;
+        }
+        audio.play();
+        npTitle.textContent = title;
+        npArtist.textContent = artist;
+        playBtn.textContent = '⏸ Pause';
+    }
+
+    // Функция паузы/воспроизведения
+    function togglePlay() {
+        if (!audio.src || audio.src === window.location.href) {
+            alert("Сначала выберите трек из списка!");
+            return;
+        }
+        
+        if (audio.paused) {
+            audio.play();
+            playBtn.textContent = '⏸ Pause';
+        } else {
+            audio.pause();
+            playBtn.textContent = '► Play';
+        }
+    }
+
+    // Функция изменения громкости
+    function changeVolume(amount) {
+        let newVol = audio.volume + amount;
+        if (newVol > 1) newVol = 1;
+        if (newVol < 0) newVol = 0;
+        
+        audio.volume = newVol;
+        volStatus.textContent = 'Громкость: ' + Math.round(newVol * 100) + '%';
+    }
+
+    // Когда трек заканчивается, меняем кнопку обратно на Play
+    audio.addEventListener('ended', () => {
+        playBtn.textContent = '► Play';
+    });
 </script>
 
 </body>
