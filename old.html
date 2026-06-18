@@ -3,299 +3,522 @@
 <head>
 <meta charset="UTF-8">
 <title>nekxdd's bio</title>
-
 <style>
-body{
-    margin:0;
-    background:#d4d0c8;
-    color:#000;
-    font-family:Tahoma,sans-serif;
-    font-size:11px;
+/* ---------- Отключаем сглаживание шрифтов для трушного пиксельного вида ---------- */
+* {
+    box-sizing: border-box;
+    -webkit-font-smoothing: none;
+    -moz-osx-font-smoothing: grayscale;
 }
 
-.window{
-    width:800px;
-    margin:20px auto;
-    border:2px solid #808080;
-    background:#ece9d8;
+body {
+    margin: 0;
+    padding: 0;
+    background: #008080; /* Классический цвет рабочего стола Windows 2000 */
+    color: #000;
+    font-family: Tahoma, "Trebuchet MS", Arial, sans-serif;
+    font-size: 11px;
+    height: 100vh;
+    overflow: hidden;
+    user-select: none;
 }
 
-.titlebar{
-    background:#0A246A;
-    color:#fff;
-    padding:3px 6px;
-    font-family:Tahoma,sans-serif;
-    font-size:11px;
-    font-weight:bold;
+/* ---------- Стилизация скроллбара под Win2k ---------- */
+::-webkit-scrollbar {
+    width: 16px;
+    height: 16px;
+    background: #dfdfdf;
+    border-left: 1px solid #fff;
+}
+::-webkit-scrollbar-thumb {
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+}
+::-webkit-scrollbar-button {
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
 }
 
-.content{
-    padding:10px;
+/* ---------- Окно ---------- */
+.window {
+    position: absolute;
+    top: 50px;
+    left: max(50px, calc(50% - 400px));
+    width: 800px;
+    max-height: calc(100vh - 80px);
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #000;
+    border-bottom: 1px solid #000;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080, 1px 1px 3px rgba(0,0,0,0.3);
+    display: flex;
+    flex-direction: column;
 }
 
-.section{
-    border:1px solid #808080;
-    background:#fff;
-    margin-bottom:10px;
-    padding:8px;
+/* ---------- Заголовок окна ---------- */
+.titlebar {
+    background: linear-gradient(to right, #0A246A, #A6CAF0);
+    color: #fff;
+    padding: 2px 3px;
+    font-weight: bold;
+    font-size: 11px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    cursor: default;
 }
 
-.section h2{
-    margin:0 0 8px 0;
-    font-family:Tahoma,sans-serif;
-    font-size:11px;
-    font-weight:bold;
+.title-text {
+    display: flex;
+    align-items: center;
+    gap: 4px;
 }
 
-a{
-    color:#0000CC;
-    font-family:Tahoma,sans-serif;
-    font-size:11px;
+.titlebar-controls {
+    display: flex;
+    gap: 2px;
 }
 
-.links a,
-.player a{
-    display:block;
-    margin:3px 0;
+.title-btn {
+    width: 16px;
+    height: 14px;
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #000;
+    font-family: Arial, sans-serif;
+    font-weight: bold;
+    font-size: 10px;
+    padding: 0;
+    cursor: default;
 }
 
-button,
-input,
-select,
-textarea{
-    font-family:Tahoma,sans-serif;
-    font-size:11px;
+.title-btn:active {
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
 }
 
-.footer{
-    text-align:center;
-    padding:10px;
+/* ---------- Меню ---------- */
+.menubar {
+    padding: 2px 5px;
+    border-bottom: 1px solid #808080;
+    box-shadow: 0 1px #fff;
+    display: flex;
+    gap: 10px;
+}
+.menubar span { padding: 2px 5px; cursor: default; }
+.menubar span:hover { background: #0A246A; color: #fff; }
+
+/* ---------- Тело окна ---------- */
+.content-wrapper {
+    padding: 10px;
+    overflow-y: auto;
+    flex-grow: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.full-width {
+    grid-column: 1 / 3;
+}
+
+/* ---------- Элементы форм (Win32 Controls) ---------- */
+fieldset {
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    margin: 0;
+    padding: 10px;
+}
+
+legend {
+    color: #000;
+    padding: 0 4px;
+}
+
+a { color: #0000FF; text-decoration: underline; cursor: pointer; }
+a:hover { color: #0000FF; }
+a:visited { color: #800080; }
+
+.links a { display: inline-block; margin-right: 10px; margin-bottom: 5px; }
+
+/* Inset (Вдавленные) элементы: текстовые поля и списки */
+.inset-box {
+    background: #fff;
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #e0e0e0;
+    border-bottom: 1px solid #e0e0e0;
+    box-shadow: inset 1px 1px #000, inset -1px -1px #fff;
+}
+
+textarea.inset-box {
+    width: 100%;
+    padding: 4px;
+    color: #000;
+    font-family: Courier New, monospace;
+    font-size: 11px;
+    resize: none;
+    margin-top: 5px;
+}
+
+/* Список треков (Имитация ListBox) */
+.listbox {
+    height: 100px;
+    overflow-y: scroll;
+    padding: 2px;
+}
+
+.listbox a {
+    display: block;
+    text-decoration: none;
+    color: #000;
+    padding: 1px 3px;
+    white-space: nowrap;
+}
+
+.listbox a:hover, .listbox a:focus {
+    background: #0A246A;
+    color: #fff;
+    outline: 1px dotted #fff;
+    outline-offset: -1px;
+}
+
+/* Системные кнопки */
+.sys-btn {
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+    padding: 4px 12px;
+    color: #000;
+    font-family: Tahoma, sans-serif;
+    font-size: 11px;
+    cursor: default;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+}
+
+.sys-btn:active {
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+    padding: 5px 11px 3px 13px; /* Смещение текста при нажатии */
+}
+
+/* ---------- Панель задач (Taskbar) ---------- */
+.taskbar {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    display: flex;
+    align-items: center;
+    padding: 2px;
+    z-index: 100;
+}
+
+.start-btn {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-weight: bold;
+    font-style: italic;
+    padding: 2px 6px;
+    margin-right: 10px;
+    height: 100%;
+}
+
+.taskbar-item {
+    background: #d4d0c8;
+    border-top: 1px solid #404040;
+    border-left: 1px solid #404040;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    box-shadow: inset 1px 1px #808080, inset -1px -1px #dfdfdf;
+    padding: 2px 8px;
+    font-weight: bold;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    min-width: 150px;
+}
+
+.systray {
+    margin-left: auto;
+    border-top: 1px solid #808080;
+    border-left: 1px solid #808080;
+    border-right: 1px solid #fff;
+    border-bottom: 1px solid #fff;
+    padding: 2px 8px;
+    height: 100%;
+    display: flex;
+    align-items: center;
+}
+
+/* Иконки 88x31 */
+.banners {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px;
+    margin-top: 10px;
+    background: #fff;
+    padding: 4px;
+}
+.banners img { image-rendering: pixelated; }
+
+hr {
+    border: none;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #fff;
+    margin: 8px 0;
 }
 </style>
 </head>
-
 <body>
 
-<div class="window">
+<div class="desktop">
 
-<div class="titlebar">
-nekxdd's bio
+    <div class="window" id="win">
+        <div class="titlebar" id="win-title">
+            <div class="title-text">
+                <span style="display:inline-block; width:12px; height:12px; background:white; border:1px solid #c0c0c0; border-top: 3px solid blue;"></span> 
+                Свойства: nekxdd's bio
+            </div>
+            <div class="titlebar-controls">
+                <div class="title-btn">_</div>
+                <div class="title-btn">□</div>
+                <div class="title-btn">x</div>
+            </div>
+        </div>
+
+        <div class="menubar">
+            <span><u>Ф</u>айл</span>
+            <span><u>П</u>равка</span>
+            <span><u>В</u>ид</span>
+            <span><u>С</u>правка</span>
+        </div>
+
+        <div class="content-wrapper">
+            
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <fieldset>
+                    <legend>Сведения о пользователе</legend>
+                    <b>Обо мне:</b><br>
+                    Просто забавный челик который вайбкодит всякую херню.<br><br>
+                    
+                    <b>Статус:</b><br>
+                    Не гений, не миллиардер, не плейбой, не филантроп.
+                </fieldset>
+
+                <fieldset class="links">
+                    <legend>Сетевое окружение (Соцсети)</legend>
+                    <a href="https://t.me/KanyeWestLover1337" target="_blank">Telegram</a>
+                    <a href="https://discord.gg/fUWugHxnWC" target="_blank">Discord</a>
+                    <a href="https://openvk.org/nxd" target="_blank">OpenVK</a>
+                    <a href="https://emb.faero.top/nekich" target="_blank">Ember</a><br>
+                    <a href="https://steamcommunity.com/id/nekichxd" target="_blank">Steam</a>
+                    <a href="https://github.com/nekxd/" target="_blank">GitHub</a>
+                    <a href="https://bsky.app/profile/nekxd.bsky.social" target="_blank">Bluesky</a>
+                    <a href="https://www.instagram.com/nekich.idk" target="_blank">Insta</a><br>
+                    <hr>
+                    <a href="https://mrim.su" target="_blank">Renaissance / nekich@mail.ru</a><br>
+                    <a href="mailto:yandhi@nekxd.ru">Отправить почту (yandhi@nekxd.ru)</a>
+                </fieldset>
+
+                <fieldset>
+                    <legend>Финансовые операции (Донат)</legend>
+                    <a href="https://new.donatepay.ru/@nekichxd" target="_blank">Шлюз DonatePay</a><br>
+                    <a href="https://www.donationalerts.com/r/nekxd" target="_blank">Шлюз DonationAlerts</a>
+                    <hr>
+                    <table style="width: 100%; text-align: left;" cellspacing="0">
+                        <tr><td>Тинькофф:</td><td>2200 7021 8463 5477</td></tr>
+                        <tr><td>YooMoney:</td><td>5599 0021 3104 1065</td></tr>
+                        <tr><td>Альфа-Банк:</td><td>2200 1546 7614 4461</td></tr>
+                        <tr><td>Ozon Банк:</td><td>2204 3212 8872 5864</td></tr>
+                        <tr><td>МТС Банк:</td><td>2203 8302 6759 3987</td></tr>
+                    </table>
+                </fieldset>
+            </div>
+
+            <div style="display: flex; flex-direction: column; gap: 10px;">
+                <fieldset>
+                    <legend>Оборудование (Мои устройства)</legend>
+                    <b>[+] Системный блок</b><br>
+                    - AMD Ryzen 5 2600<br>
+                    - ASUS ROG NVIDIA GeForce GTX 1070 8 GB<br>
+                    - 16 GB DDR4 RAM<br>
+                    - SSD WD Green M.2 SATA 240 GB<br>
+                    - HDD Toshiba 500 GB<br><br>
+
+                    <b>[+] Мониторы PnP</b><br>
+                    - MSI MAG 2K 165 Гц<br>
+                    - NEC 75 Гц<br>
+                    - Mystery TV<br><br>
+
+                    <b>[+] Устройства ввода и вывода</b><br>
+                    - Клавиатура: Defender Pro Atomic Core<br>
+                    - Мышь: VXE R1 SE+<br>
+                    - Наушники: Defender Triple<br>
+                    - Микрофон: Fifine A6<br><br>
+
+                    <b>[+] Внешние устройства</b><br>
+                    - Яндекс Станция Мини 2 с часами<br>
+                    - Realme P3 5G (256 GB)<br>
+                    - Samsung Galaxy A13 4G (64 GB)<br>
+                    - Samsung S3 Duos (16 GB)<br>
+                    - iPhone 5S (16 GB)
+                </fieldset>
+
+                <fieldset>
+                    <legend>Windows Media Player</legend>
+                    <audio id="player" controls style="width:100%; height: 30px; margin-bottom: 5px;"></audio>
+                    
+                    <div class="inset-box listbox">
+                        <a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/assmilk.mp3');return false;">Tyler The Creator - Assmilk.mp3</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a');return false;">Птицу ЕМЪ - Биохазард.m4a</a>
+                        <a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/b2.m4a');return false;">Kanye West - Bound 2.m4a</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a');return false;">Grimes - Oblivion.m4a</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3');return false;">Kanye West - Waves.mp3</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a');return false;">Kunteynir - Это жизнь.m4a</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a');return false;">Kunteynir - Дало в Ноги.m4a</a>
+                        <a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/she.m4a');return false;">Tyler The Creator - She.m4a</a>
+                    </div>
+                </fieldset>
+            </div>
+
+            <div class="full-width">
+                <fieldset>
+                    <legend>Экспорт (Коды кнопок)</legend>
+                    <div style="display: flex; gap: 10px;">
+                        <div style="flex: 1;">
+                            <img src="http://nekxd.ru/button.png" width="88" height="31" alt="nekxd"><br>
+                            <textarea class="inset-box" rows="2" readonly>&lt;a href="http://nekxd.ru" target="_blank"&gt;&lt;img src="http://nekxd.ru/button.png" width="88" height="31" alt="nekxd"&gt;&lt;/a&gt;</textarea>
+                        </div>
+                        <div style="flex: 1;">
+                            <img src="http://nekxd.ru/old.png" width="88" height="31" alt="NekxdOld"><br>
+                            <textarea class="inset-box" rows="2" readonly>&lt;a href="http://nekxd.ru/old.html" target="_blank"&gt;&lt;img src="http://nekxd.ru/old.png" width="88" height="31" alt="NekxdOld"&gt;&lt;/a&gt;</textarea>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset style="margin-top: 10px;">
+                    <legend>Партнеры и значки</legend>
+                    <div class="inset-box banners">
+                        <a href="https://mynickname.com/id833025" target="_blank"><img src="https://mynickname.com/forum3t5/Nekich.gif" alt="Nekich"></a>
+                        <a href="http://madebydimas.top" target="_blank"><img src="http://madebydimas.top/button.png" width="88" height="31"></a>
+                        <a href="http://myslivets.com" target="_blank"><img src="http://myslivets.com/img/button.png" width="88" height="31"></a>
+                        <a href="http://veselcraft.ru/" target="_blank"><img src="http://veselcraft.ru/images/vc.gif"></a>
+                        <a href="https://github.com" target="_blank"><img src="https://madebydimas.top/github.gif" width="88" height="31"></a>
+                        <a href="http://firefox.com" target="_blank"><img src="http://nekxd.ru/firefox.gif" height="31" width="88" alt="Firefox"></a>
+                        <a href="http://nekxd.ru/posuda.mp4" target="_blank"><img border="0" src="http://nekxd.ru/windows-media-player.gif" width="88" height="31"></a>
+                        <img src="https://88x31.kate.pet/postal_2.jpg" height="31" />
+                        <img src="https://88x31.kate.pet/hl.gif" height="31" />
+                        <img src="https://88x31.kate.pet/w7-boot.gif" height="31" />
+                        <img src="https://88x31.kate.pet/firefox_now.png" height="31" />
+                        <img src="https://88x31.kate.pet/telegram-old.gif" height="31" />
+                        <img src="https://88x31.kate.pet/discord_now_02.gif" height="31" />
+                        <img src="https://88x31.kate.pet/made_with_windows.gif" height="31" />
+                    </div>
+                </fieldset>
+
+                <div style="text-align: right; margin-top: 15px; border-top: 1px solid #808080; padding-top: 10px; box-shadow: inset 0 1px #fff;">
+                    <a href="index.html" class="sys-btn">ОК (Вернуться на Metro)</a>
+                    <a href="#" class="sys-btn" onclick="return false;">Отмена</a>
+                    <a href="#" class="sys-btn" style="color: #808080;" onclick="return false;">Применить</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
 </div>
 
-<div class="content">
-
-<div class="section">
-<h2>Обо мне</h2>
-Просто забавный челик который вайбкодит всякую херню.
-</div>
-
-<div class="section">
-<h2>Статус</h2>
-Не гений, не миллиардер, не плейбой, не филантроп.
-</div>
-<div class="section">
-<h2>Мои устройства</h2>
-
-<b>ПК</b><br>
-AMD Ryzen 5 2600<br>
-ASUS ROG NVIDIA GeForce GTX 1070 8 GB<br>
-16 GB DDR4 RAM<br>
-SSD WD Green M.2 SATA 240 GB<br>
-HDD Toshiba 500 GB
-
-<br><br>
-
-<b>Мониторы</b><br>
-MSI MAG 2K 165 Гц<br>
-NEC 75 Гц<br>
-Mystery TV
-
-<br><br>
-
-<b>Периферия</b><br>
-Клавиатура: Defender Pro Atomic Core<br>
-Мышь: VXE R1 SE+<br>
-Наушники: Defender Triple<br>
-Микрофон: Fifine A6
-
-<br><br>
-
-<b>Умные устройства</b><br>
-Яндекс Станция Мини 2 с часами
-
-<br><br>
-
-<b>Телефоны</b><br>
-Realme P3 5G (256 GB)<br>
-Samsung Galaxy A13 4G (64 GB)<br>
-Samsung S3 Duos (16 GB)<br>
-iPhone 5S (16 GB)
-
-</div>
-
-<div class="section links">
-<h2>Соцсети</h2>
-
-<a href="https://t.me/KanyeWestLover1337">Telegram</a>
-<a href="https://discord.gg/fUWugHxnWC">Discord</a>
-<a href="https://openvk.org/nxd">OpenVK</a>
-<a href="https://emb.faero.top/nekich">Ember</a>
-<a href="https://steamcommunity.com/id/nekichxd">Steam</a>
-<a href="https://github.com/nekxd/">GitHub</a>
-<a href="https://bsky.app/profile/nekxd.bsky.social">Bluesky</a>
-<a href="https://www.instagram.com/nekich.idk">Instagram</a>
-
-<a href="https://mrim.su">Renaissance / nekich@mail.ru</a>
-
-<a href="mailto:yandhi@nekxd.ru">Почта</a>
-
-</div>
-
-<div class="section">
-<h2>Поддержать меня денюшкой</h2>
-
-<p>
-<a href="https://new.donatepay.ru/@nekichxd">
-DonatePay
-</a>
-</p>
-
-<p>
-<a href="https://www.donationalerts.com/r/nekxd">
-DonationAlerts
-</a>
-</p>
-
-<p>Тинькофф: 2200 7021 8463 5477</p>
-<p>YooMoney: 5599 0021 3104 1065</p>
-<p>Альфа-Банк: 2200 1546 7614 4461</p>
-<p>Ozon Банк: 2204 3212 8872 5864</p>
-<p>МТС Банк: 2203 8302 6759 3987</p>
-
-</div>
-
-<div class="section player">
-<h2>Музыка</h2>
-
-<audio id="player" controls style="width:100%"></audio>
-
-<div class="player">
-<a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/assmilk.mp3');return false;">Tyler The Creator - Assmilk</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a');return false;">Птицу ЕМЪ - Биохазард</a>
-<a href="#" onclick="playTrack('https://raw.githubusercontent.com/nekxd/player/main/b2.m4a');return false;">Kanye West - Bound 2</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a');return false;">Grimes - Oblivion</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3');return false;">Kanye West - Waves</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a');return false;">Kunteynir - Это жизнь</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a');return false;">Kunteynir - Дало в Ноги</a>
-<a href="#" onclick="playTrack('https://github.com/nekxd/player/raw/refs/heads/main/she.m4a');return false;">Tyler The Creator - She</a>
+<div class="taskbar">
+    <div class="sys-btn start-btn">
+        <span style="display:grid; grid-template-columns: 1fr 1fr; gap:1px; width: 14px; height: 14px; margin-right: 2px;">
+            <span style="background: #E84C22;"></span><span style="background: #81BA25;"></span>
+            <span style="background: #00A4EF;"></span><span style="background: #FFB901;"></span>
+        </span>
+        Пуск
+    </div>
+    <div class="taskbar-item">
+        Свойства: nekxdd's bio
+    </div>
+    <div class="systray">
+        <span id="clock">15:36</span>
+    </div>
 </div>
 
 <script>
+// Скрипт для плеера
 function playTrack(url){
-    var p=document.getElementById('player');
-    p.src=url;
+    var p = document.getElementById('player');
+    p.src = url;
     p.play();
 }
+
+// Скрипт для перетаскивания окна (как в настоящей Windows!)
+const win = document.getElementById('win');
+const title = document.getElementById('win-title');
+let isDown = false;
+let offset = [0,0];
+
+title.addEventListener('mousedown', function(e) {
+    isDown = true;
+    offset = [
+        win.offsetLeft - e.clientX,
+        win.offsetTop - e.clientY
+    ];
+});
+
+document.addEventListener('mouseup', function() {
+    isDown = false;
+});
+
+document.addEventListener('mousemove', function(e) {
+    e.preventDefault();
+    if (isDown) {
+        win.style.left = (e.clientX + offset[0]) + 'px';
+        win.style.top  = (e.clientY + offset[1]) + 'px';
+    }
+});
+
+// Простенькие часы для трея
+setInterval(function() {
+    const d = new Date();
+    document.getElementById('clock').innerText = 
+        d.getHours().toString().padStart(2, '0') + ':' + 
+        d.getMinutes().toString().padStart(2, '0');
+}, 1000);
 </script>
-
-<div style="margin-top:30px">
-
-<h2 style="font-weight:300;text-align:center">
-Добавьте мою кнопку на свой сайт!
-</h2>
-
-<div style="text-align:center">
-
-<a href="http://nekxd.ru" target="_blank">
-<img src="button.png" width="88" height="31" alt="nekxd">
-</a>
-
-</div>
-
-<textarea readonly style="width:100%;height:70px;margin-top:10px;background:#222;color:#fff;border:none;padding:10px;">
-<a href="http://nekxd.ru" target="_blank" rel="noopener noreferrer"><img src="http://nekxd.ru/button.png" width="88" height="31" alt="nekxd"></a>
-</textarea>
-
-<br><br>
-
-<div style="text-align:center">
-
-<a href="http://nekxd.ru/old.html" target="_blank">
-<img src="old.png" width="88" height="31" alt="NekxdOld">
-</a>
-
-</div>
-
-<textarea readonly style="width:100%;height:70px;margin-top:10px;background:#222;color:#fff;border:none;padding:10px;">
-<a href="http://nekxd.ru/old.html" target="_blank" rel="noopener noreferrer"><img src="http://nekxd.ru/old.png" width="88" height="31" alt="NekxdOld"></a>
-</textarea>
-
-</div>
-    
-<div class="footer">
-
-<a href="https://mynickname.com/id833025">
-<img src="https://mynickname.com/forum3t5/Nekich.gif" alt="Nekich">
-</a>
-
-<br><br>
-
-<a href="http://madebydimas.top">
-<img src="http://madebydimas.top/button.png" width="88" height="31">
-</a>
-
-<a href="http://myslivets.com">
-<img src="http://myslivets.com/img/button.png" width="88" height="31">
-</a>
-
-<a href="http://veselcraft.ru/">
-<img src="http://veselcraft.ru/images/vc.gif">
-</a>
-
-<a href="https://github.com" target="_blank">
-<img src="https://madebydimas.top/github.gif" width="88" height="31">
-</a>
-
-<a href="http://firefox.com" target="_blank">
-<img src="firefox.gif" height="31" width="88" alt="Firefox">
-</a>
-
-
-<a href="posuda.mp4" target="_blank" rel="noopener noreferrer">
-<img border="0" src="windows-media-player.gif" width="88" height="31">
-</a>
-
-<img src="https://88x31.kate.pet/postal_2.jpg" height="31" />
-
-<img src="https://88x31.kate.pet/hl.gif" height="31" />
-
-<img src="https://88x31.kate.pet/w7-boot.gif" height="31" />
-
-<img src="https://88x31.kate.pet/firefox_now.png" height="31" />
-
-<img src="https://88x31.kate.pet/telegram-old.gif" height="31" />
-
-<img src="https://88x31.kate.pet/discord_now_02.gif" height="31" />
-
-<img src="https://88x31.kate.pet/made_with_windows.gif" height="31" />
-
-<img src="https://88x31.kate.pet/made_with_windows.gif" height="31" />
-
-</footer>
-
-</div>
-<div class="section">
-<h2>Навигация</h2>
-
-<p>
-<a href="index.html">
-Вернуться на Metro-версию сайта
-</a>
-</p>
-
-</div>
-
-</div>
 
 </body>
 </html>
