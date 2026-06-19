@@ -222,7 +222,7 @@ textarea.inset-box {
     display: inline-block;
 }
 
-.sys-btn:active {
+.sys-btn:active, .start-btn.active {
     border-top: 1px solid #404040;
     border-left: 1px solid #404040;
     border-right: 1px solid #fff;
@@ -282,6 +282,76 @@ textarea.inset-box {
     height: 100%;
     display: flex;
     align-items: center;
+}
+
+/* ---------- Меню Пуск (Start Menu) ---------- */
+.start-menu {
+    position: fixed;
+    bottom: 28px;
+    left: 0;
+    background: #d4d0c8;
+    border-top: 1px solid #fff;
+    border-left: 1px solid #fff;
+    border-right: 1px solid #404040;
+    border-bottom: 1px solid #404040;
+    box-shadow: inset 1px 1px #dfdfdf, inset -1px -1px #808080;
+    display: flex;
+    z-index: 200;
+    min-height: 280px;
+    font-family: Tahoma, "Trebuchet MS", Arial, sans-serif;
+    font-size: 11px;
+}
+
+.start-menu.hidden {
+    display: none;
+}
+
+.start-sidebar {
+    width: 25px;
+    background: linear-gradient(to bottom, #000000 0%, #000080 30%, #000080 100%);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding-bottom: 5px;
+}
+
+.start-title {
+    color: white;
+    font-weight: bold;
+    font-size: 15px;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    white-space: nowrap;
+    letter-spacing: 1px;
+}
+
+.start-items {
+    display: flex;
+    flex-direction: column;
+    padding: 2px;
+    min-width: 180px;
+    background: #d4d0c8;
+}
+
+.start-item {
+    display: flex;
+    align-items: center;
+    padding: 6px 20px 6px 12px;
+    color: #000;
+    text-decoration: none;
+    cursor: default;
+}
+
+.start-item:hover {
+    background: #0A246A;
+    color: #fff;
+}
+
+.start-separator {
+    height: 0;
+    border-top: 1px solid #808080;
+    border-bottom: 1px solid #fff;
+    margin: 4px 2px;
 }
 
 /* Иконки 88x31 */
@@ -461,8 +531,26 @@ hr {
     </div>
 </div>
 
+<div id="start-menu" class="start-menu hidden">
+    <div class="start-sidebar">
+        <span class="start-title">NekxdOS Professianal</span>
+    </div>
+    <div class="start-items">
+        <a href="xp.html" class="start-item">WinXP версия</a>
+        <a href="win7.html" class="start-item">Win7 версия</a>
+        <div class="start-separator"></div>
+        <a href="android.html" class="start-item">Android версия</a>
+        <a href="wm6.html" class="start-item">WM6 версия</a>
+        <div class="start-separator"></div>
+        <a href="index.html" class="start-item">Metro версия</a>
+        <a href="index.html" class="start-item">WP8 версия</a>
+        <div class="start-separator"></div>
+        <a href="#" class="start-item" onclick="return false;">Завершение работы...</a>
+    </div>
+</div>
+
 <div class="taskbar">
-    <div class="sys-btn start-btn">
+    <div class="sys-btn start-btn" id="start-btn">
         <span style="display:grid; grid-template-columns: 1fr 1fr; gap:1px; width: 14px; height: 14px; margin-right: 2px;">
             <span style="background: #E84C22;"></span><span style="background: #81BA25;"></span>
             <span style="background: #00A4EF;"></span><span style="background: #FFB901;"></span>
@@ -518,6 +606,24 @@ setInterval(function() {
         d.getHours().toString().padStart(2, '0') + ':' + 
         d.getMinutes().toString().padStart(2, '0');
 }, 1000);
+
+// Скрипт меню Пуск
+const startBtn = document.getElementById('start-btn');
+const startMenu = document.getElementById('start-menu');
+
+startBtn.addEventListener('click', function(e) {
+    e.stopPropagation();
+    startMenu.classList.toggle('hidden');
+    startBtn.classList.toggle('active');
+});
+
+// Закрытие меню Пуск при клике в любое другое место
+document.addEventListener('click', function(e) {
+    if (!startMenu.contains(e.target) && !startBtn.contains(e.target)) {
+        startMenu.classList.add('hidden');
+        startBtn.classList.remove('active');
+    }
+});
 </script>
 
 </body>
