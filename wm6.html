@@ -1,0 +1,554 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windows Mobile 6 Web App</title>
+    <style>
+        /* Отключаем сглаживание для эффекта старого экрана */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+            -webkit-font-smoothing: none;
+            font-smooth: never;
+        }
+
+        body {
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #222;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Экран устройства */
+        .device {
+            width: 320px;
+            height: 480px;
+            background: linear-gradient(to bottom, #00879D 0%, #004D61 100%);
+            position: relative;
+            overflow: hidden;
+            border: 2px solid #111;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Верхняя панель (Header) */
+        .header {
+            background: linear-gradient(to bottom, #00758F 0%, #005366 100%);
+            height: 28px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+            border-bottom: 1px solid #0099b3;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 30;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            padding: 2px 5px;
+        }
+
+        .header-left span.win-icon {
+            color: #FFB900;
+            margin-right: 5px;
+            font-size: 16px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 12px;
+        }
+
+        .close-btn {
+            border: 1px solid #fff;
+            background: #005366;
+            color: white;
+            width: 18px;
+            height: 18px;
+            display: none;
+            text-align: center;
+            line-height: 16px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        /* Выпадающее меню Пуск */
+        .start-menu {
+            position: absolute;
+            top: 28px;
+            left: 0;
+            width: 230px;
+            background-color: #006073;
+            border: 1px solid #003340;
+            border-top: none;
+            box-shadow: 2px 2px 5px rgba(0,0,0,0.5);
+            display: none;
+            flex-direction: column;
+            z-index: 40;
+            /* На случай, если пунктов станет слишком много */
+            max-height: 420px;
+            overflow-y: auto;
+        }
+
+        .start-menu.active {
+            display: flex;
+        }
+
+        .start-menu-item {
+            text-decoration: none;
+            color: white;
+            font-size: 15px;
+            padding: 8px 10px;
+            display: flex;
+            align-items: center;
+            border-bottom: 1px solid #007289;
+            cursor: pointer;
+        }
+
+        .start-menu-item:hover {
+            background-color: #004554;
+        }
+
+        .start-menu-item span.icon {
+            margin-right: 10px;
+            font-size: 18px;
+        }
+
+        /* Экраны */
+        .screen {
+            display: none;
+            flex-grow: 1;
+            flex-direction: column;
+            overflow: hidden;
+            background: linear-gradient(to bottom, #00879D 0%, #004D61 100%);
+        }
+
+        .screen.active {
+            display: flex;
+        }
+
+        /* ---- ЭКРАН "СЕГОДНЯ" ---- */
+        .today-screen {
+            padding: 5px 0;
+            color: white;
+            font-size: 13px;
+        }
+        .today-item {
+            display: flex;
+            align-items: center;
+            padding: 8px 10px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(0, 0, 0, 0.2);
+        }
+        .today-icon {
+            width: 20px;
+            text-align: center;
+            margin-right: 10px;
+            font-size: 16px;
+        }
+        .time-large {
+            font-size: 16px;
+            font-weight: bold;
+            text-align: right;
+            flex-grow: 1;
+        }
+
+        /* ---- ЭКРАН КАЛЕНДАРЯ ---- */
+        .calendar-screen {
+            background-color: #fff;
+            color: black;
+        }
+        .cal-header {
+            background: #E0DFE3;
+            display: flex;
+            justify-content: space-between;
+            padding: 2px 5px;
+            border-bottom: 1px solid #999;
+            font-size: 13px;
+            font-weight: bold;
+        }
+        .cal-year { font-size: 14px; }
+        .cal-controls { font-weight: normal; letter-spacing: 2px;}
+        .cal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 1fr);
+            flex-grow: 1;
+        }
+        .month-block {
+            border-right: 1px solid #000;
+            border-bottom: 1px solid #000;
+            padding: 2px;
+            font-size: 9px;
+            display: flex;
+            flex-direction: column;
+        }
+        .month-block:nth-child(3n) { border-right: none; }
+        .month-title {
+            text-align: center;
+            font-weight: bold;
+            font-size: 11px;
+            margin-bottom: 2px;
+        }
+        .days-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            text-align: right;
+            gap: 1px;
+            font-family: Tahoma;
+        }
+        .day-weekend { color: red; }
+        .day-blue { color: blue; }
+
+        /* ---- ЭКРАН КОНТАКТОВ ---- */
+        .contacts-screen {
+            background-color: #D6EDF8;
+            color: #000;
+        }
+        .search-input-wrap {
+            padding: 4px;
+            background: #fff;
+            border-bottom: 1px solid #000;
+        }
+        .search-input-wrap input {
+            width: 100%;
+            border: 1px solid #999;
+            padding: 3px;
+            font-family: Tahoma;
+            font-size: 13px;
+        }
+        .alpha-strip {
+            display: flex;
+            background: #fff;
+            border-bottom: 1px solid #000;
+            font-size: 11px;
+        }
+        .alpha-strip span {
+            flex-grow: 1;
+            text-align: center;
+            border-right: 1px solid #000;
+            padding: 2px 0;
+            cursor: pointer;
+        }
+        .alpha-strip span:last-child { border-right: none; }
+        
+        .contact-list {
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+        .contact-item {
+            display: flex;
+            align-items: center;
+            padding: 4px 6px;
+            border-bottom: 1px solid #B5D2E1;
+            text-decoration: none;
+            color: #000;
+        }
+        .contact-item:hover { background-color: #BEE1F0; }
+        .contact-icon {
+            width: 16px;
+            height: 16px;
+            background: #aaa;
+            margin-right: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+            color: #fff;
+            border: 1px solid #666;
+        }
+        .contact-details {
+            display: flex;
+            flex-direction: column;
+            font-size: 13px;
+        }
+        .contact-name { font-weight: bold; }
+        .contact-sub { font-size: 11px; color: #333; }
+
+        /* Нижняя панель (Soft keys) */
+        .footer {
+            background: linear-gradient(to bottom, #00758F 0%, #005366 100%);
+            height: 26px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 10px;
+            color: white;
+            font-weight: bold;
+            font-size: 13px;
+            z-index: 10;
+        }
+        .soft-key { cursor: pointer; }
+        .soft-key:hover { text-decoration: underline; }
+
+        /* Стилизация скроллбара для меню (если оно будет длинным) */
+        ::-webkit-scrollbar { width: 4px; }
+        ::-webkit-scrollbar-track { background: transparent; }
+        ::-webkit-scrollbar-thumb { background: #0099b3; }
+
+    </style>
+</head>
+<body>
+
+<div class="device">
+    <div class="header">
+        <div class="header-left" id="startBtn">
+            <span class="win-icon">⊞</span> <span id="headerTitle">Пуск</span>
+        </div>
+        <div class="header-right">
+            <span>📶</span> <span>🔊</span> <span id="clockHeader">00:00</span>
+            <div class="close-btn" id="closeAppBtn">X</div>
+        </div>
+    </div>
+
+    <div class="start-menu" id="startMenu">
+        <div class="start-menu-item" onclick="openApp('calendar', 'Календарь', 'Повестка', 'Меню')">
+            <span class="icon">📅</span> Календарь
+        </div>
+        <div class="start-menu-item" onclick="openApp('contacts', 'Контакты', 'Создать', 'Меню')">
+            <span class="icon">📇</span> Контакты
+        </div>
+        <div style="height: 1px; background: #003340; border-bottom: 1px solid #007289;"></div>
+        <a href="old.html" class="start-menu-item"><span class="icon">🖥️</span> Win9x версия</a>
+        <a href="xp.html" class="start-menu-item"><span class="icon">💻</span> WinXP версия</a>
+        <a href="win7.html" class="start-menu-item"><span class="icon">🪟</span> Win7 версия</a>
+        <a href="index.html" class="start-menu-item"><span class="icon">📱</span> Metro-версия</a>
+        <a href="mobile.html" class="start-menu-item"><span class="icon">📞</span> WP8 версия</a>
+        <a href="android.html" class="start-menu-item"><span class="icon">🤖</span> Android версия</a>
+    </div>
+
+    <div id="screen-today" class="screen today-screen active">
+        <div class="today-item" style="border-top: none;">
+            <div class="today-icon">🕒</div>
+            <div id="currentDate">Загрузка даты...</div>
+            <div class="time-large" id="mainTime">00:00</div>
+        </div>
+        <div class="today-item">
+            <div class="today-icon">👤</div>
+            <div>Владелец: <b>Никита</b></div>
+        </div>
+        <div class="today-item">
+            <div class="today-icon">✉️</div>
+            <div>Непрочитанных сообщений нет</div>
+        </div>
+        <div class="today-item">
+            <div class="today-icon">📋</div>
+            <div>Задач нет</div>
+        </div>
+        <div class="today-item" style="cursor: pointer;" onclick="openApp('calendar', 'Календарь', 'Повестка', 'Меню')">
+            <div class="today-icon">📅</div>
+            <div>Встречи не запланированы</div>
+        </div>
+        <div style="padding: 8px 10px; display: flex;">
+            <input type="text" placeholder="Live Search" style="flex-grow:1; padding:2px; font-family:Tahoma; background:#006073; color:#fff; border:1px solid #003340;">
+            <button style="background:#005366; border:1px solid #003340; color:#fff; padding:0 8px;">🔍</button>
+        </div>
+        <div class="today-item" style="border-bottom: none;">
+            <div class="today-icon">🔓</div>
+            <div>Устройство разблокировано</div>
+        </div>
+    </div>
+
+    <div id="screen-calendar" class="screen calendar-screen">
+        <div class="cal-header">
+            <div class="cal-year">2026</div>
+            <div class="cal-controls">🔄 ◀ ▶</div>
+        </div>
+        <div class="cal-grid" id="calendarGrid">
+            </div>
+    </div>
+
+    <div id="screen-contacts" class="screen contacts-screen">
+        <div class="search-input-wrap">
+            <input type="text" value="Введите имя...">
+        </div>
+        <div class="alpha-strip">
+            <span>#аб</span><span>вгд</span><span>ежз</span><span>икл</span><span>мно</span><span>прс</span><span>туф</span><span>хцч</span><span>шщэ</span><span>юя</span>
+        </div>
+        <div class="contact-list">
+            <a href="https://t.me/KanyeWestLover1337" target="_blank" class="contact-item">
+                <div class="contact-icon">👤</div>
+                <div class="contact-details"><span class="contact-name">Telegram</span><span class="contact-sub">@KanyeWestLover1337</span></div>
+            </a>
+            <a href="https://discord.gg/fUWugHxnWC" target="_blank" class="contact-item">
+                <div class="contact-icon">💬</div>
+                <div class="contact-details"><span class="contact-name">Discord</span><span class="contact-sub">fUWugHxnWC</span></div>
+            </a>
+            <a href="https://openvk.org/nxd" target="_blank" class="contact-item">
+                <div class="contact-icon">🌐</div>
+                <div class="contact-details"><span class="contact-name">OpenVK</span><span class="contact-sub">/nxd</span></div>
+            </a>
+            <a href="https://emb.faero.top/nekich" target="_blank" class="contact-item">
+                <div class="contact-icon">🔥</div>
+                <div class="contact-details"><span class="contact-name">Ember</span><span class="contact-sub">/nekich</span></div>
+            </a>
+            <a href="https://steamcommunity.com/id/nekichxd" target="_blank" class="contact-item">
+                <div class="contact-icon">🎮</div>
+                <div class="contact-details"><span class="contact-name">Steam</span><span class="contact-sub">nekichxd</span></div>
+            </a>
+            <a href="https://github.com/nekxd/" target="_blank" class="contact-item">
+                <div class="contact-icon">💻</div>
+                <div class="contact-details"><span class="contact-name">GitHub</span><span class="contact-sub">nekxd</span></div>
+            </a>
+            <a href="https://bsky.app/profile/nekxd.bsky.social" target="_blank" class="contact-item">
+                <div class="contact-icon">☁️</div>
+                <div class="contact-details"><span class="contact-name">Bluesky</span><span class="contact-sub">nekxd.bsky.social</span></div>
+            </a>
+            <a href="https://www.instagram.com/nekich.idk" target="_blank" class="contact-item">
+                <div class="contact-icon">📷</div>
+                <div class="contact-details"><span class="contact-name">Insta</span><span class="contact-sub">nekich.idk</span></div>
+            </a>
+            <a href="https://mrim.su" target="_blank" class="contact-item">
+                <div class="contact-icon">📧</div>
+                <div class="contact-details"><span class="contact-name">Renaissance</span><span class="contact-sub">nekich@mail.ru</span></div>
+            </a>
+            <a href="mailto:yandhi@nekxd.ru" class="contact-item">
+                <div class="contact-icon">✉️</div>
+                <div class="contact-details"><span class="contact-name">Отправить почту</span><span class="contact-sub">yandhi@nekxd.ru</span></div>
+            </a>
+        </div>
+    </div>
+
+    <div class="footer">
+        <div class="soft-key" id="leftSoftKey" onclick="openApp('calendar', 'Календарь', 'Повестка', 'Меню')">Календарь</div>
+        <div class="soft-key" id="rightSoftKey" onclick="openApp('contacts', 'Контакты', 'Создать', 'Меню')">Контакты</div>
+    </div>
+</div>
+
+<script>
+    /* =========================================
+       1. ЧАСЫ И ДАТА
+       ========================================= */
+    function updateClock() {
+        const now = new Date();
+        
+        // Время
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes}`;
+        
+        document.getElementById('mainTime').textContent = timeString;
+        document.getElementById('clockHeader').textContent = timeString;
+
+        // Дата
+        const days = ['воскресенье', 'понедельник', 'вторник', 'среда', 'четверг', 'пятница', 'суббота'];
+        const months = ['января', 'февраля', 'марта', 'апреля', 'мая', 'июня', 'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'];
+        
+        const dayName = days[now.getDay()];
+        const dayNum = now.getDate();
+        const monthName = months[now.getMonth()];
+        const year = now.getFullYear();
+
+        document.getElementById('currentDate').innerHTML = `${dayName}<br>${dayNum} ${monthName} ${year} г.`;
+    }
+
+    // Запускаем часы
+    setInterval(updateClock, 1000);
+    updateClock(); // Обновляем сразу без ожидания первой секунды
+
+
+    /* =========================================
+       2. НАВИГАЦИЯ И МЕНЮ ПУСК
+       ========================================= */
+    const startBtn = document.getElementById('startBtn');
+    const startMenu = document.getElementById('startMenu');
+    const closeAppBtn = document.getElementById('closeAppBtn');
+    const headerTitle = document.getElementById('headerTitle');
+    const leftSoftKey = document.getElementById('leftSoftKey');
+    const rightSoftKey = document.getElementById('rightSoftKey');
+
+    // Открытие меню пуск
+    startBtn.addEventListener('click', (e) => {
+        startMenu.classList.toggle('active');
+        e.stopPropagation();
+    });
+
+    // Закрытие при клике вне меню
+    document.addEventListener('click', (e) => {
+        if (!startMenu.contains(e.target) && !startBtn.contains(e.target)) {
+            startMenu.classList.remove('active');
+        }
+    });
+
+    // Функция переключения экранов
+    function openApp(appId, title, leftKeyText, rightKeyText) {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById('screen-' + appId).classList.add('active');
+        headerTitle.textContent = title;
+        closeAppBtn.style.display = 'block';
+        leftSoftKey.textContent = leftKeyText;
+        rightSoftKey.textContent = rightKeyText;
+        
+        // Убираем действия по умолчанию с софт-клавиш, если мы уже в приложении
+        leftSoftKey.onclick = null;
+        rightSoftKey.onclick = null;
+        startMenu.classList.remove('active');
+    }
+
+    // Кнопка [X] - возврат на главный экран
+    closeAppBtn.addEventListener('click', () => {
+        document.querySelectorAll('.screen').forEach(el => el.classList.remove('active'));
+        document.getElementById('screen-today').classList.add('active');
+        headerTitle.textContent = 'Пуск';
+        closeAppBtn.style.display = 'none';
+        leftSoftKey.textContent = 'Календарь';
+        rightSoftKey.textContent = 'Контакты';
+        
+        // Возвращаем функции запуска с главного экрана
+        leftSoftKey.onclick = () => openApp('calendar', 'Календарь', 'Повестка', 'Меню');
+        rightSoftKey.onclick = () => openApp('contacts', 'Контакты', 'Создать', 'Меню');
+    });
+
+
+    /* =========================================
+       3. КАЛЕНДАРЬ НА ГОД
+       ========================================= */
+    const monthsNames = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'];
+    const daysInMonth = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+    let firstDayOffset = 3; // 1 января 2026 - Четверг
+    const calendarGrid = document.getElementById('calendarGrid');
+
+    for (let m = 0; m < 12; m++) {
+        let monthHtml = `<div class="month-block"><div class="month-title">${monthsNames[m]}</div><div class="days-grid">`;
+        
+        for (let i = 0; i < firstDayOffset; i++) {
+            monthHtml += `<div></div>`;
+        }
+        
+        for (let d = 1; d <= daysInMonth[m]; d++) {
+            let dayOfWeek = (firstDayOffset + d - 1) % 7;
+            let cssClass = '';
+            
+            // Выходные красным (суббота, воскресенье)
+            if (dayOfWeek === 5 || dayOfWeek === 6) cssClass = 'day-weekend';
+            
+            // Подсветка текущего дня
+            const today = new Date();
+            if (today.getFullYear() === 2026 && today.getMonth() === m && today.getDate() === d) {
+                cssClass = 'day-blue'; 
+            }
+
+            monthHtml += `<div class="${cssClass}">${d}</div>`;
+        }
+        
+        monthHtml += `</div></div>`;
+        calendarGrid.innerHTML += monthHtml;
+        firstDayOffset = (firstDayOffset + daysInMonth[m]) % 7;
+    }
+</script>
+
+</body>
+</html>
