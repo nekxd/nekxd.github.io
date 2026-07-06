@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Skype | Бесплатная видеосвязь и звонки</title>
-    <!-- Фавикон из веб-архива 2014 года -->
     <link rel="shortcut icon" href="https://web.archive.org/web/20140627015839im_/http://www.skype.com/favicon.ico" type="image/x-icon">
     
     <style>
@@ -17,7 +16,7 @@
         }
 
         body {
-            background-color: #f4f4f4;
+            background-color: #ffffff;
             color: #333;
         }
 
@@ -40,6 +39,7 @@
             padding: 0 40px;
             position: relative;
             z-index: 10;
+            border-bottom: 1px solid #e5e5e5;
         }
 
         .header-left, .header-right {
@@ -47,70 +47,89 @@
             align-items: center;
         }
 
+        /* Контейнер под предоставленный логотип */
         .logo-container {
             display: flex;
             align-items: center;
-            margin-right: 40px;
-            text-decoration: none;
+            margin-right: 35px;
         }
 
         .logo-container img {
-            height: 35px;
-            margin-right: 5px;
-        }
-
-        .logo-text {
-            font-size: 28px;
-            font-weight: 600;
-            color: #00aff0;
-            letter-spacing: -1px;
+            height: 38px; /* Идеальный размер для аккуратного отображения в шапке */
+            width: auto;
+            display: block;
         }
 
         .main-nav a {
             margin-right: 25px;
-            color: #777;
+            color: #444;
             font-size: 14px;
             font-weight: 400;
         }
 
         .main-nav a:hover {
             color: #00aff0;
+            text-decoration: none;
         }
 
         .auth-nav a {
-            margin-left: 20px;
-            color: #00aff0;
+            margin-left: 25px;
             font-size: 14px;
         }
 
         /* Главный баннер (Hero Section) */
         .hero {
-            /* Фоновая картинка по ссылке, которую ты указал */
-            background: url('https://web.archive.org/web/20140627015839im_/http://www.skypeassets.com/i/common/images/misc/dummy.png') center/cover no-repeat;
-            background-color: #d8d8d8; /* Запасной цвет, если dummy.png прозрачный */
-            height: 400px;
+            height: 420px;
+            position: relative;
+            overflow: hidden;
             display: flex;
             justify-content: center;
             align-items: center;
+        }
+
+        /* Задний фон (Коллаж лиц, создающий атмосферу Skype 2014) */
+        .hero-collage-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: repeat(8, 1fr);
+            grid-template-rows: repeat(3, 1fr);
+            z-index: 1;
+        }
+
+        .hero-collage-bg div {
+            background-size: cover;
+            background-position: center;
+            filter: grayscale(15%) brightness(95%);
+        }
+
+        /* Контент поверх заднего фона */
+        .hero-content {
             position: relative;
-            overflow: hidden;
+            z-index: 2;
+            width: 100%;
+            max-width: 1100px;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            padding-left: 100px;
         }
 
         /* Контейнер для кругов */
-        .hero-circles-wrapper {
+        .circles-container {
             position: relative;
-            width: 450px;
-            height: 380px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
+            width: 480px;
+            height: 400px;
         }
 
         /* Большой голубой круг */
         .blue-circle {
-            background-color: #00aff0;
-            width: 360px;
-            height: 360px;
+            background-color: rgba(0, 175, 240, 0.92);
+            width: 370px;
+            height: 370px;
             border-radius: 50%;
             display: flex;
             justify-content: center;
@@ -118,24 +137,26 @@
             color: #ffffff;
             text-align: center;
             padding: 40px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.15);
+            backdrop-filter: blur(2px);
         }
 
         .blue-circle h1 {
-            font-size: 26px;
+            font-size: 25px;
             font-weight: 300;
-            line-height: 1.3;
+            line-height: 1.35;
+            letter-spacing: -0.5px;
         }
 
-        /* Зеленая кнопка-круг */
+        /* Зеленая кнопка «Загрузить Skype» */
         .green-circle {
             background-color: #73c000;
-            width: 130px;
-            height: 130px;
+            width: 135px;
+            height: 135px;
             border-radius: 50%;
             position: absolute;
-            bottom: 10px;
-            right: 0px;
+            bottom: 25px;
+            right: 15px;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -143,91 +164,105 @@
             color: #ffffff !important;
             text-align: center;
             text-decoration: none !important;
-            font-size: 16px;
-            font-weight: 400;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-            transition: transform 0.2s ease, background-color 0.2s ease;
+            font-size: 15px;
+            font-weight: bold;
+            line-height: 1.2;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.2);
+            transition: transform 0.15s ease, background-color 0.15s ease;
         }
 
         .green-circle:hover {
-            transform: scale(1.05);
-            background-color: #83d600;
+            transform: scale(1.04);
+            background-color: #7ecd00;
         }
 
-        .green-circle span.arrow {
-            font-size: 20px;
-            margin-top: 5px;
+        .green-circle .arrow {
+            font-size: 22px;
+            margin-top: 3px;
         }
 
-        /* Подзаголовок (Sub-hero) */
+        /* Подзаголовок ниже баннера */
         .sub-hero {
             background-color: #ffffff;
             text-align: center;
-            padding: 30px 20px;
-            font-size: 16px;
-            color: #555;
+            padding: 35px 20px;
+            font-size: 18px;
+            color: #444;
+            border-bottom: 1px solid #f0f0f0;
         }
 
         .sub-hero a {
             display: block;
-            margin-top: 8px;
-            font-size: 18px;
-            font-weight: 400;
+            margin-top: 6px;
+            font-size: 16px;
+            font-weight: bold;
         }
 
-        /* Контентная часть (Блоки внизу) */
+        /* Сетка нижних информационных блоков */
         .content-grid {
             display: flex;
             justify-content: center;
-            gap: 20px;
-            padding: 40px 20px;
-            max-width: 1000px;
+            gap: 25px;
+            padding: 50px 20px;
+            max-width: 1050px;
             margin: 0 auto;
         }
 
         .card {
             background-color: #ffffff;
-            width: 480px;
-            height: 250px;
+            width: 490px;
+            height: 240px;
             display: flex;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
-            overflow: hidden;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+            border: 1px solid #e0e0e0;
         }
 
         .card-text {
             padding: 30px;
-            flex: 1;
+            flex: 1.2;
             display: flex;
             flex-direction: column;
             justify-content: center;
         }
 
         .card-text h2 {
-            font-size: 20px;
+            font-size: 21px;
             font-weight: 400;
-            margin-bottom: 15px;
+            margin-bottom: 12px;
             color: #333;
+            line-height: 1.2;
         }
 
         .card-text p {
             font-size: 13px;
-            color: #777;
-            margin-bottom: 20px;
-            line-height: 1.4;
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.45;
         }
 
-        .card-image {
-            width: 50%;
-            background-color: #e9e9e9;
-            background-image: url('https://web.archive.org/web/20140627015839im_/http://www.skypeassets.com/i/common/images/misc/dummy.png');
+        .card-text a {
+            font-size: 14px;
+            font-weight: bold;
+        }
+
+        /* Изображения внутри нижних карточек */
+        .card-image-grid {
+            flex: 1;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            background-color: #eee;
+        }
+        
+        .card-image-grid div {
             background-size: cover;
             background-position: center;
         }
 
-        /* Специфичные стили для синей карточки */
+        /* Правая синяя карточка */
         .card.blue-card {
             background-color: #00aff0;
-            color: #ffffff;
+            border: none;
         }
 
         .card.blue-card .card-text h2, 
@@ -239,74 +274,129 @@
             color: #ffffff;
             text-decoration: underline;
         }
+
+        .card-image-girl {
+            flex: 1;
+            background-color: #009ce4;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            background-image: url('https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?w=300&auto=format&fit=crop&q=80');
+            background-size: cover;
+            background-position: center;
+        }
+        
+        .question-badge {
+            position: absolute;
+            bottom: 20px;
+            left: 20px;
+            background-color: #ffffff;
+            color: #00aff0;
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+        }
     </style>
 </head>
 <body>
 
-    <!-- Шапка -->
     <header>
         <div class="header-left">
             <a href="#" class="logo-container">
-                <!-- Логотип из архива (с фоллбэк текстом рядом) -->
-                <img src="https://web.archive.org/web/20140627015839im_/http://www.skypeassets.com/i/common/images/misc/dummy.png" alt="Skype Logo">
-                <span class="logo-text">skype</span>
+                <img src="https://github.com/nekxd/nekxd.github.io/blob/main/Skype.webp?raw=true" alt="Skype Logo">
             </a>
             <nav class="main-nav">
                 <a href="#">Подробно</a>
                 <a href="#">Расценки</a>
-                <!-- Ссылка загрузки вверху -->
                 <a href="download.html">Загрузка</a>
                 <a href="#">Поддержка</a>
             </nav>
         </div>
         <div class="header-right auth-nav">
-            <!-- Кнопка Войти -->
             <a href="https://apps.skype.dev/web/login/?next=%2Fweb">Войти</a>
-            <!-- Кнопка Присоединяйтесь -->
-            <a href="https://discord.gg/skype">Присоединяйтесь!</a>
+            <a href="https://discord.gg/skype" style="font-weight: bold;">Присоединяйтесь!</a>
         </div>
     </header>
 
-    <!-- Главный блок с кругами -->
     <section class="hero">
-        <div class="hero-circles-wrapper">
-            <div class="blue-circle">
-                <h1>Соберитесь вместе,<br>воспользовавшись<br>бесплатной<br>видеосвязью.</h1>
+        <div class="hero-collage-bg">
+            <div style="background-image: url('https://images.unsplash.com/photo-1544005313-94ddf0286df2?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1506794778202-cad84cf45f1d?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1522075469751-3a6694fb2f61?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1534528741775-53994a69daeb?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=150&auto=format&fit=crop&q=60')"></div>
+            
+            <div style="background-image: url('https://images.unsplash.com/photo-1519085360753-af0119f7cbe7?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1489980508314-941910ded1f4?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1552058544-f2b08422138a?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1517841905240-472988babdf9?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1560250097-0b93528c311a?w=150&auto=format&fit=crop&q=60')"></div>
+
+            <div style="background-image: url('https://images.unsplash.com/photo-1566492031773-4f4e44671857?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1573497019940-1c28c88b4f3e?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1548142813-c348350df52b?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1504257404764-52199f30e927?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1531746020798-e6953c6e8e04?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1537368910025-700350fe46c7?w=150&auto=format&fit=crop&q=60')"></div>
+            <div style="background-image: url('https://images.unsplash.com/photo-1580489944761-15a19d654956?w=150&auto=format&fit=crop&q=60')"></div>
+        </div>
+
+        <div class="hero-content">
+            <div class="circles-container">
+                <div class="blue-circle">
+                    <h1>Соберитесь вместе,<br>воспользовавшись<br>бесплатной<br>видеосвязью.</h1>
+                </div>
+                <a href="success.html" class="green-circle">
+                    <span>Загрузить<br>Skype</span>
+                    <span class="arrow">↓</span>
+                </a>
             </div>
-            <!-- Большая зеленая кнопка загрузки -->
-            <a href="success.html" class="green-circle">
-                Загрузить<br>Skype<br>
-                <span class="arrow">↓</span>
-            </a>
         </div>
     </section>
 
-    <!-- Подзаголовок -->
     <section class="sub-hero">
         Хотите узнать обо всем этом поподробнее?
         <a href="#">Подробности о Skype</a>
     </section>
 
-    <!-- Нижние блоки -->
     <section class="content-grid">
-        <!-- Левая карточка -->
         <div class="card">
             <div class="card-text">
                 <h2>Групповые<br>видеозвонки</h2>
                 <p>Соберитесь большой компанией в одном видеозвонке — теперь бесплатно!</p>
                 <a href="#">Подробнее</a>
             </div>
-            <div class="card-image"></div>
+            <div class="card-image-grid">
+                <div style="background-image: url('https://images.unsplash.com/photo-1511551203524-9a24350a5771?w=100&auto=format&fit=crop&q=60')"></div>
+                <div style="background-image: url('https://images.unsplash.com/photo-1517462964-21fdcec3f25b?w=100&auto=format&fit=crop&q=60')"></div>
+                <div style="background-image: url('https://images.unsplash.com/photo-1524504388940-b1c1722653e1?w=100&auto=format&fit=crop&q=60')"></div>
+                <div style="background-image: url('https://images.unsplash.com/photo-1501196354995-cbb51c65aaea?w=100&auto=format&fit=crop&q=60')"></div>
+            </div>
         </div>
 
-        <!-- Правая карточка -->
         <div class="card blue-card">
             <div class="card-text">
                 <h2>Все, что вы хотели<br>знать о Skype</h2>
                 <p>Посмотрите обучающие видеоролики и почерпните много полезного о Skype.</p>
                 <a href="#">Посмотреть</a>
             </div>
-            <div class="card-image"></div>
+            <div class="card-image-girl">
+                <div class="question-badge">?</div>
+            </div>
         </div>
     </section>
 
