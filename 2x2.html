@@ -2,12 +2,12 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <title>OBS Impact Clock</title>
+    <title>2х2 часы</title>
     <style>
         body {
             margin: 0;
             padding: 0;
-            /* Прозрачный фон специально для OBS */
+            /* Прозрачный фон для OBS */
             background-color: transparent; 
             display: flex;
             justify-content: center;
@@ -18,41 +18,32 @@
 
         #clock {
             font-family: 'Impact', sans-serif;
-            font-size: 120px; /* Размер шрифта (можно менять) */
-            color: #ffffff; /* Основной цвет текста (белый) */
+            font-size: 120px; 
+            color: #ffffff; /* Цвет часов */
             letter-spacing: 2px;
-            
-            /* Жесткая черная обводка и мягкая тень для читаемости на стриме */
-            text-shadow: 
-                -4px -4px 0 #000000,  
-                 4px -4px 0 #000000,
-                -4px  4px 0 #000000,
-                 4px  4px 0 #000000,
-                 8px  8px 15px rgba(0, 0, 0, 0.8);
+            /* Все тени и подсветки удалены */
         }
     </style>
 </head>
 <body>
 
-    <div id="clock">00:00:00</div>
+    <!-- Стартовое значение теперь без секунд -->
+    <div id="clock">00:00</div>
 
     <script>
         function updateClock() {
             const now = new Date();
             
-            // Получаем часы, минуты и секунды, добавляя 0 спереди, если число меньше 10
+            // Получаем только часы и минуты
             let hours = String(now.getHours()).padStart(2, '0');
             let minutes = String(now.getMinutes()).padStart(2, '0');
-            let seconds = String(now.getSeconds()).padStart(2, '0');
 
-            // Обновляем текст внутри элемента
-            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+            // Обновляем текст (без секунд)
+            document.getElementById('clock').textContent = `${hours}:${minutes}`;
         }
 
-        // Обновляем часы каждую секунду (1000 миллисекунд)
+        // Обновляем часы каждую секунду (чтобы минуты переключались вовремя)
         setInterval(updateClock, 1000);
-        
-        // Вызываем функцию сразу при загрузке, чтобы не было задержки в 1 секунду
         updateClock();
     </script>
 
