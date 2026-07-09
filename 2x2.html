@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>OBS Impact Clock</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            /* Прозрачный фон специально для OBS */
+            background-color: transparent; 
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        #clock {
+            font-family: 'Impact', sans-serif;
+            font-size: 120px; /* Размер шрифта (можно менять) */
+            color: #ffffff; /* Основной цвет текста (белый) */
+            letter-spacing: 2px;
+            
+            /* Жесткая черная обводка и мягкая тень для читаемости на стриме */
+            text-shadow: 
+                -4px -4px 0 #000000,  
+                 4px -4px 0 #000000,
+                -4px  4px 0 #000000,
+                 4px  4px 0 #000000,
+                 8px  8px 15px rgba(0, 0, 0, 0.8);
+        }
+    </style>
+</head>
+<body>
+
+    <div id="clock">00:00:00</div>
+
+    <script>
+        function updateClock() {
+            const now = new Date();
+            
+            // Получаем часы, минуты и секунды, добавляя 0 спереди, если число меньше 10
+            let hours = String(now.getHours()).padStart(2, '0');
+            let minutes = String(now.getMinutes()).padStart(2, '0');
+            let seconds = String(now.getSeconds()).padStart(2, '0');
+
+            // Обновляем текст внутри элемента
+            document.getElementById('clock').textContent = `${hours}:${minutes}:${seconds}`;
+        }
+
+        // Обновляем часы каждую секунду (1000 миллисекунд)
+        setInterval(updateClock, 1000);
+        
+        // Вызываем функцию сразу при загрузке, чтобы не было задержки в 1 секунду
+        updateClock();
+    </script>
+
+</body>
+</html>
