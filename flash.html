@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nekich Игры</title>
+    
+    <!-- Подключаем Ruffle для эмуляции Flash -->
+    <script src="https://unpkg.com/@ruffle-rs/ruffle"></script>
+    
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            font-family: Tahoma, Arial, sans-serif;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            font-weight: normal;
+            margin-bottom: 30px;
+            color: #444;
+        }
+
+        #game-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        /* Тот самый дизайн кнопки (стиль Windows 7 / Aero) */
+        .game-btn {
+            background: linear-gradient(to bottom, #7eb3d8 0%, #588fbc 49%, #4781b2 50%, #5890bf 100%);
+            border: 1px solid #43648a;
+            border-radius: 3px;
+            color: #ffffff;
+            font-family: Tahoma, Arial, sans-serif;
+            font-size: 14px;
+            padding: 8px 20px;
+            text-shadow: 1px 1px 1px #335980;
+            box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.4);
+            cursor: pointer;
+            transition: background 0.1s;
+        }
+
+        .game-btn:hover {
+            background: linear-gradient(to bottom, #8fbee0 0%, #689cc6 49%, #558dbd 50%, #689ec9 100%);
+        }
+
+        .game-btn:active {
+            background: linear-gradient(to bottom, #4781b2 0%, #588fbc 100%);
+            box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            text-shadow: none;
+        }
+
+        /* Полноэкранный оверлей для плеера */
+        #player-overlay {
+            display: none;
+            position: fixed;
+            top: 0; left: 0;
+            width: 100vw; height: 100vh;
+            background-color: #000;
+            z-index: 1000;
+        }
+
+        /* Плеер растягивается на 100% экрана */
+        #ruffle-container {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Кнопка закрытия игры */
+        #close-btn {
+            position: absolute;
+            top: 15px; right: 20px;
+            z-index: 1001;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Nekich Игры</h1>
+    
+    <!-- Сюда будут добавляться кнопки с играми -->
+    <div id="game-list"></div>
+
+    <!-- Полноэкранный плеер (изначально скрыт) -->
+    <div id="player-overlay">
+        <button id="close-btn" class="game-btn">✖ Закрыть игру</button>
+        <div id="ruffle-container"></div>
+    </div>
+
+    <script>
+        // ТВОЙ ДОМЕН
+        const domain = "https://nekxd.ru/";
+
+        // СПИСОК ИГР: файл + красивое название
+        const games = [
+            { file: "AngryBirds.swf", name: "Angry Birds" },
+            { file: "TalkingTom2.swf", name: "Говорящий Том 2" },
+            { file: "TomLovesAngela.swf", name: "Том любит Анджелу" },
+            { file: "Murder.swf", name: "Убить короля" },
+            { file: "TrollfaceQuest1.swf", name: "TrollFace Quest 1" },
+            { file: "TrollfaceQuest2.swf", name: "TrollFace Quest 2" },
+            { file: "TrollfaceQuest3.swf", name: "TrollFace Quest 3" },
+            { file: "TrollfaceQuest4.swf", name: "TrollFace Quest 4" },
+            { file: "TrollfaceQuest5.swf", name: "TrollFace Quest 5" },
+            { file: "TrollfaceQuest6.swf", name: "TrollFace Quest 6" },
+            { file: "TrollfaceQuest7.swf", name: "TrollFace Quest 7" },
+            { file: "377.swf", name: "Разбей свой ПК!" }
+        ];
+
+        const gameListDiv = document.getElementById('game-list');
+        const overlay = document.getElementById('player-overlay');
+        const container = document.getElementById('ruffle-container');
+        const closeBtn = document.getElementById('close-btn');
+
+        // Создаем кнопки
+        games.forEach(game => {
+            const btn = document.createElement('button');
+            btn.className = 'game-btn';
+            
+            // Ставим красивое название из списка
+            btn.textContent = game.name;
+            
+            // Назначаем запуск игры по клику (склеиваем домен и имя файла)
+            btn.onclick = () => playGame(domain + game.file);
+            
+            gameListDiv.appendChild(btn);
+        });
+
+        // Функция запуска игры
+        function playGame(fileUrl) {
+            overlay.style.display = 'block';
+            
+            const ruffle = window.RufflePlayer.newest();
+            const player = ruffle.createPlayer();
+            
+            player.style.width = "100%";
+            player.style.height = "100%";
+            
+            container.innerHTML = '';
+            container.appendChild(player);
+            
+            // Загружаем игру напрямую с твоего домена
+            player.load(fileUrl);
+        }
+
+        // Закрытие игры
+        closeBtn.onclick = () => {
+            overlay.style.display = 'none';
+            container.innerHTML = ''; // Удаляем плеер
+        };
+    </script>
+</body>
+</html>
