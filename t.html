@@ -1,0 +1,762 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nekxdd's bio</title>
+<!-- Подключаем Roboto: Light(300) критически важен для стиля Holo -->
+<link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+<!-- Подключаем holo-web -->
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ZMYaro/holo-web@master/css/holo.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/ZMYaro/holo-web@master/css/holo-dark.css">
+
+<style>
+    /* ---------- ГЛОБАЛЬНАЯ СЕТКА И ФОН ---------- */
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        user-select: none;
+    }
+
+    /* Скроллбар в стиле Android 4.x */
+    ::-webkit-scrollbar { width: 4px; height: 4px; }
+    ::-webkit-scrollbar-thumb { background: #444444; }
+
+    /* ФЕЙКОВЫЙ STATUS BAR (Оставляем твой кастомный, т.к. в holo-web его нет) */
+    .status-bar {
+        height: 25px;
+        background-color: #000000;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 8px;
+        border-bottom: 1px solid #1A1A1A;
+    }
+    .status-bar svg {
+        width: 16px;
+        height: 16px;
+        fill: #999999;
+        margin-left: 6px;
+    }
+    .status-time {
+        font-size: 14px;
+        color: #33B5E5;
+        margin-left: 8px;
+        font-weight: 400;
+    }
+
+    /* ---------- КОНТЕЙНЕР НАСТРОЕК ---------- */
+    .settings-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+        background-color: #000000;
+    }
+
+    /* ---------- ЛЕВАЯ ПАНЕЛЬ ---------- */
+    .left-pane {
+        width: 30%;
+        min-width: 220px;
+        max-width: 320px;
+        background-color: #111111;
+        border-right: 1px solid #000000;
+        overflow-y: auto;
+    }
+
+    .category-header {
+        font-size: 12px;
+        color: #33B5E5; /* В Holo заголовки часто синие */
+        text-transform: uppercase;
+        font-weight: 700;
+        margin: 16px 16px 4px 16px;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #333333;
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        cursor: pointer;
+        min-height: 48px;
+        transition: background-color 0.1s;
+    }
+    .nav-item.active { background-color: #33B5E5; }
+    .nav-item:active:not(.active) { background-color: rgba(51, 181, 229, 0.3); }
+    
+    .nav-item svg {
+        width: 24px;
+        height: 24px;
+        fill: #888888;
+        margin-right: 16px;
+    }
+    .nav-item.active svg { fill: #FFFFFF; }
+    
+    .nav-item span {
+        font-size: 16px;
+        font-weight: 400;
+        color: #DDDDDD;
+    }
+    .nav-item.active span { color: #FFFFFF; }
+
+    /* ---------- ПРАВАЯ ПАНЕЛЬ ---------- */
+    .right-pane {
+        flex: 1;
+        background-color: #000000;
+        overflow-y: auto;
+    }
+
+    .content-section { display: none; padding: 10px 0; }
+    .content-section.active { display: block; }
+
+    /* Кастомные дополнения для контента */
+    .holo-audio {
+        width: 100%;
+        margin-top: 10px;
+        background: #111;
+    }
+
+    .banner-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        padding: 10px 16px;
+    }
+    .banner-container img {
+        image-rendering: pixelated;
+        border: 1px solid #333;
+    }
+
+    /* Модификаторы для списков Holo */
+    ul.holo-list { margin: 0; padding: 0; }
+    ul.holo-list li { cursor: pointer; }
+    ul.holo-list li.no-hover { cursor: default; }
+    ul.holo-list li.no-hover:active { background: transparent; }
+    ul.holo-list a { text-decoration: none; color: inherit; display: block; }
+</style>
+</head>
+<body class="holo-dark">
+
+<!-- Фейковый Status Bar -->
+<div class="status-bar">
+    <svg viewBox="0 0 24 24"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    <div class="status-time" id="clock">08:25</div>
+</div>
+
+<!-- Action Bar (используем классы holo-web) -->
+<header class="holo-action-bar">
+    <div class="holo-action-bar-icon" style="padding-left: 10px; padding-right: 10px; display:flex; align-items:center;">
+        <svg viewBox="0 0 24 24" style="width: 28px; height: 28px; fill: #CCCCCC;"><path d="M19.4 13c.0-.3.1-.6.1-1s0-.7-.1-1l2.1-1.7c.2-.2.2-.5.1-.7l-2-3.5c-.1-.2-.4-.3-.6-.2l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c0-.2-.2-.4-.5-.4h-4c-.3 0-.5.2-.5.4l-.4 2.7c-.6.3-1.2.6-1.7 1l-2.5-1c-.2-.1-.5 0-.6.2l-2 3.5c-.1.2-.1.5.1.7l2.1 1.7c-.1.3-.1.6-.1 1s0 .7.1 1l-2.1 1.7c-.2.2-.2.5-.1.7l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h4c.3 0 .5-.2.5-.4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1c.2.1.5 0 .6-.2l2-3.5c.1-.2.1-.5-.1-.7l-2.1-1.7zM12 15.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
+    </div>
+    <div class="holo-action-bar-title">nekxdd's bio</div>
+</header>
+
+<div class="settings-container">
+    
+    <!-- Левая панель навигации -->
+    <div class="left-pane">
+        <div class="category-header">Personal</div>
+        <div class="nav-item active" data-target="about">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Обо мне</span>
+        </div>
+        <div class="nav-item" data-target="socials">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <span>Соцсети</span>
+        </div>
+
+        <div class="category-header">Accounts</div>
+        <div class="nav-item" data-target="donate">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V9h2v3zm0 4h-2v-2h2v2z"/></svg>
+            <span>Реквизиты</span>
+        </div>
+
+        <div class="category-header">System</div>
+        <div class="nav-item" data-target="hardware">
+            <svg viewBox="0 0 24 24"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+            <span>Оборудование</span>
+        </div>
+        <div class="nav-item" data-target="player">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <span>Media Player</span>
+        </div>
+
+        <div class="category-header">Extras</div>
+        <div class="nav-item" data-target="banners">
+            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <span>Баннеры</span>
+        </div>
+        <div class="nav-item" data-target="versions">
+            <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+            <span>Версии сайта</span>
+        </div>
+    </div>
+
+    <!-- Правая панель с контентом -->
+    <div class="right-pane">
+        
+        <!-- Обо мне -->
+        <div class="content-section active" id="about">
+            <ul class="holo-list">
+                <li class="no-hover">
+                    <span class="title">Обо мне</span>
+                    <span class="subtitle">Просто забавный челик который вайбкодит всякую херню.</span>
+                </li>
+                <li class="no-hover">
+                    <span class="title">Статус</span>
+                    <span class="subtitle">Не гений, не миллиардер, не плейбой, не филантроп.</span>
+                </li>
+            </ul>
+        </div>
+
+        <!-- Соцсети -->
+        <div class="content-section" id="socials">
+            <ul class="holo-list">
+                <li><a href="https://www.twitch.tv/nekxdd" target="_blank"><span class="title">Twitch</span><span class="subtitle">nekxdd</span></a></li>
+                <li><a href="https://discord.gg/fUWugHxnWC" target="_blank"><span class="title">Discord</span><span class="subtitle">Перейти на сервер</span></a></li>
+                <li><a href="https://openvk.org/nxd" target="_blank"><span class="title">OpenVK</span><span class="subtitle">openvk.org/nxd</span></a></li>
+                <li><a href="https://emb.faero.top/nekich" target="_blank"><span class="title">Ember</span><span class="subtitle">emb.faero.top/nekich</span></a></li>
+                <li><a href="https://steamcommunity.com/id/nekichxd" target="_blank"><span class="title">Steam</span><span class="subtitle">steamcommunity.com/id/nekichxd</span></a></li>
+                <li><a href="https://github.com/nekxd/" target="_blank"><span class="title">GitHub</span><span class="subtitle">github.com/nekxd</span></a></li>
+                <li><a href="https://bsky.app/profile/nekxd.bsky.social" target="_blank"><span class="title">Bluesky</span><span class="subtitle">nekxd.bsky.social</span></a></li>
+                <li><a href="https://www.instagram.com/nekich.idk" target="_blank"><span class="title">Instagram - является экстремистским</span><span class="subtitle">@nekich.idk</span></a></li>
+                <li><a href="https://mrim.su" target="_blank"><span class="title">Renaissance</span><span class="subtitle">nekich@mail.ru</span></a></li>
+                <li><a href="mailto:yandhi@nekxd.ru"><span class="title">Отправить почту</span><span class="subtitle">yandhi@nekxd.ru</span></a></li>
+            </ul>
+Здарова! Переделал твой код под `ZMYaro/holo-web`[cite: 1]. 
+
+Библиотека отлично берет на себя базовую стилизацию UI, так что я вырезал кучу хардкодного CSS для шрифтов, теней и цветов, передав эту работу готовым классам (вроде `.holo-action-bar`)[cite: 1]. При этом я сохранил твою кастомную сетку на Flexbox (разделение на левую панель навигации и правую с контентом), так как это структурная фича в духе настроек Android для планшетов, и все твои данные (реквизиты, треки, железо и баннеры)[cite: 1].
+
+Вот обновленный и более чистый вариант:
+
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>nekxdd's bio</title>
+
+<!-- Подключаем Roboto: Light(300) критически важен для стиля Holo[cite: 1] -->
+<link href="[https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap](https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap)" rel="stylesheet">
+
+<!-- Подключаем библиотеку ZMYaro/holo-web -->
+<link rel="stylesheet" href="[https://cdn.jsdelivr.net/gh/ZMYaro/holo-web@master/css/holo-dark.css](https://cdn.jsdelivr.net/gh/ZMYaro/holo-web@master/css/holo-dark.css)">
+
+<style>
+    /* ---------- СТРОГИЙ HOLO DARK (Структура) ---------- */
+    * {
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        outline: none;
+    }
+
+    body {
+        margin: 0;
+        padding: 0;
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        user-select: none;
+        background-color: #000000; /* Подстраховка для фона[cite: 1] */
+    }
+
+    /* Скроллбар в стиле Android 4.x[cite: 1] */
+    ::-webkit-scrollbar {
+        width: 4px;
+        height: 4px;
+    }
+    ::-webkit-scrollbar-thumb {
+        background: #444444;
+    }
+
+    /* ---------- ФЕЙКОВЫЙ STATUS BAR ---------- */
+    /* Библиотека стилизует само приложение, поэтому системный бар оставляем кастомным[cite: 1] */
+    .status-bar {
+        height: 25px;
+        background-color: #000000;
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        padding: 0 8px;
+        border-bottom: 1px solid #1A1A1A;
+    }
+    .status-bar svg {
+        width: 16px;
+        height: 16px;
+        fill: #999999;
+        margin-left: 6px;
+    }
+    .status-time {
+        font-size: 14px;
+        color: #33B5E5; 
+        margin-left: 8px;
+        font-weight: 400;
+    }
+
+    /* ---------- КОНТЕЙНЕР НАСТРОЕК ---------- */
+    .settings-container {
+        display: flex;
+        flex: 1;
+        overflow: hidden;
+    }
+
+    /* ---------- ЛЕВАЯ ПАНЕЛЬ ---------- */
+    .left-pane {
+        width: 30%;
+        min-width: 220px;
+        max-width: 320px;
+        background-color: #111111; 
+        border-right: 1px solid #000000;
+        overflow-y: auto;
+    }
+
+    .category-header {
+        font-size: 12px;
+        color: #CCCCCC;
+        text-transform: uppercase;
+        font-weight: 700;
+        margin: 16px 16px 4px 16px;
+        padding-bottom: 4px;
+        border-bottom: 2px solid #333333; 
+    }
+
+    .nav-item {
+        display: flex;
+        align-items: center;
+        padding: 10px 16px;
+        cursor: pointer;
+        min-height: 48px;
+        transition: background-color 0.1s;
+    }
+    .nav-item.active {
+        background-color: #33B5E5; 
+    }
+    .nav-item svg {
+        width: 24px;
+        height: 24px;
+        fill: #888888;
+        margin-right: 16px;
+    }
+    .nav-item.active svg {
+        fill: #FFFFFF;
+    }
+    .nav-item span {
+        font-size: 16px;
+        font-weight: 400;
+        color: #DDDDDD;
+    }
+    .nav-item.active span {
+        color: #FFFFFF;
+    }
+
+    /* ---------- ПРАВАЯ ПАНЕЛЬ ---------- */
+    .right-pane {
+        flex: 1;
+        background-color: #000000;
+        overflow-y: auto;
+    }
+
+    .content-section {
+        display: none;
+    }
+    .content-section.active {
+        display: block;
+    }
+
+    /* Кастомные элементы поверх holo-web */
+    .list-item {
+        padding: 16px;
+        border-bottom: 1px solid #222222; 
+        display: block;
+        text-decoration: none;
+        cursor: pointer;
+        background-color: #000000;
+    }
+    .list-item.no-hover {
+        cursor: default;
+    }
+    .list-item:active:not(.no-hover) {
+        background-color: #33B5E5; 
+    }
+    
+    .list-title {
+        font-size: 18px;
+        font-weight: 300; 
+        color: #FFFFFF;
+        margin-bottom: 4px;
+    }
+    .list-summary {
+        font-size: 14px;
+        font-weight: 400;
+        color: #888888;
+        line-height: 1.3;
+    }
+    .list-item:active:not(.no-hover) .list-title,
+    .list-item:active:not(.no-hover) .list-summary {
+        color: #FFFFFF; 
+    }
+
+    .holo-audio {
+        width: 100%;
+        margin-top: 10px;
+        background: #111;
+    }
+    
+    .banner-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 10px;
+    }
+    .banner-container img {
+        image-rendering: pixelated;
+        border: 1px solid #333;
+    }
+</style>
+</head>
+<body class="holo-dark">
+
+<!-- Фейковый Status Bar[cite: 1] -->
+<div class="status-bar">
+    <svg viewBox="0 0 24 24"><path d="M12.01 21.49L23.64 7c-.45-.34-4.93-4-11.64-4C5.28 3 .81 6.66.36 7l11.63 14.49.01.01.01-.01z"/></svg>
+    <svg viewBox="0 0 24 24"><path d="M15.67 4H14V2h-4v2H8.33C7.6 4 7 4.6 7 5.33v15.33C7 21.4 7.6 22 8.33 22h7.33c.74 0 1.34-.6 1.34-1.33V5.33C17 4.6 16.4 4 15.67 4z"/></svg>
+    <div class="status-time" id="clock">08:25</div>
+</div>
+
+<!-- Использование стандартного Action Bar из holo-web -->
+<header class="holo-action-bar">
+    <div class="holo-action-bar-icon">
+        <!-- Острая шестеренка настроек Holo[cite: 1] -->
+        <svg viewBox="0 0 24 24" style="width:28px; height:28px; fill:#CCC; margin-top:8px;"><path d="M19.4 13c.0-.3.1-.6.1-1s0-.7-.1-1l2.1-1.7c.2-.2.2-.5.1-.7l-2-3.5c-.1-.2-.4-.3-.6-.2l-2.5 1c-.5-.4-1.1-.7-1.7-1l-.4-2.7c0-.2-.2-.4-.5-.4h-4c-.3 0-.5.2-.5.4l-.4 2.7c-.6.3-1.2.6-1.7 1l-2.5-1c-.2-.1-.5 0-.6.2l-2 3.5c-.1.2-.1.5.1.7l2.1 1.7c-.1.3-.1.6-.1 1s0 .7.1 1l-2.1 1.7c-.2.2-.2.5-.1.7l2 3.5c.1.2.4.3.6.2l2.5-1c.5.4 1.1.7 1.7 1l.4 2.7c0 .2.2.4.5.4h4c.3 0 .5-.2.5-.4l.4-2.7c.6-.3 1.2-.6 1.7-1l2.5 1c.2.1.5 0 .6-.2l2-3.5c.1-.2.1-.5-.1-.7l-2.1-1.7zM12 15.5c-1.9 0-3.5-1.6-3.5-3.5s1.6-3.5 3.5-3.5 3.5 1.6 3.5 3.5-1.6 3.5-3.5 3.5z"/></svg>
+    </div>
+    <div class="holo-action-bar-title">nekxdd's bio</div>
+</header>
+
+<div class="settings-container">
+    
+    <!-- Левая панель навигации[cite: 1] -->
+    <div class="left-pane">
+        
+        <div class="category-header">Personal</div>
+        
+        <div class="nav-item active" data-target="about">
+            <svg viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
+            <span>Обо мне</span>
+        </div>
+        
+        <div class="nav-item" data-target="socials">
+            <svg viewBox="0 0 24 24"><path d="M16 11c1.66 0 2.99-1.34 2.99-3S17.66 5 16 5c-1.66 0-3 1.34-3 3s1.34 3 3 3zm-8 0c1.66 0 2.99-1.34 2.99-3S9.66 5 8 5C6.34 5 5 6.34 5 8s1.34 3 3 3zm0 2c-2.33 0-7 1.17-7 3.5V19h14v-2.5c0-2.33-4.67-3.5-7-3.5zm8 0c-.29 0-.62.02-.97.05 1.16.84 1.97 1.97 1.97 3.45V19h6v-2.5c0-2.33-4.67-3.5-7-3.5z"/></svg>
+            <span>Соцсети</span>
+        </div>
+
+        <div class="category-header">Accounts</div>
+        
+        <div class="nav-item" data-target="donate">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.11 0-2 .9-2 2v14c0 1.1.89 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 9h-2V9h2v3zm0 4h-2v-2h2v2z"/></svg>
+            <span>Реквизиты</span>
+        </div>
+
+        <div class="category-header">System</div>
+        
+        <div class="nav-item" data-target="hardware">
+            <svg viewBox="0 0 24 24"><path d="M4 6h18V4H4c-1.1 0-2 .9-2 2v11H0v3h14v-3H4V6zm19 2h-6c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h6c.55 0 1-.45 1-1V9c0-.55-.45-1-1-1zm-1 9h-4v-7h4v7z"/></svg>
+            <span>Оборудование</span>
+        </div>
+        
+        <div class="nav-item" data-target="player">
+            <svg viewBox="0 0 24 24"><path d="M12 3v10.55c-.59-.34-1.27-.55-2-.55-2.21 0-4 1.79-4 4s1.79 4 4 4 4-1.79 4-4V7h4V3h-6z"/></svg>
+            <span>Media Player</span>
+        </div>
+
+        <div class="category-header">Extras</div>
+        
+        <div class="nav-item" data-target="banners">
+            <svg viewBox="0 0 24 24"><path d="M21 19V5c0-1.1-.9-2-2-2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2zM8.5 13.5l2.5 3.01L14.5 12l4.5 6H5l3.5-4.5z"/></svg>
+            <span>Баннеры</span>
+        </div>
+        
+        <div class="nav-item" data-target="versions">
+            <svg viewBox="0 0 24 24"><path d="M13 3c-4.97 0-9 4.03-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42C8.27 19.99 10.51 21 13 21c4.97 0 9-4.03 9-9s-4.03-9-9-9zm-1 5v5l4.28 2.54.72-1.21-3.5-2.08V8H12z"/></svg>
+            <span>Версии сайта</span>
+        </div>
+
+    </div>
+
+    <!-- Правая панель с контентом[cite: 1] -->
+    <div class="right-pane">
+        
+        <!-- Обо мне[cite: 1] -->
+        <div class="content-section active" id="about">
+            <div class="list-item no-hover">
+                <div class="list-title">Обо мне</div>
+                <div class="list-summary">Просто забавный челик который вайбкодит всякую херню.</div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Статус</div>
+                <div class="list-summary">Не гений, не миллиардер, не плейбой, не филантроп.</div>
+            </div>
+        </div>
+
+        <!-- Соцсети[cite: 1] -->
+        <div class="content-section" id="socials">
+            <a href="[https://www.twitch.tv/nekxdd](https://www.twitch.tv/nekxdd)" target="_blank" class="list-item">
+                <div class="list-title">Twitch</div>
+                <div class="list-summary">nekxdd</div>
+            </a>
+            <a href="[https://discord.gg/fUWugHxnWC](https://discord.gg/fUWugHxnWC)" target="_blank" class="list-item">
+                <div class="list-title">Discord</div>
+                <div class="list-summary">Перейти на сервер</div>
+            </a>
+            <a href="[https://openvk.org/nxd](https://openvk.org/nxd)" target="_blank" class="list-item">
+                <div class="list-title">OpenVK</div>
+                <div class="list-summary">openvk.org/nxd</div>
+            </a>
+            <a href="[https://emb.faero.top/nekich](https://emb.faero.top/nekich)" target="_blank" class="list-item">
+                <div class="list-title">Ember</div>
+                <div class="list-summary">emb.faero.top/nekich</div>
+            </a>
+            <a href="[https://steamcommunity.com/id/nekichxd](https://steamcommunity.com/id/nekichxd)" target="_blank" class="list-item">
+                <div class="list-title">Steam</div>
+                <div class="list-summary">[steamcommunity.com/id/nekichxd](https://steamcommunity.com/id/nekichxd)</div>
+            </a>
+            <a href="[https://github.com/nekxd/](https://github.com/nekxd/)" target="_blank" class="list-item">
+                <div class="list-title">GitHub</div>
+                <div class="list-summary">[github.com/nekxd](https://github.com/nekxd)</div>
+            </a>
+            <a href="[https://bsky.app/profile/nekxd.bsky.social](https://bsky.app/profile/nekxd.bsky.social)" target="_blank" class="list-item">
+                <div class="list-title">Bluesky</div>
+                <div class="list-summary">nekxd.bsky.social</div>
+            </a>
+            <a href="[https://www.instagram.com/nekich.idk](https://www.instagram.com/nekich.idk)" target="_blank" class="list-item">
+                <div class="list-title">Instagram - является экстремистским</div>
+                <div class="list-summary">@nekich.idk</div>
+            </a>
+            <a href="[https://mrim.su](https://mrim.su)" target="_blank" class="list-item">
+                <div class="list-title">Renaissance</div>
+                <div class="list-summary">nekich@mail.ru</div>
+            </a>
+            <a href="mailto:yandhi@nekxd.ru" class="list-item">
+                <div class="list-title">Отправить почту</div>
+                <div class="list-summary">yandhi@nekxd.ru</div>
+            </a>
+        </div>
+
+        <!-- Донат / Реквизиты[cite: 1] -->
+        <div class="content-section" id="donate">
+            <a href="[https://new.donatepay.ru/@nekichxd](https://new.donatepay.ru/@nekichxd)" target="_blank" class="list-item">
+                <div class="list-title">Шлюз DonatePay</div>
+                <div class="list-summary">Перейти к оплате</div>
+            </a>
+            <a href="[https://www.donationalerts.com/r/nekxd](https://www.donationalerts.com/r/nekxd)" target="_blank" class="list-item">
+                <div class="list-title">Шлюз DonationAlerts</div>
+                <div class="list-summary">Перейти к оплате</div>
+            </a>
+            <div class="list-item no-hover">
+                <div class="list-title">Тинькофф</div>
+                <div class="list-summary">2200 7021 8463 5477</div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">YooMoney</div>
+                <div class="list-summary">5599 0021 3104 1065</div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Альфа-Банк</div>
+                <div class="list-summary">2200 1546 7614 4461</div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Ozon Банк</div>
+                <div class="list-summary">2204 3212 8872 5864</div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">МТС Банк</div>
+                <div class="list-summary">2203 8302 6759 3987</div>
+            </div>
+        </div>
+
+        <!-- Оборудование[cite: 1] -->
+        <div class="content-section" id="hardware">
+            <div class="list-item no-hover">
+                <div class="list-title">Системный блок</div>
+                <div class="list-summary">
+                    AMD Ryzen 5 2600<br>
+                    ASUS ROG NVIDIA GeForce GTX 1070 8 GB<br>
+                    16 GB DDR4 RAM<br>
+                    SSD WD Green M.2 SATA 240 GB<br>
+                    HDD Toshiba 500 GB
+                </div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Мониторы PnP</div>
+                <div class="list-summary">
+                    MSI MAG 2K 165 Гц<br>
+                    NEC 75 Гц<br>
+                    Mystery TV
+                </div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Устройства ввода и вывода</div>
+                <div class="list-summary">
+                    Клавиатура: Defender Pro Atomic Core<br>
+                    Мышь: VXE R1 SE+<br>
+                    Наушники: Defender Triple<br>
+                    Микрофон: Fifine A6
+                </div>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Внешние устройства</div>
+                <div class="list-summary">
+                    Яндекс Станция Мини 2 с часами<br>
+                    Realme P3 5G (256 GB)<br>
+                    Samsung Galaxy A13 4G (64 GB)<br>
+                    Samsung S3 Duos (16 GB)<br>
+                    iPhone 5S (16 GB)
+                </div>
+            </div>
+        </div>
+
+        <!-- Плеер[cite: 1] -->
+        <div class="content-section" id="player">
+            <div class="list-item no-hover" style="border-bottom: none; padding-bottom: 0;">
+                <div class="list-title">Медиаплеер</div>
+                <audio id="audio-player" class="holo-audio" controls></audio>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://raw.githubusercontent.com/nekxd/player/main/assmilk.mp3](https://raw.githubusercontent.com/nekxd/player/main/assmilk.mp3)')">
+                <div class="list-title">Tyler The Creator - Assmilk.mp3</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a](https://github.com/nekxd/player/raw/refs/heads/main/biohazard.m4a)')">
+                <div class="list-title">Птицу ЕМЪ - Биохазард.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://raw.githubusercontent.com/nekxd/player/main/b2.m4a](https://raw.githubusercontent.com/nekxd/player/main/b2.m4a)')">
+                <div class="list-title">Kanye West - Bound 2.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a](https://github.com/nekxd/player/raw/refs/heads/main/oblivion.m4a)')">
+                <div class="list-title">Grimes - Oblivion.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3](https://github.com/nekxd/player/raw/refs/heads/main/waves.mp3)')">
+                <div class="list-title">Kanye West - Waves.mp3</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a](https://github.com/nekxd/player/raw/refs/heads/main/chejizh.m4a)')">
+                <div class="list-title">Kunteynir - Это жизнь.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a](https://github.com/nekxd/player/raw/refs/heads/main/dalovnogi.m4a)')">
+                <div class="list-title">Kunteynir - Дало в Ноги.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+            <div class="list-item" onclick="playTrack('[https://github.com/nekxd/player/raw/refs/heads/main/she.m4a](https://github.com/nekxd/player/raw/refs/heads/main/she.m4a)')">
+                <div class="list-title">Tyler The Creator - She.m4a</div>
+                <div class="list-summary">Нажмите для воспроизведения</div>
+            </div>
+        </div>
+
+        <!-- Баннеры[cite: 1] -->
+        <div class="content-section" id="banners">
+            <div class="list-item no-hover">
+                <div class="list-title">Кнопка nekxd</div>
+                <img src="[http://nekxd.ru/button.png](http://nekxd.ru/button.png)" width="88" height="31" alt="nekxd"><br>
+                <textarea class="holo-text-input" style="width:100%; margin-top:8px; font-family:monospace;" rows="2" readonly>&lt;a href="[http://nekxd.ru](http://nekxd.ru)" target="_blank"&gt;&lt;img src="[http://nekxd.ru/button.png](http://nekxd.ru/button.png)" width="88" height="31" alt="nekxd"&gt;&lt;/a&gt;</textarea>
+            </div>
+            <div class="list-item no-hover">
+                <div class="list-title">Кнопка nekxd old</div>
+                <img src="[http://nekxd.ru/old.png](http://nekxd.ru/old.png)" width="88" height="31" alt="NekxdOld"><br>
+                <textarea class="holo-text-input" style="width:100%; margin-top:8px; font-family:monospace;" rows="2" readonly>&lt;a href="[http://nekxd.ru/old.html](http://nekxd.ru/old.html)" target="_blank"&gt;&lt;img src="[http://nekxd.ru/old.png](http://nekxd.ru/old.png)" width="88" height="31" alt="NekxdOld"&gt;&lt;/a&gt;</textarea>
+            </div>
+            
+            <div class="list-item no-hover">
+                <div class="list-title">Партнеры и значки</div>
+                <div class="banner-container">
+                    <a href="[https://mynickname.com/id833025](https://mynickname.com/id833025)" target="_blank"><img src="[https://mynickname.com/forum3t5/Nekich.gif](https://mynickname.com/forum3t5/Nekich.gif)" alt="Nekich"></a>
+                    <a href="[http://madebydimas.top](http://madebydimas.top)" target="_blank"><img src="[http://madebydimas.top/button.png](http://madebydimas.top/button.png)" width="88" height="31"></a>
+                    <a href="[http://myslivets.com](http://myslivets.com)" target="_blank"><img src="[http://myslivets.com/img/button.png](http://myslivets.com/img/button.png)" width="88" height="31"></a>
+                    <a href="[http://veselcraft.ru/](http://veselcraft.ru/)" target="_blank"><img src="[http://veselcraft.ru/images/vc.gif](http://veselcraft.ru/images/vc.gif)"></a>
+                    <a href="[https://github.com](https://github.com)" target="_blank"><img src="[https://madebydimas.top/github.gif](https://madebydimas.top/github.gif)" width="88" height="31"></a>
+                    <a href="[http://firefox.com](http://firefox.com)" target="_blank"><img src="[http://nekxd.ru/firefox.gif](http://nekxd.ru/firefox.gif)" height="31" width="88" alt="Firefox"></a>
+                    <a href="[http://nekxd.ru/posuda.mp4](http://nekxd.ru/posuda.mp4)" target="_blank"><img border="0" src="[http://nekxd.ru/windows-media-player.gif](http://nekxd.ru/windows-media-player.gif)" width="88" height="31"></a>
+                    <img src="[https://88x31.kate.pet/postal_2.jpg](https://88x31.kate.pet/postal_2.jpg)" height="31" />
+                    <img src="[https://88x31.kate.pet/hl.gif](https://88x31.kate.pet/hl.gif)" height="31" />
+                    <img src="[https://88x31.kate.pet/w7-boot.gif](https://88x31.kate.pet/w7-boot.gif)" height="31" />
+                    <img src="[https://88x31.kate.pet/firefox_now.png](https://88x31.kate.pet/firefox_now.png)" height="31" />
+                    <img src="[https://88x31.kate.pet/telegram-old.gif](https://88x31.kate.pet/telegram-old.gif)" height="31" />
+                    <img src="[https://88x31.kate.pet/discord_now_02.gif](https://88x31.kate.pet/discord_now_02.gif)" height="31" />
+                    <img src="[https://88x31.kate.pet/made_with_windows.gif](https://88x31.kate.pet/made_with_windows.gif)" height="31" />
+                </div>
+            </div>
+        </div>
+
+        <!-- Версии[cite: 1] -->
+        <div class="content-section" id="versions">
+            <a href="xp.html" class="list-item">
+                <div class="list-title">WinXP версия</div>
+                <div class="list-summary">xp.html</div>
+            </a>
+            <a href="old.html" class="list-item">
+                <div class="list-title">Win9x версия</div>
+                <div class="list-summary">old.html</div>
+            </a>
+            <a href="win7.html" class="list-item">
+                <div class="list-title">Win7 версия</div>
+                <div class="list-summary">win7.html</div>
+            </a>
+            <a href="index.html" class="list-item">
+                <div class="list-title">Metro версия</div>
+                <div class="list-summary">index.html</div>
+            </a>
+            <a href="mobile.html" class="list-item">
+                <div class="list-title">WP8 версия</div>
+                <div class="list-summary">mobile.html</div>
+            </a>
+            <a href="wm6.html" class="list-item">
+                <div class="list-title">WM6 версия</div>
+                <div class="list-summary">wm6.html</div>
+            </a>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    // Переключение секций[cite: 1]
+    const navItems = document.querySelectorAll('.nav-item');
+    const contentSections = document.querySelectorAll('.content-section');
+
+    navItems.forEach(item => {
+        item.addEventListener('click', () => {
+            navItems.forEach(nav => nav.classList.remove('active'));
+            contentSections.forEach(sec => sec.classList.remove('active'));
+
+            item.classList.add('active');
+            const targetId = item.getAttribute('data-target');
+            document.getElementById(targetId).classList.add('active');
+        });
+    });
+
+    // Плеер[cite: 1]
+    function playTrack(url) {
+        var p = document.getElementById('audio-player');
+        p.src = url;
+        p.play();
+    }
+
+    // Часы для Status Bar[cite: 1]
+    setInterval(function() {
+        const d = new Date();
+        document.getElementById('clock').innerText = 
+            d.getHours().toString().padStart(2, '0') + ':' + 
+            d.getMinutes().toString().padStart(2, '0');
+    }, 1000);
+</script>
+
+</body>
+</html>
