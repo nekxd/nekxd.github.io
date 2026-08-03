@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>^_^</title>
+    <title>>.<</title>
     <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&display=swap" rel="stylesheet">
     <link rel="preload" href="https://www.google.com/s2/favicons?domain=donatepay.ru&sz=32" as="image">
     <link rel="preload" href="https://www.google.com/s2/favicons?domain=t.me&sz=32" as="image">
@@ -22,19 +22,11 @@
 
         :root {
             --bg: #0f0a12;
-            --card-bg: rgba(25, 18, 30, 0.0);
-            --surface: #1a1420;
             --text: #f0eaf5;
             --text-secondary: #cbb5d9;
             --accent: #b388d9;
-            --accent-soft: #7e4a9e;
             --border: rgba(179, 136, 217, 0.2);
-            --shadow: none;
             --glow: rgba(179, 136, 217, 0.08);
-            --card-radius: 0px;
-            --card-padding: clamp(20px, 4vw, 40px);
-            --card-max-width: 100%;
-            --transition: 0.3s ease;
         }
 
         body {
@@ -42,14 +34,12 @@
             background: var(--bg);
             color: var(--text);
             min-height: 100vh;
-            padding: 20px 20px 20px 20px;
-            position: relative;
+            padding: 20px;
             background-image: radial-gradient(circle at 20% 30%, var(--glow) 0%, var(--bg) 90%);
             background-attachment: fixed;
             display: flex;
             align-items: flex-start;
             justify-content: center;
-            transition: background 0.3s ease, color 0.3s ease;
             padding-top: 90px;
         }
 
@@ -84,7 +74,7 @@
         .kao-banner a:hover {
             border-bottom-color: #b388d9;
         }
-        .kao-banner span {
+        .kao-banner span#countdown {
             color: #f2e3ff;
             font-weight: 700;
             font-size: clamp(15px, 2.4vw, 20px);
@@ -93,6 +83,9 @@
             border-radius: 40px;
             letter-spacing: 0.5px;
             border: 1px solid #7e4a9e;
+            display: inline-block;
+            min-width: 180px;
+            font-variant-numeric: tabular-nums;
         }
         .kao-banner-close {
             background: transparent;
@@ -115,29 +108,15 @@
         @media (max-width: 600px) {
             .kao-banner { padding: 12px 16px; flex-direction: column; gap: 6px; }
             .kao-banner-close { right: 10px; top: 10px; transform: none; }
+            .kao-banner span#countdown { min-width: unset; width: 100%; }
         }
 
-        /* ===== КОНТЕЙНЕР (без карточки) ===== */
+        /* ===== КОНТЕЙНЕР ===== */
         .container {
-            width: 100%;
-            max-width: 100%;
-            padding: 0 12px;
-            margin: 0 auto;
-        }
-
-        /* ===== ОСНОВНОЙ КОНТЕНТ (без фона-карточки) ===== */
-        .content {
-            background: transparent;
-            backdrop-filter: none;
-            -webkit-backdrop-filter: none;
-            border-radius: 0;
-            padding: 0;
-            box-shadow: none;
-            border: none;
-            transition: all 0.3s ease;
             width: 100%;
             max-width: 820px;
             margin: 0 auto;
+            padding: 0 12px;
         }
 
         /* ===== АВАТАР ===== */
@@ -153,9 +132,7 @@
             margin: 0 auto 14px;
             border: 4px solid var(--accent);
             box-shadow: 0 8px 32px rgba(0,0,0,0.3);
-            background: var(--surface);
-            transition: border-color 0.3s;
-            cursor: default;
+            background: #1a1420;
         }
         .avatar img {
             width: 100%;
@@ -178,7 +155,6 @@
             padding: clamp(18px, 3vw, 28px);
             margin-bottom: 28px;
             backdrop-filter: blur(4px);
-            transition: background 0.3s;
         }
         .about-text {
             font-size: clamp(15px, 2vw, 17px);
@@ -256,7 +232,6 @@
             height: 22px;
             border-radius: 4px;
             flex-shrink: 0;
-            filter: drop-shadow(0 1px 2px rgba(0,0,0,0.1));
         }
         .social-name {
             font-weight: 500;
@@ -272,15 +247,6 @@
         }
 
         /* ===== ДОНАТ ===== */
-        .donate-block {
-            background: var(--glow);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            padding: clamp(18px, 3vw, 28px);
-            margin-bottom: 28px;
-            backdrop-filter: blur(4px);
-            transition: background 0.3s;
-        }
         .donate-title {
             font-size: clamp(14px, 1.8vw, 16px);
             font-weight: 700;
@@ -303,6 +269,7 @@
             display: flex;
             flex-wrap: wrap;
             gap: 12px;
+            margin-bottom: 28px;
         }
         .donate-link {
             background: var(--glow);
@@ -400,51 +367,6 @@
             border-radius: 4px;
         }
 
-        /* ===== 404 СТРАНИЦА ===== */
-        .page-404 {
-            display: none;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 50px 20px;
-            text-align: center;
-            min-height: 55vh;
-        }
-        .page-404.active {
-            display: flex;
-        }
-        .page-404 .emoji-big {
-            font-size: 80px;
-            margin-bottom: 12px;
-        }
-        .page-404 h2 {
-            font-size: 34px;
-            font-weight: 500;
-            color: var(--text);
-        }
-        .page-404 p {
-            font-size: 20px;
-            color: var(--accent);
-            margin: 8px 0 28px;
-        }
-        .page-404 .back-link {
-            color: var(--accent);
-            font-weight: 500;
-            font-size: 20px;
-            text-decoration: none;
-            border-bottom: 2px solid transparent;
-            transition: 0.2s;
-            cursor: pointer;
-        }
-        .page-404 .back-link:hover {
-            border-bottom-color: var(--accent);
-        }
-
-        /* ===== СКРЫТИЕ ОСНОВНОГО КОНТЕНТА при 404 ===== */
-        .main-hidden {
-            display: none !important;
-        }
-
         /* ===== АДАПТИВ ===== */
         @media (max-width: 600px) {
             body { padding-top: 110px; padding-left: 10px; padding-right: 10px; }
@@ -468,127 +390,120 @@
     <!-- БАННЕР -->
     <div class="kao-banner" id="kaoBanner">
         <a href="https://keepandroidopen.org/ru/" target="_blank" rel="noopener">Android станет закрытой платформой через</a>
-        <span id="countdown">149 д. 22 ч 55 мин 47 с</span>
+        <span id="countdown">-- д. -- ч -- мин -- с</span>
         <button class="kao-banner-close" aria-label="Close" onclick="document.getElementById('kaoBanner').style.display='none'">✕</button>
     </div>
 
-    <div class="container" id="appContainer">
-        <!-- ОСНОВНОЙ КОНТЕНТ (без карточки) -->
-        <div class="content" id="mainContent">
-            <!-- Аватар -->
-            <div class="avatar-section">
-                <div class="avatar">
-                    <img src="https://github.com/nekxd/nekxd.fun/blob/main/%7B2467FB7C-687F-43FE-A8BB-C843ADDF75A0%7D.png?raw=true" alt="Никита Яндиев" loading="lazy">
-                </div>
-                <h1 class="name">Никита Яндиев</h1>
+    <div class="container">
+        <!-- Аватар -->
+        <div class="avatar-section">
+            <div class="avatar">
+                <img src="https://github.com/nekxd/nekxd.fun/blob/main/%7B2467FB7C-687F-43FE-A8BB-C843ADDF75A0%7D.png?raw=true" alt="Никита Яндиев" loading="lazy">
             </div>
+            <h1 class="name">Никита Яндиев</h1>
+        </div>
 
-            <!-- О себе -->
-            <div class="about-section">
-                <p class="about-text">
-                    привет! меня зовут Никита, я обычный 14 летний школьник который занимается херней, не более) проживаю в городе Ковров, учусь в школе, живу никому не интересной жизню, вайбкодчю, играю в игры, и сплю. этот сайт был создан как чисто визитка, если вы хотите увидеть мой основной сайт, добро пожаловать — <a href="https://nekxd.ru" target="_blank" class="about-link">nekxd.ru</a>
-                </p>
+        <!-- О себе -->
+        <div class="about-section">
+            <p class="about-text">
+                привет! меня зовут Никита, я обычный 14 летний школьник который занимается херней, не более) проживаю в городе Ковров, учусь в школе, живу никому не интересной жизню, вайбкодчю, играю в игры, и сплю. этот сайт был создан как чисто визитка, если вы хотите увидеть мой основной сайт, добро пожаловать — <a href="https://nekxd.ru" target="_blank" class="about-link">nekxd.ru</a>
+            </p>
+        </div>
+
+        <!-- Соц. сети -->
+        <div>
+            <div class="section-title">мои соц. сети</div>
+            <div class="social-grid">
+                <a href="https://t.me/nekich_lox" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=t.me&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">Блог</div><div class="social-handle">t.me/nekich_lox</div></div>
+                </a>
+                <a href="https://t.me/nekichshpst" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=t.me&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">Щитпостня</div><div class="social-handle">t.me/nekichshpst</div></div>
+                </a>
+                <a href="https://openvk.org/nxd" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=openvk.org&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">OpenVK</div><div class="social-handle">openvk.org/nxd</div></div>
+                </a>
+                <a href="https://vk.ru/yandhi_soon" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=vk.ru&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">VK</div><div class="social-handle">vk.ru/yandhi_soon</div></div>
+                </a>
+                <a href="https://youtube.com/@EeLarpGuy" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">YouTube</div><div class="social-handle">@EeLarpGuy</div></div>
+                </a>
+                <a href="https://tiktok.com/@ee_larp" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=tiktok.com&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">TikTok</div><div class="social-handle">@ee_larp</div></div>
+                </a>
+                <a href="https://twitch.tv/nekxdd" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=twitch.tv&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">Twitch</div><div class="social-handle">twitch.tv/nekxdd</div></div>
+                </a>
+                <a href="https://emb.faero.top/jg" target="_blank" class="social-link">
+                    <img src="https://www.google.com/s2/favicons?domain=emb.faero.top&sz=32" alt="" class="social-favicon" loading="lazy">
+                    <div><div class="social-name">Ember</div><div class="social-handle">emb.faero.top/jg</div></div>
+                </a>
             </div>
+        </div>
 
-            <!-- Соц. сети -->
-            <div>
-                <div class="section-title">мои соц. сети</div>
-                <div class="social-grid">
-                    <a href="https://t.me/nekich_lox" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=t.me&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">Блог</div><div class="social-handle">t.me/nekich_lox</div></div>
-                    </a>
-                    <a href="https://t.me/nekichshpst" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=t.me&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">Щитпостня</div><div class="social-handle">t.me/nekichshpst</div></div>
-                    </a>
-                    <a href="https://openvk.org/nxd" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=openvk.org&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">OpenVK</div><div class="social-handle">openvk.org/nxd</div></div>
-                    </a>
-                    <!-- VK (новый) -->
-                    <a href="https://vk.ru/yandhi_soon" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=vk.ru&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">VK</div><div class="social-handle">vk.ru/yandhi_soon</div></div>
-                    </a>
-                    <a href="https://youtube.com/@EeLarpGuy" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=youtube.com&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">YouTube</div><div class="social-handle">@EeLarpGuy</div></div>
-                    </a>
-                    <a href="https://tiktok.com/@ee_larp" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=tiktok.com&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">TikTok</div><div class="social-handle">@ee_larp</div></div>
-                    </a>
-                    <a href="https://twitch.tv/nekxdd" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=twitch.tv&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">Twitch</div><div class="social-handle">twitch.tv/nekxdd</div></div>
-                    </a>
-                    <a href="https://emb.faero.top/jg" target="_blank" class="social-link">
-                        <img src="https://www.google.com/s2/favicons?domain=emb.faero.top&sz=32" alt="" class="social-favicon" loading="lazy">
-                        <div><div class="social-name">Ember</div><div class="social-handle">emb.faero.top/jg</div></div>
-                    </a>
-                </div>
-            </div>
-
-            <!-- Донат: DonatePay + Карта с иконкой Тинькофф -->
-            <div>
-                <div class="donate-title">задонатить мне денежку</div>
-                <div class="donate-items">
-                    <a href="https://new.donatepay.ru/@nekxdd" target="_blank" class="donate-link">
-                        <img src="https://www.google.com/s2/favicons?domain=donatepay.ru&sz=32" alt="" class="donate-favicon" loading="lazy">
-                        DonatePay
-                    </a>
-                    
-                    <!-- НОМЕР КАРТЫ С ИКОНКОЙ ТИНЬКОФФ -->
-                    <div class="card-number" onclick="copyCardNumber(this)" title="Нажмите, чтобы скопировать номер карты">
-                        <img src="https://gateline.net/wp-content/uploads/%D0%9B%D0%BE%D0%B3%D0%BE-%D0%A2%D0%B8%D0%BD%D1%8C%D0%BA%D0%BE%D1%84%D1%84_2.png" alt="Тинькофф" class="card-icon" loading="lazy">
-                        <span class="card-text">2200 7021 8463 5477</span>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Друзья -->
-            <div style="margin-top: 12px;">
-                <div class="section-title">друзья / крутые чуваки</div>
-                <div class="friends-grid">
-                    <a href="http://nekxd.ru" target="_blank"><img src="http://nekxd.ru/button.png" width="88" height="31" alt="nekxd" loading="lazy"></a>
-                    <a href="http://nekxd.ru/old.html" target="_blank"><img src="http://nekxd.ru/old.png" width="88" height="31" alt="NekxdOld" loading="lazy"></a>
-                    <a href="http://madebydimas.top" target="_blank"><img src="http://madebydimas.top/button.gif" width="88" height="31" alt="madebydimas" loading="lazy"></a>
-                    <a href="http://myslivets.com" target="_blank"><img src="http://myslivets.com/img/button.png" width="88" height="31" alt="myslivets" loading="lazy"></a>
-                    <a href="http://veselcraft.cc/" target="_blank"><img src="http://veselcraft.cc/images/vc.gif" width="88" height="31" alt="veselcraft" loading="lazy"></a>
-                    <a href="http://yuno.nya.pub" target="_blank"><img src="http://yuno.nya.pub/img/yuno88x31.png" width="88" height="31" alt="клацни на меня!" loading="lazy"></a>
+        <!-- Донат -->
+        <div>
+            <div class="donate-title">задонатить мне денежку</div>
+            <div class="donate-items">
+                <a href="https://new.donatepay.ru/@nekxdd" target="_blank" class="donate-link">
+                    <img src="https://www.google.com/s2/favicons?domain=donatepay.ru&sz=32" alt="" class="donate-favicon" loading="lazy">
+                    DonatePay
+                </a>
+                
+                <div class="card-number" onclick="copyCardNumber(this)" title="Нажмите, чтобы скопировать номер карты">
+                    <img src="https://gateline.net/wp-content/uploads/%D0%9B%D0%BE%D0%B3%D0%BE-%D0%A2%D0%B8%D0%BD%D1%8C%D0%BA%D0%BE%D1%84%D1%84_2.png" alt="Тинькофф" class="card-icon" loading="lazy">
+                    <span class="card-text">2200 7021 8463 5477</span>
                 </div>
             </div>
         </div>
 
-        <!-- СТРАНИЦА 404 -->
-        <div class="page-404" id="page404">
-            <div class="emoji-big">^_^</div>
-            <h2>ничего не найдено</h2>
-            <p>страница, которую вы ищете, не существует</p>
-            <a class="back-link" onclick="showMain()">← назад</a>
+        <!-- Друзья -->
+        <div style="margin-top: 12px;">
+            <div class="section-title">друзья / крутые чуваки</div>
+            <div class="friends-grid">
+                <a href="http://nekxd.ru" target="_blank"><img src="http://nekxd.ru/button.png" width="88" height="31" alt="nekxd" loading="lazy"></a>
+                <a href="http://nekxd.ru/old.html" target="_blank"><img src="http://nekxd.ru/old.png" width="88" height="31" alt="NekxdOld" loading="lazy"></a>
+                <a href="http://madebydimas.top" target="_blank"><img src="http://madebydimas.top/button.gif" width="88" height="31" alt="madebydimas" loading="lazy"></a>
+                <a href="http://myslivets.com" target="_blank"><img src="http://myslivets.com/img/button.png" width="88" height="31" alt="myslivets" loading="lazy"></a>
+                <a href="http://veselcraft.cc/" target="_blank"><img src="http://veselcraft.cc/images/vc.gif" width="88" height="31" alt="veselcraft" loading="lazy"></a>
+                <a href="http://yuno.nya.pub" target="_blank"><img src="http://yuno.nya.pub/img/yuno88x31.png" width="88" height="31" alt="клацни на меня!" loading="lazy"></a>
+            </div>
         </div>
     </div>
 
     <script>
-        // ===== ТАЙМЕР ДЛЯ БАННЕРА =====
+        // ===== ТАЙМЕР ДО 1 ЯНВАРЯ 2027 =====
         function updateCountdown() {
             const now = new Date();
-            const target = new Date('2026-01-01T00:00:00');
+            const target = new Date('2027-01-01T00:00:00');
             let diff = Math.floor((target - now) / 1000);
-            if (diff < 0) diff = 0;
+            
+            if (diff < 0) {
+                document.getElementById('countdown').textContent = '0 д. 00 ч 00 мин 00 с';
+                return;
+            }
+            
             const days = Math.floor(diff / 86400);
             const hours = String(Math.floor((diff % 86400) / 3600)).padStart(2, '0');
             const mins = String(Math.floor((diff % 3600) / 60)).padStart(2, '0');
             const secs = String(diff % 60).padStart(2, '0');
+            
             document.getElementById('countdown').textContent = `${days} д. ${hours} ч ${mins} мин ${secs} с`;
         }
+
         updateCountdown();
         setInterval(updateCountdown, 1000);
 
         // ===== КОПИРОВАНИЕ НОМЕРА КАРТЫ =====
         function copyCardNumber(element) {
-            // Извлекаем только номер карты из текста
             const cardNumber = element.querySelector('.card-text').textContent.trim();
             navigator.clipboard.writeText(cardNumber).then(() => {
                 const originalHTML = element.innerHTML;
@@ -608,28 +523,7 @@
             });
         }
 
-        // ===== 404 =====
-        function show404() {
-            document.getElementById('mainContent').classList.add('main-hidden');
-            document.getElementById('page404').classList.add('active');
-        }
-        function showMain() {
-            document.getElementById('mainContent').classList.remove('main-hidden');
-            document.getElementById('page404').classList.remove('active');
-        }
-
-        // ===== ОБРАБОТКА 404 ДЛЯ НЕСУЩЕСТВУЮЩИХ СТРАНИЦ =====
-        (function check404() {
-            const path = window.location.pathname;
-            if (path !== '/' && path !== '/index.html' && path !== '') {
-                const isFile = /\.[a-z0-9]+$/i.test(path);
-                if (!isFile) {
-                    show404();
-                }
-            }
-        })();
-
-        console.log('Визитка Никиты | 404 для несуществующих страниц | Карта 2200 7021 8463 5477 с иконкой Тинькофф');
+        console.log('chlen');
     </script>
 
 </body>
