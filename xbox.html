@@ -1,1 +1,143 @@
-пися
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>немае</title>
+    <link rel="stylesheet" href="https://unpkg.com/7.css">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            /* ИМЕННО РАСТЯГИВАНИЕ ГИФКИ (игнорируя пропорции) */
+            background-image: url('https://yuno.nya.pub/img/yuno.gif');
+            background-size: 100% 100%; 
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 9pt;
+            padding: 20px;
+            position: relative;
+            overflow: hidden; 
+        }
+
+        /* РАЗМЫТИЕ ФОНА */
+        body::before {
+            content: '';
+            position: absolute;
+            top: -5%;
+            left: -5%;
+            width: 110%;
+            height: 110%;
+            
+            background-image: inherit;
+            background-size: 100% 100%; /* Растягиваем и здесь */
+            background-position: center;
+            background-repeat: no-repeat;
+            /* fixed привязывает размер фона строго к окну браузера */
+            background-attachment: fixed; 
+            
+            filter: blur(15px) brightness(0.35);
+            z-index: -2;
+        }
+
+        /* ОКНО 7.CSS */
+        .window {
+            max-width: 400px;
+            width: 100%;
+            backdrop-filter: blur(12px);
+            background: rgba(255, 255, 255, 0.5); 
+            z-index: 1;
+        }
+
+        .window-body {
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-size: 2rem;
+            color: #1a3c6e;
+            font-weight: 300;
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            font-size: 1.1rem;
+            color: #444;
+            font-style: italic;
+        }
+
+        .footer {
+            text-align: center;
+            padding-top: 15px;
+            border-top: 1px solid rgba(0, 0, 0, 0.15); 
+            color: #222;
+            margin-top: 15px;
+        }
+
+        .footer p {
+            margin-bottom: 4px;
+        }
+
+        .link {
+            display: inline-block;
+            padding: 6px 18px;
+            margin-top: 5px;
+            background: #f0f0f0;
+            color: #333;
+            text-decoration: none;
+            border: 1px solid #a0a0a0;
+            border-radius: 2px;
+            transition: all 0.2s;
+        }
+
+        .link:hover {
+            background: #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="window glass">
+        <div class="title-bar">
+            <span class="title-bar-text">хлам</span>
+            <div class="title-bar-controls">
+                <button aria-label="Minimize"></button>
+                <button aria-label="Maximize"></button>
+                <button aria-label="Close"></button>
+            </div>
+        </div>
+        <div class="window-body">
+            <header>
+                <h1>ты що совсем ебанувся</h1>
+                <p class="subtitle">ЭЭЭЭ ТЫ КУДО ПОПАЛ</p>
+            </header>
+
+            <div class="footer">
+                <p>С любовью и уважением к Вам, никитко яндиев</p>
+                <p>© 2017 — <span id="current-year"></span></p>
+                <p>made by deepseek & gemini</p>
+                <p><a href="https://nekxd.fun" class="link">основной сайт</a></p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('current-year').textContent = new Date().getFullYear();
+    </script>
+</body>
+</html>
