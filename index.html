@@ -158,6 +158,29 @@ function copyText(text) {
     document.body.removeChild(tempInput);
 }
 
+function updateCountdown() {
+    var now = new Date();
+    var year = now.getFullYear();
+    var nextYearNewYear = new Date(year + 1, 0, 1, 0, 0, 0);
+    var diff = nextYearNewYear - now;
+
+    if (diff <= 0) {
+        nextYearNewYear = new Date(year + 2, 0, 1, 0, 0, 0);
+        diff = nextYearNewYear - now;
+    }
+
+    var days = Math.floor(diff / (1000 * 60 * 60 * 24));
+    var hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+    var minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+    var text = days + " д. " + (hours < 10 ? "0" : "") + hours + " ч " + (minutes < 10 ? "0" : "") + minutes + " мин " + (seconds < 10 ? "0" : "") + seconds + " с";
+    var el = document.getElementById('countdown');
+    if (el) {
+        el.innerHTML = text;
+    }
+}
+
 function loadLastFm() {
     var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
     var url = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=nekxd&api_key=58456c5a4406ed377b1167b05b55a0f5&format=json&limit=5";
@@ -198,14 +221,19 @@ function loadLastFm() {
     };
     xhr.send(null);
 }
-window.onload = loadLastFm;
+
+window.onload = function() {
+    loadLastFm();
+    updateCountdown();
+    setInterval(updateCountdown, 1000);
+};
 </script>
 </head>
 <body>
 
 <div class="kao-banner" id="kaoBanner">
     <a href="https://keepandroidopen.org/ru/" target="_blank" rel="noopener">android станет закрытой платформой через Т_Т</a>
-    <span id="countdown">??</span>
+    <span id="countdown">...</span>
     <button class="kao-banner-close" aria-label="Close" onclick="document.getElementById('kaoBanner').style.display='none'">✕</button>
 </div>
 
@@ -309,7 +337,7 @@ window.onload = loadLastFm;
 <div id="tab-donate" class="tab-content">
     <h2>пожертвования</h2>
     <ul class="link-list">
-        <li><img src="https://www.google.com/s2/favicons?domain=donationalerts.com" class="fav-icon" alt=""> <a href="https://www.donationalerts.com/r/nekxd" target="_blank">Шлюз DonationAlerts</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=donationalerts.com" class="fav-icon" alt=""> <a href="https://www.donationalerts.com/r/nekxd" target="_blank">donationalerts</a></li>
         <li><img src="https://gateline.net/wp-content/uploads/%D0%9B%D0%BE%D0%B3%D0%BE-%D0%A2%D0%B8%D0%BD%D1%8C%D0%BA%D0%BE%D1%84%D1%84_2.png" class="fav-icon" alt=""> тинькофф: 2200 7021 8463 5477</li>
         <li><img src="https://www.google.com/s2/favicons?domain=yoomoney.ru" class="fav-icon" alt=""> yoomoney: 4100119476531198</li>
     </ul>
