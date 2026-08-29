@@ -1,0 +1,339 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<title>^_^</title>
+<link rel="icon" type="image/png" href="oldfav.png">
+<style>
+body {
+    font-family: Tahoma, sans-serif;
+    background-color: #f5f5f5;
+    color: #000000;
+    margin: 20px;
+    font-size: 14px;
+}
+a {
+    color: #0000ee;
+    text-decoration: underline;
+}
+a:visited {
+    color: #551a8b;
+}
+a:active {
+    color: #ff0000;
+}
+h1, h2, h3 {
+    font-family: Tahoma, sans-serif;
+}
+.kao-banner {
+    background-color: #ffcccc;
+    border: 1px solid #cc0000;
+    padding: 10px;
+    margin-bottom: 20px;
+    text-align: center;
+}
+.kao-banner a {
+    font-weight: bold;
+}
+.kao-banner-close {
+    margin-left: 15px;
+    cursor: pointer;
+}
+.nav {
+    margin-bottom: 20px;
+    padding: 10px;
+    background-color: #dddddd;
+    border: 1px solid #aaaaaa;
+}
+.nav a {
+    margin-right: 15px;
+    font-weight: bold;
+    text-decoration: none;
+}
+.nav a:hover {
+    text-decoration: underline;
+    background-color: #cccccc;
+}
+.tab-content {
+    display: none;
+    background-color: #ffffff;
+    border: 1px solid #aaaaaa;
+    padding: 15px;
+    overflow: hidden;
+}
+#tab-about {
+    display: block;
+}
+table {
+    border-collapse: collapse;
+    margin-top: 10px;
+}
+td {
+    padding: 5px;
+}
+.banners img {
+    border: 0;
+    margin: 2px;
+    vertical-align: middle;
+}
+.link-list {
+    list-style: none;
+    padding-left: 0;
+}
+.link-list li {
+    margin-bottom: 8px;
+}
+.fav-icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    margin-right: 6px;
+    border: 0;
+}
+.fav-letter {
+    display: inline-block;
+    width: 16px;
+    text-align: center;
+    font-weight: bold;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+.lastfm-track {
+    margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+}
+.lastfm-track img {
+    border: 1px solid #ccc;
+    margin-right: 10px;
+}
+textarea.code-export {
+    width: 95%;
+    resize: none;
+    font-family: monospace;
+    font-size: 11px;
+    margin-top: 5px;
+}
+.faero-banner {
+    float: right;
+    width: 300px;
+    margin-left: 20px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    display: block;
+}
+.faero-banner img {
+    width: 100%;
+    display: block;
+    border: 0;
+}
+.text-icon {
+    display: inline-block;
+    font-weight: bold;
+    margin-right: 6px;
+    vertical-align: middle;
+}
+</style>
+<script>
+function showTab(tabId) {
+    var tabs = ['tab-about', 'tab-friends', 'tab-donate', 'tab-socials', 'tab-projects'];
+    for (var i = 0; i < tabs.length; i++) {
+        document.getElementById(tabs[i]).style.display = 'none';
+    }
+    document.getElementById(tabId).style.display = 'block';
+}
+
+function copyText(text) {
+    var tempInput = document.createElement("input");
+    tempInput.style = "position: absolute; left: -1000px; top: -1000px";
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    try {
+        document.execCommand("copy");
+        alert("Скопировано: " + text);
+    } catch (err) {
+        prompt("Скопируйте текст:", text);
+    }
+    document.body.removeChild(tempInput);
+}
+
+function loadLastFm() {
+    var xhr = window.XMLHttpRequest ? new XMLHttpRequest() : new ActiveXObject("Microsoft.XMLHTTP");
+    var url = "https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&user=nekxd&api_key=58456c5a4406ed377b1167b05b55a0f5&format=json&limit=5";
+    xhr.open("GET", url, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4) {
+            if (xhr.status == 200) {
+                try {
+                    var data = eval('(' + xhr.responseText + ')');
+                    var tracks = data.recenttracks.track;
+                    var html = '<div>';
+                    for(var i = 0; i < tracks.length; i++) {
+                        var artist = tracks[i].artist['#text'];
+                        var name = tracks[i].name;
+                        var imageTag = '';
+                        
+                        if (tracks[i].image && tracks[i].image.length > 0) {
+                            var imgUrl = tracks[i].image[1]['#text'] || tracks[i].image[0]['#text'];
+                            if (imgUrl) {
+                                imageTag = '<img src="' + imgUrl + '" width="34" height="34" alt="cover">';
+                            }
+                        }
+                        
+                        html += '<div class="lastfm-track">' + imageTag + '<span>' + artist + ' &mdash; ' + name + '</span></div>';
+                    }
+                    html += '</div>';
+                    document.getElementById('lastfm-scrobbler').innerHTML = html;
+                } catch(e) {
+                    document.getElementById('lastfm-scrobbler').innerHTML = 'Т_Т | сервис походу недоступен в вашей стране';
+                }
+            } else {
+                document.getElementById('lastfm-scrobbler').innerHTML = 'Т_Т | сервис походу недоступен в вашей стране';
+            }
+        }
+    };
+    xhr.onerror = function() {
+        document.getElementById('lastfm-scrobbler').innerHTML = 'Т_Т | сервис походу недоступен в вашей стране';
+    };
+    xhr.send(null);
+}
+window.onload = loadLastFm;
+</script>
+</head>
+<body>
+
+<div class="kao-banner" id="kaoBanner">
+    <a href="https://keepandroidopen.org/ru/" target="_blank" rel="noopener">android станет закрытой платформой через Т_Т</a>
+    <span id="countdown">124 д. 02 ч 55 мин 35 с</span>
+    <button class="kao-banner-close" aria-label="Close" onclick="document.getElementById('kaoBanner').style.display='none'">✕</button>
+</div>
+
+<h1>био яндиева</h1>
+
+<div class="nav">
+    <a href="javascript:showTab('tab-about')">[ Обо мне ]</a>
+    <a href="javascript:showTab('tab-friends')">[ Друзья ]</a>
+    <a href="javascript:showTab('tab-projects')">[ Проекты ]</a>
+    <a href="javascript:showTab('tab-donate')">[ Пожертвования ]</a>
+    <a href="javascript:showTab('tab-socials')">[ Соц.сети ]</a>
+</div>
+
+<div id="tab-about" class="tab-content">
+    <h2>Обо мне (основа)</h2>
+    <p><b>Обо мне:</b><br>привет! меня зовут Никита, я обычный 14 летний школьник который занимается херней, не более) проживаю в городе Ковров, учусь в школе, живу никому не интересной жизню, вайбкодчю, играю в игры, и сплю. этот сайт был создан для старых браузеров, основной сайт - <a href="http://nekxd.fun" target="_blank">nekxd.fun</a></p>
+    
+    <h2>Оборудование (Мои устройства)</h2>
+    <p><b>[+] Системный блок</b><br>
+    - AMD Ryzen 5 2600<br>
+    - ASUS ROG NVIDIA GeForce GTX 1070 8 GB<br>
+    - 16 GB DDR4 RAM<br>
+    - SSD WD Green M.2 SATA 240 GB<br>
+    - HDD Toshiba 500 GB</p>
+    
+    <p><b>[+] Мониторы PnP</b><br>
+    - MSI MAG 2K 165 Гц</p>
+    
+    <p><b>[+] Устройства ввода и вывода</b><br>
+    - Клавиатура: Defender Pro Atomic Core<br>
+    - Мышь: VXE R1 SE+<br>
+    - Наушники: Defender Triple<br>
+    - Микрофон: Fifine A6</p>
+    
+    <p><b>[+] Внешние устройства</b><br>
+    - Яндекс Станция Мини 2 с часами<br>
+    - Realme P3 5G (256 GB)<br>
+    - Samsung Galaxy A13 4G (64 GB)<br>
+    - iPhone 11 (128 GB)<br>
+    - iPhone 5S (16 GB)</p>
+
+    <h2>Сейчас слушаю (Last.fm)</h2>
+    <div id="lastfm-scrobbler">Загрузка последних треков...</div>
+</div>
+
+<div id="tab-friends" class="tab-content">
+    <a href="https://faero.top" target="_blank" class="faero-banner">
+        <img src="https://faero.top/ad/faero.png" alt="faero.top">
+    </a>
+
+    <h2>Друзья и крутые чуваки</h2>
+    <div class="banners">
+        <a href="https://mynickname.com/id833025" target="_blank"><img src="https://mynickname.com/forum3t5/Nekich.gif" alt="Nekich"></a>
+        <a href="http://madebydimas.top" target="_blank"><img src="http://madebydimas.top/button.png" width="88" height="31" alt=""></a>
+        <a href="http://myslivets.com" target="_blank"><img src="http://myslivets.com/img/button.png" width="88" height="31" alt=""></a>
+        <a href="http://veselcraft.ru/" target="_blank"><img src="http://veselcraft.ru/images/vc.gif" alt=""></a>
+        <a href="https://github.com" target="_blank"><img src="https://madebydimas.top/buttons/github.gif" width="88" height="31" alt=""></a>
+        <a href="http://firefox.com" target="_blank"><img src="http://nekxd.ru/firefox.gif" height="31" width="88" alt="Firefox"></a>
+        <a href="http://nekxd.ru/posuda.mp4" target="_blank"><img src="http://nekxd.ru/windows-media-player.gif" width="88" height="31" alt=""></a>
+        <img src="https://88x31.kate.pet/postal_2.jpg" height="31" alt="">
+        <img src="https://88x31.kate.pet/hl.gif" height="31" alt="">
+        <img src="https://88x31.kate.pet/w7-boot.gif" height="31" alt="">
+        <img src="https://88x31.kate.pet/firefox_now.png" height="31" alt="">
+        <img src="https://88x31.kate.pet/telegram-old.gif" height="31" alt="">
+        <img src="https://88x31.kate.pet/discord_now_02.gif" height="31" alt="">
+        <img src="https://88x31.kate.pet/made_with_windows.gif" height="31" alt="">
+        <a href="http://yuno.nya.pub" target="_blank"><img src="http://yuno.nya.pub/img/yuno88x31.png" width="88" height="31" alt="клацни на меня!"></a>
+    </div>
+    
+    <br>
+    <ul class="link-list">
+        <li><img src="http://nekxd.fun/mts.ico" class="fav-icon" alt=""> <a href="http://mts.nekxd.fun/" target="_blank">мтс??</a></li>
+        <li><span class="fav-letter">М</span> <a href="http://metrosocial.pythonanywhere.com/" target="_blank">metrosocial</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=t.me" class="fav-icon" alt=""> <a href="https://t.me/faerochat" target="_blank">faerochat</a></li>
+    </ul>
+
+    <hr style="clear: both; margin-top: 20px;">
+    <h3>Добавьте мои кнопки</h3>
+    <table width="100%" cellpadding="0" cellspacing="0" border="0">
+        <tr>
+            <td width="50%" valign="top">
+                <a href="http://nekxd.ru" target="_blank"><img src="http://nekxd.ru/old.png" width="88" height="31" alt="yandhievru"></a><br>
+                <textarea rows="2" class="code-export" readonly>&lt;a href="http://nekxd.ru" target="_blank"&gt;&lt;img src="http://nekxd.ru/old.png" width="88" height="31" alt="yandhievru"&gt;&lt;/a&gt;</textarea>
+            </td>
+            <td width="50%" valign="top">
+                <a href="http://nekxd.fun" target="_blank"><img src="http://nekxd.fun/fun.png" width="88" height="31" alt="yandhiev" loading="lazy"></a><br>
+                <textarea rows="2" class="code-export" readonly>&lt;a href="http://nekxd.fun" target="_blank"&gt;&lt;img src="http://nekxd.fun/fun.png" width="88" height="31" alt="yandhiev" loading="lazy"&gt;&lt;/a&gt;</textarea>
+            </td>
+        </tr>
+    </table>
+</div>
+
+<div id="tab-projects" class="tab-content">
+    <h2>проекты</h2>
+    <ul class="link-list">
+        <li><img src="http://nekxd.ru/skyp.ico" class="fav-icon" alt=""> <a href="http://nekxd.ru/skype" target="_blank">nekxd.ru/skype</a></li>
+        <li><img src="http://soap.nekxd.fun/assets/img/favicon.ico" class="fav-icon" alt=""> <a href="http://soap.nekxd.fun/" target="_blank">soap</a></li>
+    </ul>
+</div>
+
+<div id="tab-donate" class="tab-content">
+    <h2>пожертвования</h2>
+    <ul class="link-list">
+        <li><img src="https://www.google.com/s2/favicons?domain=donationalerts.com" class="fav-icon" alt=""> <a href="https://www.donationalerts.com/r/nekxd" target="_blank">Шлюз DonationAlerts</a></li>
+        <li><img src="https://gateline.net/wp-content/uploads/%D0%9B%D0%BE%D0%B3%D0%BE-%D0%A2%D0%B8%D0%BD%D1%8C%D0%BA%D0%BE%D1%84%D1%84_2.png" class="fav-icon" alt=""> тинькофф: 2200 7021 8463 5477</li>
+        <li><img src="https://www.google.com/s2/favicons?domain=yoomoney.ru" class="fav-icon" alt=""> yoomoney: 4100119476531198</li>
+    </ul>
+</div>
+
+<div id="tab-socials" class="tab-content">
+    <h2>Соц. сетки</h2>
+    <ul class="link-list">
+        <li><img src="https://www.google.com/s2/favicons?domain=twitch.tv" class="fav-icon" alt=""> <a href="https://www.twitch.tv/nekxdd" target="_blank">twitch</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=openvk.org" class="fav-icon" alt=""> <a href="https://openvk.org/nxd" target="_blank">openvk</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=steamcommunity.com" class="fav-icon" alt=""> <a href="https://steamcommunity.com/id/nekichxd" target="_blank">steam</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=github.com" class="fav-icon" alt=""> <a href="https://github.com/nekxd/" target="_blank">github</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=mrim.su" class="fav-icon" alt=""> <a href="https://mrim.su" target="_blank">mrim.su</a> // <a href="javascript:void(0);" onclick="copyText('nekich@mail.ru')" title="Нажмите, чтобы скопировать">nekich@mail.ru</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=vepurovk.fun" class="fav-icon" alt=""> <a href="https://vepurovk.fun/xdd" target="_blank">vepurovk</a></li>
+        <li><img src="http://nekxd.ru/vk.ico" class="fav-icon" alt=""> <a href="https://vk.ru/yandhi_soon" target="_blank">вкухкудахте</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=youtube.com" class="fav-icon" alt=""> <a href="https://youtube.com/@yndhv" target="_blank">ютуб</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=tiktok.com" class="fav-icon" alt=""> <a href="https://tiktok.com/@yndhv" target="_blank">тикток</a></li>
+        <li><img src="https://www.google.com/s2/favicons?domain=t.me" class="fav-icon" alt=""> <a href="https://t.me/addlist/j6ywu8amrGY1NGIy" target="_blank">папка в тг с каналами</a></li>
+        <li><span class="text-icon">^_^</span> <a href="mailto:yandhi@nekxd.ru">yandhi@nekxd.ru</a></li>
+        <li><img src="http://soap.nekxd.fun/assets/img/favicon.ico" class="fav-icon" alt=""> <a href="mailto:nekxd@bk.ru">nekxd@bk.ru</a></li>
+        <li><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/cc/Logo_ICQ.svg/960px-Logo_ICQ.svg.png" class="fav-icon" alt=""> KICQ: 7352248</li>
+        <li><img src="http://nekxd.ru/skyp.ico" class="fav-icon" alt=""> skype: nekxdd</li>
+    </ul>
+</div>
+
+</body>
+</html>
