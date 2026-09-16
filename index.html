@@ -163,15 +163,6 @@ body.holo-dark textarea.code-export {
 body.holo-dark .holo-divider {
     border-top: 1px solid #22272e;
 }
-body.holo-dark .holo-footer-bar {
-    background-color: #14171a;
-    border-top: 1px solid #252b33;
-    color: #ffffff;
-}
-body.holo-dark .holo-footer-bar:hover {
-    background-color: #1d2329;
-    color: #33b5e5;
-}
 
 /* =========================================================
    HOLO LIGHT THEME
@@ -303,15 +294,6 @@ body.holo-light textarea.code-export {
 }
 body.holo-light .holo-divider {
     border-top: 1px solid #d8d8d8;
-}
-body.holo-light .holo-footer-bar {
-    background-color: #d6d6d6;
-    border-top: 1px solid #c0c0c0;
-    color: #222222;
-}
-body.holo-light .holo-footer-bar:hover {
-    background-color: #e0e0e0;
-    color: #0099cc;
 }
 
 /* =========================================================
@@ -517,20 +499,6 @@ textarea.code-export:focus {
     margin: 18px 0;
     clear: both;
 }
-
-/* Bottom Action Bar Theme Switcher */
-.holo-footer-bar {
-    display: block;
-    text-align: center;
-    padding: 14px 10px;
-    margin-top: 20px;
-    font-size: 12px;
-    font-weight: bold;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-    cursor: pointer;
-    text-decoration: none;
-}
 </style>
 <script type="text/javascript">
 function showTab(tabId) {
@@ -572,14 +540,8 @@ function toggleTheme() {
 
 function updateThemeUI(theme) {
     var topBtn = document.getElementById('themeTopBtn');
-    var footerBtn = document.getElementById('themeFooterBtn');
-    
-    if (theme === 'light') {
-        if (topBtn) topBtn.innerHTML = 'ТЁМНАЯ ТЕМА';
-        if (footerBtn) footerBtn.innerHTML = 'SWITCH TO DARK THEME';
-    } else {
-        if (topBtn) topBtn.innerHTML = 'СВЕТЛАЯ ТЕМА';
-        if (footerBtn) footerBtn.innerHTML = 'SWITCH TO LIGHT THEME';
+    if (topBtn) {
+        topBtn.innerHTML = (theme === 'light') ? 'ТЁМНАЯ ТЕМА' : 'СВЕТЛАЯ ТЕМА';
     }
 }
 
@@ -749,7 +711,7 @@ window.onload = function() {
         <span id="countdown">...</span>
     </div>
 
-    <!-- Holo Action Bar Header (No Icon) -->
+    <!-- Holo Action Bar Header -->
     <div class="holo-action-bar">
         <h1>био яндиева</h1>
         <button type="button" class="holo-theme-btn" id="themeTopBtn" onclick="toggleTheme()">СВЕТЛАЯ ТЕМА</button>
@@ -827,7 +789,6 @@ window.onload = function() {
             <a href="http://telegram.org" target="_blank"><img src="https://88x31.kate.pet/telegram-old.gif" height="31" alt=""></a>
             <a href="http://discord.com" target="_blank"><img src="https://88x31.kate.pet/discord_now_02.gif" height="31" alt=""></a>
             <a href="http://windows.com" target="_blank"><img src="https://88x31.kate.pet/made_with_windows.gif" height="31" alt=""></a>
-            <a href="http://danil.l.cd" target="_blank"><img src="http://danil.l.cd/img/88x31.png" width="88" height="31" alt="шота эээээ короче да"></a>
             <a href="https://l-lacker.ru/blackhole/ryzhik/"><img src="https://l-lacker.ru/blackhole/ryzhik/img/banner88x31.gif" width="88" height="31" alt="Рыжик.su" border="0"></a>
             <a href="http://faero.top/" target="_blank"><img src="http://faero.top/ad/button.gif" alt="faero.top" border="0" width="88" height="31"></a>
         </div>
@@ -835,7 +796,6 @@ window.onload = function() {
         <div style="margin-top: 15px;"></div>
         <ul class="link-list">
             <li><img src="http://ynd.su/mts.ico" class="fav-icon" alt=""> <a href="http://mts.nekxd.fun/" target="_blank">мтс??</a></li>
-            <li><span class="fav-letter">М</span> <a href="http://metrosocial.pythonanywhere.com/" target="_blank">metrosocial</a></li>
             <li><img src="http://ynd.su/frct.ico" class="fav-icon" alt=""> <a href="https://t.me/faerochat" target="_blank">faerochat</a></li>
         </ul>
 
@@ -897,9 +857,6 @@ window.onload = function() {
             <li><img src="http://nekxd.ru/skyp.ico" class="fav-icon" alt=""> skype: <b class="holo-highlight">nekxdd</b></li>
         </ul>
     </div>
-
-    <!-- Holo Footer Action Bar (Theme Switcher Button from screenshot) -->
-    <a href="javascript:toggleTheme()" class="holo-footer-bar" id="themeFooterBtn">SWITCH TO LIGHT THEME</a>
 </div>
 
 </body>
